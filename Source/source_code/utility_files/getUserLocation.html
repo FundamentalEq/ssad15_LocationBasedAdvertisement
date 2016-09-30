@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Accessible Map</title>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.18.2/css/ol.css" type="text/css">
+    <script src="http://openlayers.org/en/v3.18.2/build/ol.js"></script>
+    <link rel="stylesheet" type="text/css" href="getUserLocation.css">
+  </head>
+  <body>
+    <input type="text" id="address" name="FirstName" value="Enter the address">
+     <button type="button" id="find_address">Find</button> <br>
+    <a class="skiplink" href="#map">Go to map</a>
+    <div id="map" class="map" tabindex="0" style="height:500px;width:500px"></div>
+    <button id="zoom-out">Zoom out</button>
+    <button id="zoom-in">Zoom in</button>
+    <script src="getUserLocation.js"></script>
+  </body>
+</html>
