@@ -1,11 +1,18 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>Django Girls blog</title>
+        <title>UserAuth Form</title>
     </head>
     <body>
         <div>
-		<h1>hello </h1>
+	<p class="top-menu"><a href="{% url 'home' %}">Home</a></p>
+	{% if user.is_authenticated %}
+         <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+         <p class="top-menu"><a href="{% url 'upload' %}">Upload Advertisement</a></p>
+      {% else  %}
+    <p class="top-menu"><a href="{% url 'register' %}">Sign Up</a></p>
+    <p class="top-menu"><a href="{% url 'login' %}">Log IN</a></p>
+     {% endif %}
             {% block content %}
             {% endblock %}
         </div>
