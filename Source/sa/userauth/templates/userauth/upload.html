@@ -1,0 +1,27 @@
+{% extends 'userauth/base.html' %}
+      {% block content %}
+        {% if user.is_authenticated %}
+        <h1>Upload Advertisement</h1>
+        {% if uploaded %}
+        <strong>thank you for uploading!</strong>
+	<a href="/userauth/upload">Select for Adding More Advertisements.</a><br />
+        <!--<a href="/userauth/upload">Return to the homepage.</a><br />-->
+        {% else %}
+        userauth says: <strong>upload here!</strong><br />
+
+        <form  method="post" action="/userauth/upload/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+
+            {{ form.as_p }}
+
+            <input type="submit" name="submit" />
+        </form>
+        {% endif %}
+        {% else  %}
+         <p>Your don't have access to this page. To proceed,
+    please login with an account that has access.</p>
+        {% endif %}
+{% endblock %}

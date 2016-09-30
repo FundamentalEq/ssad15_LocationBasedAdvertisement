@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
+        <title>userauth</title>
+    </head>
+
+    <body>
+      {% extends 'userauth/base.html' %}
+            {% block content %}
+            {% if user.is_authenticated %}
+            <p>You are already Logged In </p>
+           {% else %}
+      <form id="login_form" method="post" action="/userauth/login/">
+            {% csrf_token %}
+            Username: <input type="text" name="username" value="" size="50" />
+            <br />
+            Password: <input type="password" name="password" value="" size="50" />
+            <br />
+      <input type="submit" value="submit" />
+        </form>
+        {% endif %}
+{% endblock %}
+    </body>
+</html>
