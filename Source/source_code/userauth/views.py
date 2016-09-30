@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.template import context
 from django.shortcuts import render_to_response
-from userauth.forms import UserForm, UserProfileForm
+from userauth.forms import UserForm, UserProfileForm, UploadForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
@@ -67,3 +67,18 @@ def restricted(request):
 def user_logout(request):
     	logout(request)
 	return HttpResponseRedirect('/userauth/')
+
+def upload(request):
+	uploaded = False
+        if request.method == "POST":
+           form = UploadForm(request.POST, request.FILES)
+           if form.is_valid():
+            	post = form.save(commit=False)
+            	post.uploader = request.user
+            	uploaded = True
+            	post.save()
+            	
+	else:
+		form = UploadForm()
+	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded})
+	
