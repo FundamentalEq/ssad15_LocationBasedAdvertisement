@@ -7,7 +7,7 @@ from django.db import models
 class zone(models.Model):
     total_bundles=models.IntegerField(default=10)
     bundles_used=models.IntegerField(default=0)
-    cost=models.DecimalField(default=0,max_digits=10,decimal_places=2)
+    cost=models.DecimalField(default=100,max_digits=10,decimal_places=2)
     bottom_left_coordinate_x=models.DecimalField(max_digits=9,decimal_places=6,default=0)
     bottom_left_coordinate_y=models.DecimalField(max_digits=9,decimal_places=6,default=0)
 

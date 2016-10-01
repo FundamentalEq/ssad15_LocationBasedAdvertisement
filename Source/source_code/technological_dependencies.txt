@@ -1,4 +1,4 @@
-mysl for Python
+mysql for Python
 
 crontab :
 sudo pip install django-crontab
