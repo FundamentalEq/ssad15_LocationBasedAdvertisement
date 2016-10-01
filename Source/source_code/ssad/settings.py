@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ssad.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'location_based_advertisement',
+        'NAME': 'LDA_SSAD',
         'USER': 'root',
         'PASSWORD': 'the c-13',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
