@@ -17,6 +17,10 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import login
+from django.contrib.auth.decorators import user_passes_test
+import django.contrib.auth.views
+admin.autodiscover()
 
 urlpatterns = [
     url(r'^ssad15/', include('ssad15.urls')),
