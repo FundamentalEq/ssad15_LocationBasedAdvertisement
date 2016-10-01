@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
         default=USER,)
 	def __unicode__(self):
         	return self.user.username
-	def is_upperclass(self):	
+	def is_upperclass(self):
 		return self.applying_as_a in (self.MERCHANT)'''
 
 class UploadAdvetisement(models.Model):
@@ -48,7 +48,9 @@ class UploadAdvetisement(models.Model):
         (3, '3'),
         (4, '4'),
         (5, '5'),
-        (6, '6'),	
+        (6, '6'),
 	)
 	no_of_weeks = models.IntegerField(choices=no_of_weeks,
         default=1,)
+	bussinessPoint_longitude=models.DecimalField(max_digits=12,decimal_places=9,default=0)
+	bussinessPoint_latitude=models.DecimalField(max_digits=12,decimal_places=9,default=0)

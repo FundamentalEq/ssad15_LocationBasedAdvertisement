@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
+
 #from userauth.models import UserProfile,
 from userauth.models import UploadAdvetisement
 class UserForm(forms.ModelForm):
@@ -21,5 +22,7 @@ class UserForm(forms.ModelForm):
 class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement
-		fields = ('upload_Advertisement','time_of_advertisement','no_of_slots','select_bundles','no_of_weeks',)
-
+		fields = ('upload_Advertisement','time_of_advertisement'
+		   		,'no_of_slots','select_bundles','no_of_weeks','bussinessPoint_longitude'
+				,'bussinessPoint_latitude')
+		# widgets = {'bussinessPoint_longitude': forms.HiddenInput() }

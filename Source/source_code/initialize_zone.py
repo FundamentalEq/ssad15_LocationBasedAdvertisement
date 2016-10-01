@@ -5,8 +5,6 @@ from global_values import *
 # thought the distance between 2 longitutde and latitude is not constant
 # but since The India lies near equator and our size of each zone = 5Km
 # our assumption will introduce a marginal error that can be ignored
-delx = 5.0/111 # width of zone = 5Km
-dely = 5.0/111 # height of zone = 5Km
 
 # print delx,dely
 x,y = left_extreme,bottom_extreme
