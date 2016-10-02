@@ -99,9 +99,8 @@ def device_login(request):
                 #if Add_Device.objects.filter(Username=request.POST['username'], password=request.POST['password']).exists():
                 if Add_Device.objects.filter(Username=request.POST['username'],password=request.POST['password']).count()==1:
                         #return render(request,'/userauth/')
-                        return HttpResponseRedirect('/userauth/')
+                        return HttpResponseRedirect('/ssad15/start_advertisement')
                 else:
                         return HttpResponse("Invalid Login")
         else:
                 return render(request,'userauth/logdiv.html', {})
-

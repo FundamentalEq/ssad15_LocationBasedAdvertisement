@@ -53,8 +53,8 @@ map.on('click', function(evt) {
     vectorSource.addFeature(iconFeature);
     console.log(lat) ;
     console.log(lon) ;
-    document.getElementById('id_bussinessPoint_latitude').value = coordinate[1] ;
-    document.getElementById('id_bussinessPoint_longitude').value = coordinate[0] ;
+    document.getElementById('id_bussinessPoint_latitude').value = lon ;
+    document.getElementById('id_bussinessPoint_longitude').value = lat ;
 });
 
 document.getElementById('zoom-out').onclick = function() {

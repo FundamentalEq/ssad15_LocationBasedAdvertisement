@@ -33,6 +33,7 @@ def do_transfer() :
             x = xcenter - (DELX/2)
             while x < (xcenter + DELX/2) :
                 zone_no = getzone(x,y)
+                print "zone no is",zone_no
                 my_zone = zone.objects.filter(id = int(zone_no))
                 print "my zone" , my_zone[0].id
                 #**********to be done**********

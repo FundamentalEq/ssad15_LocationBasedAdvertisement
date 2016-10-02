@@ -23,37 +23,53 @@ def getzone(longitude,latitude):
 def get_advertisement(zone_id):
     current_time=datetime.datetime.now()
     #calculating slot number from 1 to 120
-    slot_no=int((current_time.minute * 60 + current_time.second)/30)
-    slot=get_object_or_404(slot,zone_id=zone_id_id,slot_no=slot_no)
-    ad_id=slot.advertisement_id_id
+    # slot_no=int((current_time.minute * 60 + current_time.second)/30)
+    slot_no=1
+    Slot=get_object_or_404(slot,zone_id_id=zone_id,slot_no=slot_no)
+    ad_id=Slot.advertisement_id_id
     ad=get_object_or_404(advertisement,pk=ad_id)
-    path=ad.upload
+    print "Ad is ",ad
+    path=ad.upload.url
     path=str(path)
     return path
 
 #get the pinged location from the device
 #get corresponding zone no and display advertisement according to time and zone
 #this function to be changed for scheduling in R2
+import json
 def display_advertisement(request):
     #checking if location is posted or not
     #error set to 1 represents an error in getting location of the device
-    if request.method == 'GET':
-        if 'longitude' in request.GET:
-            longitude = request.GET['longitude']
+    error = 0
+    if request.method == 'POST':
+        if 'longitude' in request.POST:
+            longitude = float(request.POST['longitude'])
         else :
             error=1
-        if 'latitude' in request.GET :
-            latitude=request.GET['latitude']
+        if 'latitude' in request.POST :
+            latitude= float(request.POST['latitude'])
         else :
             error=1
-
-    if error == 1:
+    else :
+        error = 1
+    print float(longitude),float(latitude)
+    if error:
         return HttpResponse("Error in getting location !")
     else :
         zone_no=getzone(longitude,latitude)
+        print "zone no is ",zone_no
         path=get_advertisement(zone_no)
+        # path = "media/" + path
+        print "path fron db is",path
+        # path = "chaitanya"
         context={'path':path}
-        return render(request, 'ssad15/display_advertisement.html', context)
+        return HttpResponse(
+            json.dumps(context),
+            content_type="application/json"
+        )
+        # return render(request, 'ssad15/display_advertisement.html', context)
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
     return render(request,'ssad15/start_advertisement.html')
+def render_advertisement(request):
+    return render(request,'ssad15/render_advertisement.html')
