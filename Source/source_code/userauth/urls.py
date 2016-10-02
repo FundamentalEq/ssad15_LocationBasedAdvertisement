@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^upload/$', views.upload, name='upload'),
     url(r'^$', views.home, name='home'),
+    url(r'^device/$', views.device_login, name='device_login'),
     ]

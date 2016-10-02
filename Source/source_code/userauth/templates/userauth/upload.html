@@ -3,11 +3,14 @@
       {% block content %}
         {% if user.is_authenticated %}
         <h1>Upload Advertisement</h1>
-        {% if uploaded %}
+        {% if uploaded and time_error %}
         <strong>thank you for uploading!</strong>
 	<a href="/userauth/upload">Select for Adding More Advertisements.</a><br />
         <!--<a href="/userauth/upload">Return to the homepage.</a><br />-->
         {% else %}
+{% if uploaded and not time_error %}
+        <p> Your Time Of Ad should be less</p>
+        {% endif %}
         userauth says: <strong>upload here!</strong><br />
         <!-- code added by me -->
         <link rel="stylesheet" href="http://openlayers.org/en/v3.18.2/css/ol.css" type="text/css"></link>

@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.template import context
+from models import Add_Device
 from django.shortcuts import render_to_response
-from userauth.forms import UserForm, UploadForm
+from userauth.forms import UserForm, UploadForm ,Login_Adver
 #from userauth.forms import UserForm, UserProfileForm, UploadForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
@@ -75,16 +76,32 @@ def user_logout(request):
 
 def upload(request):
 	uploaded = False
+        time_error = False
         if request.method == "POST":
            form = UploadForm(request.POST, request.FILES)
            if form.is_valid():
             	post = form.save(commit=False)
             	post.uploader = request.user
             	uploaded = True
-            	post.save()
+                if post.time_of_advertisement <= post.no_of_slots*30:
+			time_error = True
+            		post.save()
 
 	else:
 		form = UploadForm()
-	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded})
+	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded , 'time_error':time_error})
 def home(request):
 	return render(request,'userauth/base.html')
+def device_login(request):
+        if request.method == "POST":
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                #if Add_Device.objects.filter(Username=request.POST['username'], password=request.POST['password']).exists():
+                if Add_Device.objects.filter(Username=request.POST['username'],password=request.POST['password']).count()==1:
+                        #return render(request,'/userauth/')
+                        return HttpResponseRedirect('/userauth/')
+                else:
+                        return HttpResponse("Invalid Login")
+        else:
+                return render(request,'userauth/logdiv.html', {})
+

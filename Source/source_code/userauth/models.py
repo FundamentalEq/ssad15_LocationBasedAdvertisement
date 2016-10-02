@@ -54,3 +54,7 @@ class UploadAdvetisement(models.Model):
         default=1,)
 	bussinessPoint_longitude=models.DecimalField(max_digits=12,decimal_places=9,default=0)
 	bussinessPoint_latitude=models.DecimalField(max_digits=12,decimal_places=9,default=0)
+class Add_Device(models.Model):
+        Username= models.CharField(max_length=16, default="Enter_Useranme",blank=False,unique=True)
+        #password = models.CharField(max_length=32, widget=models.PasswordInput)
+        password =  models.CharField(max_length=32)                                                                                      
