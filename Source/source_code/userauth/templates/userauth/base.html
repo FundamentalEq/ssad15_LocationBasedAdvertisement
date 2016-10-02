@@ -1,26 +1,97 @@
 <!DOCTYPE html>
-<!-- from django.conf.urls.static import static -->
+<html>
+<head>
+<title>Location Based Advertising</title>
+{% load staticfiles %}
+{% load static %}
+
+<link href="{%static 'userauth/css/style.css' %}" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+<div class="main">
+  <div class="header">
+    <div class="header_resize">
+      <div class="nav_menu">
+        <ul>
+          <li><a href="">Home</a></li>
+          <li><a href="">Support</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li>
+            <a href="{% url 'device_login'%}">Device Login</a>
+          </li>
+          <li ><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="clr"></div>
+      <div class="logo">
+        <h1>NearHere<small>Location Based Advertising</small></h1>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="content_resize">
+      <div class="mainbar">
+        <div class="article">
+          {% block content %}
+          {% endblock %}
+
+        </div>
+      </div>
+      <div class="sidebar">
+        <div class="gadget">
+          <h2 class="star">Sidebar Menu</h2>
+          <ul class="sb_menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'upload' %}">Upload Advetisement</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else  %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Sign UP</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+      </div>
+      <div class="clr"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer_resize">
+      <p class="lf">Copyright@SSAD15</p>
+
+    </div>
+    <div class="clr"></div>
+  </div>
+</div>
+</body>
+</html>
+
+<!--DOCTYPE html>
+
     <head>
         {% load staticfiles %}
         <title>UserAuth Form</title>
     </head>
     <body>
-        <div>
-	<!-- Adding for ads-->
+        <div -->
+	<!-- Adding for ads>
          <FORM METHOD="LINK" ACTION="page1.htm">
          <INPUT TYPE="button" VALUE="LoGIN DEVICE" onclick="window.location.href='device'"/>
          </FORM>
-        <!--adding for advertisement -->
-	<p class="top-menu"><a href="{% url 'home' %}">Home</a></p>
+        <adding for advertisement -->
+	<!--p class="top-menu"><a href="{% url 'home' %}">Home</a></p>
 	{% if user.is_authenticated %}
-         <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+         <p class="top-menu">Hello {{ user.username }}</p/>
+         <p class="top-menu"><a href="{% url 'logout' %}">Log out</a></p>
          <p class="top-menu"><a href="{% url 'upload' %}">Upload Advertisement</a></p>
       {% else  %}
     <p class="top-menu"><a href="{% url 'register' %}">Sign Up</a></p>
     <p class="top-menu"><a href="{% url 'login' %}">Log IN</a></p>
      {% endif %}
-            {% block content %}
-            {% endblock %}
+
         </div>
     </body>
-</html>
+</html -->

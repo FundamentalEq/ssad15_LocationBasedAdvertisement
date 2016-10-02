@@ -17,3 +17,6 @@ a.skiplink:focus {
 #map:focus {
   outline: #4A74A8 solid 0.15em;
 }
+<script type="text/javascript" src="{%static 'userauth/js/cufon-yui.js' %}"></script>
+<script type="text/javascript" src="{%static 'userauth/js/arial.js' %}"></script>
+<script type="text/javascript" src="{%static 'userauth/js/cuf_run.js' %}"></script>
