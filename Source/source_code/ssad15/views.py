@@ -24,8 +24,8 @@ def get_advertisement(zone_id):
     current_time=datetime.datetime.now()
     #calculating slot number from 1 to 120
     slot_no=int((current_time.minute * 60 + current_time.second)/30)
-    slot=get_object_or_404(slot,zone_id=zone_id,slot_no=slot_no)
-    ad_id=slot.advertisement_id
+    slot=get_object_or_404(slot,zone_id=zone_id_id,slot_no=slot_no)
+    ad_id=slot.advertisement_id_id
     ad=get_object_or_404(advertisement,pk=ad_id)
     path=ad.upload
     path=str(path)
@@ -37,13 +37,13 @@ def get_advertisement(zone_id):
 def display_advertisement(request):
     #checking if location is posted or not
     #error set to 1 represents an error in getting location of the device
-    if request.method == 'POST':
-        if 'longitude' in request.POST:
-            longitude = request.POST['longitude']
+    if request.method == 'GET':
+        if 'longitude' in request.GET:
+            longitude = request.GET['longitude']
         else :
             error=1
-        if 'latitude' in request.POST :
-            latitude=request.POST['latitude']
+        if 'latitude' in request.GET :
+            latitude=request.GET['latitude']
         else :
             error=1
 
@@ -54,3 +54,6 @@ def display_advertisement(request):
         path=get_advertisement(zone_no)
         context={'path':path}
         return render(request, 'ssad15/display_advertisement.html', context)
+#after device is logged in,it will be redirected to this controller
+def start_advertisement(request):
+    return render(request,'ssad15/start_advertisement.html')
