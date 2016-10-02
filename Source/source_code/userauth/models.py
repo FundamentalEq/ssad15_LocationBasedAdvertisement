@@ -20,7 +20,7 @@ from django.contrib.auth.models import User
 
 class UploadAdvetisement(models.Model):
         uploader = models.ForeignKey('auth.User')
-        upload_Advertisement=models.FileField(upload_to='documents/')
+        upload_Advertisement=models.FileField(upload_to='uploads/')
 	time_of_advertisement=models.IntegerField(default=30)
 	no_of_slots= (
         (1, '1'),
@@ -57,4 +57,4 @@ class UploadAdvetisement(models.Model):
 class Add_Device(models.Model):
         Username= models.CharField(max_length=16, default="Enter_Useranme",blank=False,unique=True)
         #password = models.CharField(max_length=32, widget=models.PasswordInput)
-        password =  models.CharField(max_length=32)                                                                                      
+        password =  models.CharField(max_length=32)

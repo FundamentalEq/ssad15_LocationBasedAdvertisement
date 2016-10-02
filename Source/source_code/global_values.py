@@ -12,8 +12,11 @@ top_extreme = 17.599900
 bottom_extreme = 17.2015163
 
 #SIZE OF EACH SQUARE
-delx = 5.0/kmTodegree # width of zone = 5Km
-dely = 5.0/kmTodegree # height of zone = 5Km
-
+BUSSINESS_ZONE_SIZE = 5.0
+delx = 1.0/kmTodegree # width of zone = 5Km
+dely = 1.0/kmTodegree # height of zone = 5Km
+DELX = BUSSINESS_ZONE_SIZE/(kmTodegree)
+DELY = BUSSINESS_ZONE_SIZE/(kmTodegree)
 zonesAlongX =  math.floor((right_extreme - left_extreme )/delx)
 zonesAlongY = math.floor((top_extreme - bottom_extreme)/dely)
+AREA = 25.0

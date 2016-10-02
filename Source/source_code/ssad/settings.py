@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'userauth',
+    # 'ssad15',
+    'django_cron',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,6 +73,10 @@ TEMPLATES = [
     },
 ]
 
+CRON_CLASSES = [
+"ssad15.cron.MyCronJob",
+# ...
+]
 WSGI_APPLICATION = 'ssad.wsgi.application'
 
 
@@ -78,7 +86,7 @@ WSGI_APPLICATION = 'ssad.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'LDA_SSAD',
+        'NAME': 'lda',
         'USER': 'root',
         'PASSWORD': 'the c-13',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on

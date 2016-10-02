@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import login
 from django.contrib.auth.decorators import user_passes_test
 import django.contrib.auth.views
+import django_cron
+# django_cron.autodiscover()
 admin.autodiscover()
 
 urlpatterns = [
@@ -30,4 +32,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
