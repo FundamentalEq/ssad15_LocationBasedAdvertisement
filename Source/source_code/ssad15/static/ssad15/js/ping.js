@@ -11,7 +11,7 @@ function updateLocation(position){
 
     $.ajax({
             type: "GET",
-            url: {% url 'display_advertisement' %},  // URL to your view that serves new info
+            url: {% url 'get_more_tables' %},  // URL to your view that serves new info
             data: {'latitude':position.coords.latitude , 'longitude':position.coords.longitude}
 
         })
