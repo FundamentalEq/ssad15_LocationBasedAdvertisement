@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- from django.conf.urls.static import static -->
+    <head>
+        {% load staticfiles %}
+        <title>UserAuth Form</title>
+    </head>
+    <body>
+        <div>
+	<!-- Adding for ads-->
+         <FORM METHOD="LINK" ACTION="page1.htm">
+         <INPUT TYPE="button" VALUE="LoGIN DEVICE" onclick="window.location.href='/userauth/device'"/>
+         </FORM>
+        <!--adding for advertisement -->
+	<p class="top-menu"><a href="{% url 'home' %}">Home</a></p>
+	{% if user.is_authenticated %}
+         <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+         <p class="top-menu"><a href="{% url 'upload' %}">Upload Advertisement</a></p>
+      {% else  %}
+    <p class="top-menu"><a href="{% url 'register' %}">Sign Up</a></p>
+    <p class="top-menu"><a href="{% url 'login' %}">Log IN</a></p>
+     {% endif %}
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
