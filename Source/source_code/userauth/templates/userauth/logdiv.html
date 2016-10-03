@@ -1,5 +1,6 @@
 {% extends 'userauth/base.html' %}
       {% block content %}
+  </br>
       <form  method="post" action="/userauth/device/">
             {% csrf_token %}
             Username: <input type="text" name="username" value="" size="50" />

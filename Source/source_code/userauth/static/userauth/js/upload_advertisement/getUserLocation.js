@@ -102,3 +102,6 @@ document.getElementById('find_address').onclick = function()
     document.getElementById('id_bussinessPoint_latitude').value = coordinate[1] ;
     document.getElementById('id_bussinessPoint_longitude').value = coordinate[0] ;
 }
+$(document).ready( function foo(){
+    document.getElementById('hidethisfromme').style.visibility = "hidden";
+}) ;

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from global_values import *
 from django.template import loader
-from .models import zone,slot,advertisement
+from .models import zone,slot,advertisement,running
 from django.shortcuts import get_list_or_404,get_object_or_404
 import datetime
 
@@ -20,13 +20,23 @@ def getzone(longitude,latitude):
     return int(zone_no)
 
 # get advertisment corresponding to the zone device is in and also the server time
-def get_advertisement(zone_id):
-    current_time=datetime.datetime.now()
+def get_advertisement(Zone_id):
+    # current_time=datetime.datetime.now()
     #calculating slot number from 1 to 120
     # slot_no=int((current_time.minute * 60 + current_time.second)/30)
-    slot_no=1
-    Slot=get_object_or_404(slot,zone_id_id=zone_id,slot_no=slot_no)
-    ad_id=Slot.advertisement_id_id
+    Slot=running.objects.filter(zone_id=Zone_id)[0]
+    tot = slot.objects.filter(zone_id=Zone_id)
+    tot_slots = len(tot)
+    if tot_slots == 0 :
+        pass # to handeled later
+    Slot.slot_no = Slot.slot_no + 1
+    if Slot.slot_no > tot_slots :
+        Slot.slot_no=1
+    slot_no=Slot.slot_no
+    print "the current slot is ",slot_no
+    Slot.save()
+    SSlot=get_object_or_404(slot,zone_id_id=Zone_id,slot_no=slot_no)
+    ad_id=SSlot.advertisement_id_id
     ad=get_object_or_404(advertisement,pk=ad_id)
     print "Ad is ",ad
     path=ad.upload.url
