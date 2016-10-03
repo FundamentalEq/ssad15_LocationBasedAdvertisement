@@ -26,3 +26,6 @@ class slot(models.Model):
 #to be decided if username of device will be alphanumeric or numeric string
 class devices(models.Model):
     username=models.CharField(max_length=10,unique=True)
+class running(models.Model):
+    slot_no = models.IntegerField(default=0)
+    zone_id = models.ForeignKey(zone, on_delete=models.CASCADE)

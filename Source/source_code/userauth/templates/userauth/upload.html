@@ -3,6 +3,7 @@
       {% block content %}
         {% if user.is_authenticated %}
         <h1>Upload Advertisement</h1>
+        <br>
         {% if uploaded and time_error %}
         <strong>thank you for uploading!</strong>
 	<a href="/userauth/upload">Select for Adding More Advertisements.</a><br />
@@ -16,19 +17,18 @@
         <link rel="stylesheet" href="http://openlayers.org/en/v3.18.2/css/ol.css" type="text/css"></link>
         <script src="http://openlayers.org/en/v3.18.2/build/ol.js"></script>
         <link rel="stylesheet" type="text/css" href="{%static 'userauth/css/upload_advertisement/getUserLocation.css' %}"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <div class="row">
 
+<div class="col-md-8">
         <input type="text" id="address" name="FirstName" value="Enter the address">
          <button type="button" id="find_address">Find</button> <br>
 
         <a class="skiplink" href="#map">Go to map</a>
 
-        <div id="map" class="map" tabindex="0" style="height:500px;width:500px"></div>
 
-        <button id="zoom-out">Zoom out</button>
-        <button id="zoom-in">Zoom in</button>
-
-        <script src="{%static 'userauth/js/upload_advertisement/getUserLocation.js' %}"></script>
-        <!-- coded added by me ends here -->
         <form  method="post" action="/userauth/upload/"
                 enctype="multipart/form-data">
 
@@ -40,11 +40,24 @@
             <input type="submit" name="submit" />
         </form>
 
-		 <button type="button">Check Availablity</button>
 		 <button type="button">Total Cost</button>
-        {% endif %}
-        {% else  %}
-         <p>Your don't have access to this page. To proceed,
-    please login with an account that has access.</p>
-        {% endif %}
+         <button type="button">Check Availablity</button>
+         {% endif %}
+         {% else  %}
+          <p>Your don't have access to this page. To proceed,
+     please login with an account that has access.</p>
+         {% endif %}
+</div>
+<div class="col-md-4">
+    <div id="map" class="map" tabindex="0" style="height:500px;width:500px"></div>
+
+    <button id="zoom-out">Zoom out</button>
+    <button id="zoom-in">Zoom in</button>
+</div>
+     </div>
+
+         <script src="{%static 'userauth/js/upload_advertisement/getUserLocation.js' %}"></script>
+         <!-- coded added by me ends here -->
+
+
 {% endblock %}

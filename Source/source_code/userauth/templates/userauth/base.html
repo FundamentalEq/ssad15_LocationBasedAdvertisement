@@ -36,23 +36,22 @@
           {% block content %}
           {% endblock %}
 
-        </div>
+      </div>
       </div>
       <div class="sidebar">
-        <div class="gadget">
-          <h2 class="star">Sidebar Menu</h2>
-          <ul class="sb_menu">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'upload' %}">Upload Advetisement</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% else  %}
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'register' %}">Sign UP</a></li>
-            {% endif %}
-          </ul>
-        </div>
-
+      <div class="gadget">
+        <h2 class="star">Sidebar Menu</h2>
+        <ul class="sb_menu">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'upload' %}">Upload Advetisement</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else  %}
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Sign UP</a></li>
+          {% endif %}
+        </ul>
+      </div>
       </div>
       <div class="clr"></div>
     </div>
