@@ -12,7 +12,7 @@ function getLocation() {
 function updateLocation(position){
     // location={'latitude':position.coords.latitude , 'longitude':position.coords.longitude}
     // console.log(location);
-    console.log("i am me")
+    console.log("i am me") ;
     $.ajax({
             type: "POST",
             url: "/ssad15/display_advertisement/",  // URL to your view that serves new info
@@ -45,5 +45,6 @@ function updateLocation(position){
 
 $(document).ready( function ping(){
   console.log("i was here") ;
-  setInterval(getLocation(),30000);
+  getLocation() ;
+  setInterval(function(){getLocation();},30000);
 });
