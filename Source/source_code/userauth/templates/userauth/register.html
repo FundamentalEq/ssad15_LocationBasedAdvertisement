@@ -1,10 +1,4 @@
-<!--<!DOCTYPE html>
-<html>
-    <head>
-        <title>Authentication</title>
-    </head>
-
-    <body>-->
+<!--
 {% extends 'userauth/base.html' %}
       {% block content %}
         <h1>Register</h1>
@@ -23,12 +17,55 @@
 
 
             {{ user_form.as_p }}
-            <!--{{ profile_form.as_p }}-->
+            {{ profile_form.as_p }}
 
             <input type="submit" name="submit" value="Register" />
         </form>
         
         {% endif %}
+{% endblock %}-->
+<!--<!DOCTYPE html>
+<html>
+    <head>
+        <title>Authentication</title>
+    </head>
+
+    <body>-->
+{% extends 'userauth/base.html' %}
+      {% block content %}
+{% if user.is_authenticated %}
+<p>First Log-out and then Sign-Up</p>
+{% else %}
+        {% if registered %}
+        <h1>Register</h1>
+        userauth says: <strong>thank you for registering!</strong>
+
+        <a href="/userauth/">Return to the homepage.</a><br />
+        {% else %}
+        userauth says: <strong>register here!</strong><br />
+        <form id="user_form" method="post" action="/userauth/register/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+                <label for="{{ user_form.username.id_for_label }}">Username:</label>
+                        {{ user_form.username }}
+                <label for="{{ user_form.password.id_for_label }}">Password:</label>
+                        {{ user_form.password }}
+                <label for="{{ profile_form.subject.id_for_label }}">Phone Number:</label>
+                        {{ profile_form.phone_number }}
+                <label for="{{ profile_form.address.id_for_label }}">Address:</label>
+                        {{ profile_form.address }}
+                <label for="{{ profile_form.first_name.id_for_label }}">First Name:</label>
+                        {{ profile_form.first_name }}
+                <label for="{{ profile_form.last_name.id_for_label }}">Last Name:</label>
+                        {{ profile_form.last_name }}
+                <label for="{{ profile_form.email_id.id_for_label }}">Email Id:</label>
+                        {{ profile_form.email_id}}
+
+            	<input type="submit" name="submit" value="Register" />
+        </form>
+        {% endif %}
+        {% endif %}
 {% endblock %}
-<!--</body>
-</html>-->
+
