@@ -17,6 +17,7 @@ delx = 1.0/kmTodegree # width of zone = 5Km
 dely = 1.0/kmTodegree # height of zone = 5Km
 DELX = BUSSINESS_ZONE_SIZE/(kmTodegree)
 DELY = BUSSINESS_ZONE_SIZE/(kmTodegree)
+#check it needs to be ceil or floor
 zonesAlongX =  math.floor((right_extreme - left_extreme )/delx)
 zonesAlongY = math.floor((top_extreme - bottom_extreme)/dely)
-AREA = 25.0
+BAREA= 25.0

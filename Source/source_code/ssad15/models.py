@@ -12,11 +12,11 @@ class zone(models.Model):
     bottom_left_coordinate_y=models.DecimalField(max_digits=20,decimal_places=17,default=0)
 class zone_cost(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
-    week = models.DateTimeField('Starting week of the advertisement')
+    week = models.IntegerField(default=0)
     cost = models.IntegerField(default=-1)
 class slots(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
-    week = models.DateTimeField('Starting week of the advertisement')
+    week = models.IntegerField(default=0)
     slot_no = models.IntegerField(default=0)
     no_of_bundles_used = models.IntegerField(default=0)
 class scheduler(models.Model) :
@@ -39,7 +39,7 @@ class running(models.Model) :
 
 class devices(models.Model):
     username=models.CharField(max_length=10,unique=True)
-    
+
 # class zone(models.Model):
 #     total_bundles=models.IntegerField(default=10)
 #     bundles_used=models.IntegerField(default=0)

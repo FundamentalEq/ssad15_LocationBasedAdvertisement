@@ -3,7 +3,7 @@ from global_values import *
 
 # assming that for both longitutde and latitude  1 degree = 111 Km
 # thought the distance between 2 longitutde and latitude is not constant
-# but since The India lies near equator and our size of each zone = 5Km
+# but since The India lies near equator and our size of each zone = 1Km
 # our assumption will introduce a marginal error that can be ignored
 
 # print delx,dely

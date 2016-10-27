@@ -19,6 +19,18 @@ def getzone(longitude,latitude):
     zone_no = rows_done*zonesAlongX + in_a_row
     return int(zone_no)
 
+def getOverLappingArea(left,right,bottom,top,zone_no):
+    Zone = zone.objects.filter(zone_id=zone_no)[0]
+    lowerx = Zone.bottom_left_coordinate_x
+    lowery = Zone.bottom_left_coordinate_y
+    topx = lowerx + delx
+    topy = lowery + dely
+    l = max(lowerx,left)
+    r = min(topx,right)
+    b = max(lowery,bottom)
+    t = min(topy,top)
+    return float((r-l)*(t-b))
+
 # get advertisment corresponding to the zone device is in and also the server time
 def get_advertisement(Zone_id):
     # current_time=datetime.datetime.now()
