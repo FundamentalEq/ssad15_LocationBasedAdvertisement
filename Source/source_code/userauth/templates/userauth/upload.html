@@ -35,7 +35,20 @@
             {% csrf_token %}
 
 
-            {{ form.as_p }}
+            <!--{{ form.as_p }}-->
+
+		<label for="{{ form.upload_Advertisement.id_for_label }}">Upload Advertisement:</label>
+                    	{{ form.upload_Advertisement }}
+                <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement:</label>
+                        {{ form.time_of_advertisement }}
+                <label for="{{ form.no_of_slots.id_for_label }}">No of Slots:</label>
+                        {{ form.no_of_slots}}
+                <label for="{{ form.select_bundles.id_for_label }}">Select Bundles:</label>
+                        {{ form.select_bundles}}
+                <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
+                        {{ form.no_of_weeks}}
+
+
 
             <input type="submit" name="submit" />
         </form>
