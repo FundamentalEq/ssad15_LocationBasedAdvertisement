@@ -1,11 +1,10 @@
 from django import forms
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
-from userauth.models import UserProfile,
+from userauth.models import UserProfile
 from userauth.models import UploadAdvetisement,Add_Device
 class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput())
-
    	class Meta:
         	model = User
         	fields = ('username','password',)
@@ -23,11 +22,8 @@ class UploadForm(forms.ModelForm):
 		# widgets = {'bussinessPoint_longitude': forms.HiddenInput() }
 class  Login_Adver(forms.ModelForm):
         #password = forms.CharField(widget=forms.PasswordInput())
-        #password = forms.CharField(max_length=32, widget=forms)           
-        class Meta:
-                model = Add_Device
-		 widgets = {
-                          'password': forms.PasswordInput(),
-                           }
-                fields = ('Username','password',)
-
+        #password = forms.CharField(max_length=32, widget=forms)
+    class Meta:
+		model = Add_Device
+		widgets = {'password': forms.PasswordInput(),}
+		fields = ('Username','password')
