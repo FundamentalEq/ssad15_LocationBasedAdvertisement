@@ -76,20 +76,24 @@ def user_logout(request):
 
 def upload(request):
 	uploaded = False
-        time_error = False
-        if request.method == "POST":
-           form = UploadForm(request.POST, request.FILES)
-           if form.is_valid():
-            	post = form.save(commit=False)
-            	post.uploader = request.user
-            	uploaded = True
-                if post.time_of_advertisement <= post.no_of_slots*30:
-			time_error = True
-            		post.save()
-
-	else:
+	time_error = False
+	msg = "sendig nothing "
+	if request.method == "POST":
+		form = UploadForm(request.POST, request.FILES)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.uploader = request.user
+			uploaded = True
+			if post.time_of_advertisement <= post.no_of_slots*30:
+				time_error = True
+				print "post is ", post.start_week
+				post.save()
+	else :
 		form = UploadForm()
-	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded , 'time_error':time_error})
+	if time_error == True :
+		return home(request)
+	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded , 'time_error':time_error,'msg':msg})
+
 def home(request):
 	return render(request,'userauth/base.html')
 def device_login(request):

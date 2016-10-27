@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 '''class UserProfile(models.Model):
 	MERCHANT = 'ME'
 	USER = 'US'
@@ -25,10 +27,10 @@ class UploadAdvetisement(models.Model):
 	no_of_slots= (
         (1, '1'),
         (2, '2'),
-	(3, '3'),
-	(4, '4'),
-	(5, '5'),
-	(6, '6'),
+		(3, '3'),
+		(4, '4'),
+		(5, '5'),
+		(6, '6'),
         )
 	no_of_slots = models.IntegerField(choices=no_of_slots,
         default=1,)
@@ -52,8 +54,10 @@ class UploadAdvetisement(models.Model):
 	)
 	no_of_weeks = models.IntegerField(choices=no_of_weeks,
         default=1,)
-	bussinessPoint_longitude=models.DecimalField(max_digits=12,decimal_places=9,default=0)
-	bussinessPoint_latitude=models.DecimalField(max_digits=12,decimal_places=9,default=0)
+	bussinessPoint_longitude=models.DecimalField(max_digits=18,decimal_places=15,default=0)
+	bussinessPoint_latitude=models.DecimalField(max_digits=18,decimal_places=15,default=0)
+	start_week = models.DateTimeField('Starting week of the advertisement',default=timezone.now())
+
 class Add_Device(models.Model):
         Username= models.CharField(max_length=16, default="Enter_Useranme",blank=False,unique=True)
         #password = models.CharField(max_length=32, widget=models.PasswordInput)
