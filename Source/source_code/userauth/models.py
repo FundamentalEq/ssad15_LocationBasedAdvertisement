@@ -2,24 +2,20 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
-'''class UserProfile(models.Model):
-	MERCHANT = 'ME'
-	USER = 'US'
-	user = models.OneToOneField(User)
-	APPLYING_AS_A = (
-        (MERCHANT, 'Merchant'),
-        (USER, 'User'),
-	)
-	applying_as_a = models.CharField(
-        max_length=2,
-        choices=APPLYING_AS_A,
-        default=USER,)
-	def __unicode__(self):
-        	return self.user.username
-	def is_upperclass(self):
-		return self.applying_as_a in (self.MERCHANT)'''
-
+from datetime import datetime
+from django.core.validators import RegexValidator
+class UserProfile(models.Model):
+	 user = models.OneToOneField(User,  on_delete=models.CASCADE)
+        date = models.DateTimeField(default=timezone.now, blank=True)
+        phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 10 digits allowed.")
+        phone_number = models.CharField(max_length=10,validators=[phone_regex], blank=True)
+        #address = models.CharField(max_length=500,blank=False,default="Address")
+        address = models.TextField(max_length=500,blank=False,default="Address")
+        first_name = models.CharField(max_length=12,blank=True)
+        email_id =   models.EmailField(max_length=70,blank=True)
+        last_name =  models.CharField(max_length=12,blank=True)
+        def __unicode__(self):
+                return self.user.username
 class UploadAdvetisement(models.Model):
         uploader = models.ForeignKey('auth.User')
         upload_Advertisement=models.FileField(upload_to='uploads/')
@@ -54,6 +50,7 @@ class UploadAdvetisement(models.Model):
 	)
 	no_of_weeks = models.IntegerField(choices=no_of_weeks,
         default=1,)
+	date = models.DateTimeField(default=timezone.now, blank=True)
 	bussinessPoint_longitude=models.DecimalField(max_digits=18,decimal_places=15,default=0)
 	bussinessPoint_latitude=models.DecimalField(max_digits=18,decimal_places=15,default=0)
 	start_week = models.DateTimeField('Starting week of the advertisement',default=timezone.now())
