@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from global_values import *
 from django.template import loader
-from .models import zone,slot,advertisement,running
+from .models import *
 from django.shortcuts import get_list_or_404,get_object_or_404
 import datetime
 
@@ -20,7 +20,7 @@ def getzone(longitude,latitude):
     return int(zone_no)
 
 def getOverLappingArea(left,right,bottom,top,zone_no):
-    Zone = zone.objects.filter(zone_id=zone_no)[0]
+    Zone = zone.objects.filter(id=zone_no)[0]
     lowerx = Zone.bottom_left_coordinate_x
     lowery = Zone.bottom_left_coordinate_y
     topx = lowerx + delx
@@ -31,6 +31,49 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
     t = min(topy,top)
     return float((r-l)*(t-b))
 
+def getWeekNumber(cur_date) :
+    return datetime.date(cur_date.year,cur_date.month,cur_date.day).isocalendar()[1]
+
+def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no,total_bundles) :
+    Slots = slots.objects.filter(zone_id = zone_no,week = week_no)
+    total_bundles = 10
+    info = zone_info.objects.filter(zone_id = zone_no ,week = week_no)
+    if info :
+        total_bundles = info.no_of_bundles
+    for slot in Slots :
+        if total_bundles -slot.no_of_bundles_used >= required_bundles :
+            sets -= 1
+            if sets == 0 :
+                return True
+    if len(Slots) + sets <= MAX_SLOTS :
+        return True
+    return False
+
+def check_availability(request) :
+    print "***************************the check function has been called"
+    Xcenter = float(request.bussinessPoint_longitude)
+    Ycenter = float(request.bussinessPoint_latitude)
+    left = Xcenter - DELX/2
+    right = Xcenter + DELX/2
+    bottom = Ycenter - DELY/2
+    top = Ycenter + DELY/2
+    # starting the loop to map the request into zones and check the availability
+    y = bottom
+    week_no = getWeekNumber(request.start_week)
+    cont_slots = math.ceil(request.time_of_advertisement/30.0)
+    sets = request.no_of_slots / cont_slots
+
+    while y < top :
+        x = left
+        while x < right :
+            zone_no = getzone(x,y)
+            OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+            required_bundles = (OArea/BAREA)*request.select_bundles ;
+            if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no,total_bundles) :
+                return False ;
+            x += delx
+        y += dely
+    return True
 # get advertisment corresponding to the zone device is in and also the server time
 def get_advertisement(Zone_id):
     # current_time=datetime.datetime.now()

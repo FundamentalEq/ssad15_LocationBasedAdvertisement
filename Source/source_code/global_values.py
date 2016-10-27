@@ -18,6 +18,8 @@ dely = 1.0/kmTodegree # height of zone = 5Km
 DELX = BUSSINESS_ZONE_SIZE/(kmTodegree)
 DELY = BUSSINESS_ZONE_SIZE/(kmTodegree)
 #check it needs to be ceil or floor
-zonesAlongX =  math.floor((right_extreme - left_extreme )/delx)
-zonesAlongY = math.floor((top_extreme - bottom_extreme)/dely)
+zonesAlongX =  math.ceil((right_extreme - left_extreme )/delx)
+zonesAlongY = math.ceil((top_extreme - bottom_extreme)/dely)
 BAREA= 25.0
+
+MAX_SLOTS = 120

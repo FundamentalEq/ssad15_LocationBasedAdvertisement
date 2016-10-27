@@ -16,6 +16,7 @@ class UserProfileForm(forms.ModelForm):
 class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement
+		# print "inside form.py class upload form"
 		fields = ('upload_Advertisement','time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','bussinessPoint_longitude'
 				,'bussinessPoint_latitude')

@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from ssad15.views import check_availability
 def register(request):
 
 	registered = False
@@ -73,19 +74,28 @@ def user_logout(request):
 	#return render(request,'userauth/base.html', {})
 
 def upload(request):
+	print  "inside upload"
 	uploaded = False
 	time_error = False
 	msg = "sendig nothing "
 	if request.method == "POST":
 		form = UploadForm(request.POST, request.FILES)
+		print "the requeat is post"
+		# print form
 		if form.is_valid():
 			post = form.save(commit=False)
 			post.uploader = request.user
 			uploaded = True
+			print "form has been validated"
 			if post.time_of_advertisement <= post.no_of_slots*30:
 				time_error = True
 				print "post is ", post.start_week
-				post.save()
+				if not check_availability(post) :
+					print "THe demanded resources are not avaialable"
+				else :
+					post.save()
+		else :
+			print form.errors
 	else :
 		form = UploadForm()
 	if time_error == True :

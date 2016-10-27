@@ -10,10 +10,11 @@ class advertisement(models.Model):
 class zone(models.Model):
     bottom_left_coordinate_x=models.DecimalField(max_digits=20,decimal_places=17,default=0)
     bottom_left_coordinate_y=models.DecimalField(max_digits=20,decimal_places=17,default=0)
-class zone_cost(models.Model) :
+class zone_info(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     week = models.IntegerField(default=0)
     cost = models.IntegerField(default=-1)
+    no_of_bundles = models.IntegerField(default=10)
 class slots(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     week = models.IntegerField(default=0)
