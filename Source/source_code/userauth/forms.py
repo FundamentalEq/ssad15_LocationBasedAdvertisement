@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import extras
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
 from userauth.models import UserProfile
@@ -19,7 +20,9 @@ class UploadForm(forms.ModelForm):
 		# print "inside form.py class upload form"
 		fields = ('upload_Advertisement','time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','bussinessPoint_longitude'
-				,'bussinessPoint_latitude')
+				,'bussinessPoint_latitude','start_week')
+		# start_week = forms.DateField(widget=extras.SelectDateWidget())
+		widgets = {'start_week':extras.SelectDateWidget()}
 		# widgets = {'bussinessPoint_longitude': forms.HiddenInput() }
 class  Login_Adver(forms.ModelForm):
         #password = forms.CharField(widget=forms.PasswordInput())
