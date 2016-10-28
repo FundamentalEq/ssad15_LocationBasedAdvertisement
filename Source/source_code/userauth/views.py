@@ -47,10 +47,10 @@ def register(request):
 def user_login(request):
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email_id = request.POST.get('email_id')
         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(email_id=email_id, password=password)
 
         if user:
             if user.is_active:
@@ -59,7 +59,7 @@ def user_login(request):
             else:
                 return HttpResponse("Your account is disabled.")
         else:
-            print "Invalid login details: {0}, {1}".format(username, password)
+            print "Invalid login details: {0}, {1}".format(email_id, password)
             return HttpResponse("Invalid login details supplied.")
 
     else:
@@ -103,7 +103,7 @@ def upload(request):
 	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded , 'time_error':time_error,'msg':msg})
 
 def home(request):
-	return render(request,'userauth/base.html')
+	return render(request,'userauth/index.html')
 def device_login(request):
         if request.method == "POST":
                 username = request.POST.get('username')

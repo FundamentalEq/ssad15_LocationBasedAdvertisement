@@ -33,4 +33,4 @@ class  Login_Adver(forms.ModelForm):
     class Meta:
 		model = Add_Device
 		widgets = {'password': forms.PasswordInput(),}
-		fields = ('Username','password')
+		fields = ('email_id','password')
