@@ -12,6 +12,7 @@ def index(request):
 
 # Get zone correponding to the location pinged by the device
 def getzone(longitude,latitude):
+    print longitude,latitude
     x = longitude
     y = latitude
     rows_done = math.floor((y- bottom_extreme)/dely)
@@ -20,32 +21,47 @@ def getzone(longitude,latitude):
     return int(zone_no)
 
 def getOverLappingArea(left,right,bottom,top,zone_no):
+    print "required zone no is ",zone_no
     Zone = zone.objects.filter(id=zone_no)[0]
     lowerx = Zone.bottom_left_coordinate_x
     lowery = Zone.bottom_left_coordinate_y
-    topx = lowerx + delx
-    topy = lowery + dely
-    l = max(lowerx,left)
-    r = min(topx,right)
-    b = max(lowery,bottom)
-    t = min(topy,top)
+    topx = float(lowerx) + float(delx)
+    topy = float(lowery) + float(dely)
+    l = float(max(lowerx,left))
+    r = float(min(topx,right))
+    b = float(max(lowery,bottom))
+    t = float(min(topy,top))
     return float((r-l)*(t-b))
 
 def getWeekNumber(cur_date) :
     return datetime.date(cur_date.year,cur_date.month,cur_date.day).isocalendar()[1]
 
-def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no,total_bundles) :
-    Slots = slots.objects.filter(zone_id = zone_no,week = week_no)
+def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no) :
+    Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by(slot_no)
     total_bundles = 10
     info = zone_info.objects.filter(zone_id = zone_no ,week = week_no)
     if info :
         total_bundles = info.no_of_bundles
-    for slot in Slots :
-        if total_bundles -slot.no_of_bundles_used >= required_bundles :
+    i=0
+    while i < len(Slots) :
+        slot = Slots[i]
+        valid = True
+        for j in range(cont_slots) :
+            if i+j > len(Slots) and i+j <= MAX_SLOTS :
+                pass
+            elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
+                pass
+            else :
+                valid = False
+                break
+        if valid :
             sets -= 1
+            i += cont_slots
             if sets == 0 :
                 return True
-    if len(Slots) + sets <= MAX_SLOTS :
+        else :
+            i += 1
+    if len(Slots) + sets*cont_slots <= MAX_SLOTS :
         return True
     return False
 
@@ -69,11 +85,75 @@ def check_availability(request) :
             zone_no = getzone(x,y)
             OArea = getOverLappingArea(left,right,bottom,top,zone_no)
             required_bundles = (OArea/BAREA)*request.select_bundles ;
-            if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no,total_bundles) :
+            if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no) :
                 return False ;
             x += delx
         y += dely
     return True
+
+def update_scheduler(request) :
+    print "adding request to database " , request
+    # making sure that the slot is still avaialable
+    if not check_availability(request) :
+        return False
+    else :
+        Xcenter = float(request.bussinessPoint_longitude)
+        Ycenter = float(request.bussinessPoint_latitude)
+        left = Xcenter - DELX/2
+        right = Xcenter + DELX/2
+        bottom = Ycenter - DELY/2
+        top = Ycenter + DELY/2
+        y = bottom
+        week_no = getWeekNumber(request.start_week)
+        cont_slots = math.ceil(request.time_of_advertisement/30.0)
+        sets = request.no_of_slots / cont_slots
+        ad = advertisement(upload=request.upload_Advertisement,time_len=time_of_advertisement)
+        ad.save()
+        while y < top :
+            x = left
+            while x < right :
+                zone_no = getzone(x,y)
+                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+                required_bundles = (OArea/BAREA)*request.select_bundles ;
+                # book_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no)
+                # Updating the database
+
+                Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by(slot_no)
+                i = 0
+                while i < range(len(Slots)) :
+                    slot = Slots[i]
+                    left = sets
+                    valid = True
+                    for j in range(cont_slots) :
+                        if i+j > len(Slots) and i+j <= MAX_SLOTS :
+                            pass
+                        elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
+                            pass
+                        else :
+                            valid = False
+                            break
+                    if valid :
+                        for j in range(cont_slots) :
+                            slot = Slots[i+j]
+                            slot.no_of_bundles_used += required_bundles
+                            slot.save()
+                            start = False
+                            if j == 0 :
+                                start = True
+                            schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
+                            schedule.save()
+                        i += cont_slots
+                        left -= 1
+                        if left == 0 :
+                            break
+                    else :
+                        i += 1
+                #the update complete
+                x += delx
+            y += dely
+        return True
+
+
 # get advertisment corresponding to the zone device is in and also the server time
 def get_advertisement(Zone_id):
     # current_time=datetime.datetime.now()

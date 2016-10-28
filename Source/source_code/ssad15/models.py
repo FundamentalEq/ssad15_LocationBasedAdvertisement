@@ -23,6 +23,7 @@ class slots(models.Model) :
 class scheduler(models.Model) :
     slots_id = models.ForeignKey(slots, on_delete=models.CASCADE)
     advertisement_id = models.ForeignKey(advertisement, on_delete=models.CASCADE)
+    bundles_tobegiven = models.DecimalField(max_digits=5,decimal_places=2,default=0)
     is_starting = models.BooleanField(default=True)
 
 class slot(models.Model):
@@ -30,7 +31,7 @@ class slot(models.Model):
     slot_no = models.IntegerField(default=0)
     advertisement_id = models.ForeignKey(advertisement, on_delete=models.CASCADE)
     is_starting = models.BooleanField(default=True)
-    bundles_used = models.DecimalField(max_digits=5,decimal_places=2,default=0)
+    bundles_tobegiven = models.DecimalField(max_digits=5,decimal_places=2,default=0)
 
 class running(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)

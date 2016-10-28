@@ -1,0 +1,28 @@
+Hi Sir , just as proof of agreement :
+Arushi :
+R1 features(left Over) :
+1)User login :
+    -Signup (UI)
+    -forgot password (complete)
+    -login (UI)
+    (including the front end of the same)
+    -Custom Upload Form
+R2 features (all R2 features):
+1)  Admin Functionality :
+    -Admin's access to user functionality like uploading advvertisement on user behalf
+    -Combined User history(Not part of SRS but asked by the client)
+2)  User Functionality :
+    -User History(including UI)
+    -User Profile and Edit(including UI)
+
+3)  Small Utility functions :
+    -Calculate Total cost
+    -Edit cost and no of bundles of zone by admin
+
+Aakash :
+1) Modify the scheduler script
+2) Update the scheduler db function
+
+Kritika :
+1) Update the ping device js
+2) UI integration

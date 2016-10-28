@@ -4,6 +4,8 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
 from userauth.models import UserProfile
 from userauth.models import UploadAdvetisement,Add_Device
+from django.contrib.admin.widgets import AdminDateWidget
+
 class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput())
    	class Meta:
@@ -23,6 +25,7 @@ class UploadForm(forms.ModelForm):
 				,'bussinessPoint_latitude','start_week')
 		# start_week = forms.DateField(widget=extras.SelectDateWidget())
 		widgets = {'start_week':extras.SelectDateWidget()}
+		# widgets = {'start_week':AdminDateWidget}
 		# widgets = {'bussinessPoint_longitude': forms.HiddenInput() }
 class  Login_Adver(forms.ModelForm):
         #password = forms.CharField(widget=forms.PasswordInput())
