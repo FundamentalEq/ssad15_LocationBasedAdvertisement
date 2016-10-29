@@ -10,12 +10,12 @@ class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput())
    	class Meta:
         	model = User
-        	fields = ('username','password',)
+        	fields = ('username','password','email')
 
 class UserProfileForm(forms.ModelForm):
     	class Meta:
         	model = UserProfile
-        	fields = ('phone_number','address','first_name' , 'last_name', 'email_id')
+        	fields = ('phone_number','address','first_name' , 'last_name',)
 class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement

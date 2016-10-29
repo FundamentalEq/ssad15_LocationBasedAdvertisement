@@ -11,9 +11,9 @@ class UserProfile(models.Model):
 	 phone_number = models.CharField(max_length=10,validators=[phone_regex], blank=True)
 	 #address = models.CharField(max_length=500,blank=False,default="Address")
 	 address = models.TextField(max_length=500,blank=False,default="Address")
-	 first_name = models.CharField(max_length=12,blank=True)
-	 email_id =   models.EmailField(max_length=70,blank=True)
-	 last_name =  models.CharField(max_length=12,blank=True)
+	 first_name = models.CharField(max_length=20,blank=True)
+	 #email_id =   models.EmailField(max_length=70,blank=True)
+	 last_name =  models.CharField(max_length=20,blank=True)
 	 def __unicode__(self):
 		 return self.user.username
 class UploadAdvetisement(models.Model):
@@ -21,8 +21,8 @@ class UploadAdvetisement(models.Model):
         upload_Advertisement=models.FileField(upload_to='uploads/')
 	time_of_advertisement=models.IntegerField(default=30)
 	no_of_slots= (
-        (1, '1'),
-        (2, '2'),
+        	(1, '1'),
+        	(2, '2'),
 		(3, '3'),
 		(4, '4'),
 		(5, '5'),
