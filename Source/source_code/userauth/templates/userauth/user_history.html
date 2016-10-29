@@ -1,0 +1,29 @@
+{% extends 'userauth/base.html' %}
+      {% block content %}
+{% if not user.is_authenticated %}
+<p>Please Logged-In</p>
+{% else %}
+<table style="width:100%">
+    <tr>
+    <th>Uploader
+    <th>File Name</th>
+    <th>Time of Advertisment</th>
+    <th> no_of_slots</th>
+    <th>select_bundles </th>
+    <th>no_of_weeks </th>
+    <th>date</th>
+    </tr>
+{% for ad in advertisment %}
+<tr>
+<td>{{ad.uploader}}</td>
+<td>{{ad.upload_Advertisement}}</td>
+<td>{{ad.time_of_advertisement}}</td>
+<td>{{ad.no_of_slots}}</td>
+<td>{{ad.select_bundles}}</td>
+<td>{{ad.no_of_weeks}}</td>
+<td>{{ad.date}}</td>
+</tr>
+{% endfor %}
+</table> 
+{% endif %}
+{% endblock %}
