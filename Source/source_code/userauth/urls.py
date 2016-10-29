@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib.auth.views import password_reset, password_reset_complete, password_reset_confirm, password_reset_done
+from django.conf.urls.static import static
 from . import views
 
 
