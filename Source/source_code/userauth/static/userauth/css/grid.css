@@ -153,6 +153,18 @@ table {
 .row:after {
   clear: both;
 }
+.b_row {
+  margin-left: -30px;
+}
+.b_row:before,
+.b_row:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.b_row:after {
+  clear: both;
+}
 [class*="grid_"] {
   float: left;
   min-height: 1px;
@@ -260,6 +272,18 @@ table {
     line-height: 0;
   }
   .row:after {
+    clear: both;
+  }
+  .b_row {
+    margin-left: -20px;
+  }
+  .b_row:before,
+  .b_row:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .b_row:after {
     clear: both;
   }
   [class*="grid_"] {
