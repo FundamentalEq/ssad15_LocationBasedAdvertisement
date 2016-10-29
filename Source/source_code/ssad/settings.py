@@ -9,6 +9,14 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'iiittest123@gmail.com'
+EMAIL_HOST_PASSWORD = 'Q!W@E#R$T%Y^'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'iiittest123@gmail.com'
+SERVER_EMAIL = "iiittest123@gmail.com"
 
 import os
 
@@ -33,6 +41,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'ssad15.apps.Ssad15Config',
     'django.contrib.admin',
+    'password_reset',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -128,11 +137,3 @@ LOGIN_URL = '/userauth/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = '/'
-
-if DEBUG:
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
-    EMAIL_HOST_USER = ''
-    EMAIL_HOST_PASSWORD = ''
-    EMAIL_USE_TLS = False
-    DEFAULT_FROM_EMAIL = 'testing@example.com'
