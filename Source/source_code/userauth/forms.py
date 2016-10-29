@@ -32,5 +32,5 @@ class  Login_Adver(forms.ModelForm):
         #password = forms.CharField(max_length=32, widget=forms)
     class Meta:
 		model = Add_Device
+		fields = ('Username','password')
 		widgets = {'password': forms.PasswordInput(),}
-		fields = ('email_id','password')

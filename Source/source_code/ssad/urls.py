@@ -26,8 +26,18 @@ urlpatterns = [
     url(r'^ssad15/', include('ssad15.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^userauth/', include('userauth.urls')),
+    # url(r'^user/password/reset/$',
+    #     'django.contrib.auth.views.password_reset',
+    #     {'post_reset_redirect' : '/user/password/reset/done/'},
+    #     name="password_reset"),
+    # (r'^user/password/reset/done/$',
+    #     'django.contrib.auth.views.password_reset_done'),
+    # (r'^user/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    #     'django.contrib.auth.views.password_reset_confirm',
+    #     {'post_reset_redirect' : '/user/password/done/'}),
+    # (r'^user/password/done/$',
+    #     'django.contrib.auth.views.password_reset_complete'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

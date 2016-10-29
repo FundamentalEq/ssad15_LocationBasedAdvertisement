@@ -1,4 +1,4 @@
 mysql for Python
-
+pip install django-allauth
 crontab :
 sudo pip install django-crontab
