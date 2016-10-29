@@ -10,6 +10,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from ssad15.views import check_availability
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import User
+from userauth.models import UserProfile,UploadAdvetisement
 def register(request):
 
 	registered = False
@@ -116,3 +119,41 @@ def device_login(request):
                         return HttpResponse("Invalid Login")
         else:
                 return render(request,'userauth/logdiv.html', {})
+def user_edit(request,pk):
+
+        if UserProfile.objects.filter(user = request.user).count()==1:
+                Edit = 0
+                user = get_object_or_404(User, pk=pk)
+                userprofile = get_object_or_404(UserProfile , user=user)
+                if request.method == "POST":
+                        user_form = UserForm(data=request.POST , instance=user)
+                        profile_form = UserProfileForm(data=request.POST , instance = userprofile)
+                        if user_form.is_valid() and profile_form.is_valid():
+                                Edit = 1
+                                user_form.save()
+                                profile_form.save()
+                                return HttpResponseRedirect('/userauth/')
+                        else:
+                                print user_form.errors , profile_form.errors
+                else:
+                        user_form = UserForm(instance=user)
+                        profile_form = UserProfileForm(instance=userprofile)
+                return render(request, 'userauth/register_edit.html', {'user_form': user_form, 'profile_form': profile_form, 'Edit':Edit})
+        else:
+                Edit = 2
+                user = get_object_or_404(User, pk=pk)
+                if request.method == "POST":
+                        user_form = UserForm(data=request.POST , instance=user)
+                        if user_form.is_valid():
+                                Edit = 3
+                                user_form.save()
+                                return HttpResponseRedirect('/userauth/')
+                        else:
+                                print user_form.errors
+                else:
+                        user_form = UserForm(instance=user)
+                return render(request, 'userauth/register_edit.html', {'user_form': user_form, 'Edit':Edit})
+def user_history(request):
+        #advertisment = UploadAdvetisement.objects.all().order_by('-date')
+        advertisment = UploadAdvetisement.objects.all().filter(uploader = request.user).order_by('-date')
+        return render(request, 'userauth/user_history.html', {'advertisment':advertisment})              
