@@ -59,7 +59,33 @@
                           </li>
                           <li><a href="">How It Works</a></li>
 
-                          <li><a href="">Login/Register</a></li>
+                          {% if user.is_authenticated %}
+                          <li><a href="myaccount.html">My Account</a>
+                          <ul>
+                            <li>
+                              <a href="">My Profile</a>
+                            </li>
+
+                            <li>
+                              {% if user.is_superuser %}
+                              <a href="">Customer History</a>
+                              {% else %}
+                              <a href="">Customer History</a>
+                              {% endif %}
+                            </li>
+                            {% if user.is_superuser %}
+                            <li>
+                              <a href="">Manage Customers</a>
+                            </li>
+                            {% endif %}
+                            <li>
+                              <a href="">Logout</a>
+                            </li>
+                          </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="">Login/Register</a></li>
+                        {% endif %}
                           <li><a href="">Upload Advertisement</a></li>
 
                       </ul>
