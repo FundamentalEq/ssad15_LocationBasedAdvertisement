@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{%static 'userauth/css/style.css' %}">
     <link rel="stylesheet" href="{%static 'userauth/css/camera.css' %}"/>
     <link rel="stylesheet" href="{%static 'userauth/css/owl.carousel.css' %}"/>
-  
+
     <script src="{%static 'userauth/js/jquery.js' %}"></script>
     <script src="{%static 'userauth/js/jquery-migrate-1.2.1.js' %}"></script>
     <script src="{%static 'userauth/js/jquery.equalheights.js' %}"></script>
@@ -44,21 +44,47 @@
               <div class="" width="100%">
                   <div class="brand put-left" float="left">
                       <h1>
-                          <a href="index.html">
+                          <a href="{% url 'home' %}">
                               <img src="{%static 'userauth/images/logo.jpg' %}" alt="Logo" width="300px" height="49px"/>
                           </a>
                       </h1>
                   </div>
                   <nav class="nav put-right" float=right>
                       <ul class="sf-menu">
-                          <li class="current"><a href="index.html">Home</a></li>
+                          <li class="current"><a href="{% url 'home' %}">Home</a></li>
                           <li>
                               <a href="">About</a>
 
                           </li>
                           <li><a href="">How It Works</a></li>
 
-                          <li><a href="">Login/Register</a></li>
+                          {% if user.is_authenticated %}
+                          <li><a href="myaccount.html">My Account</a>
+                          <ul>
+                            <li>
+                              <a href="{% url 'register_edit' pk=request.user.pk  %}">My Profile</a>
+                            </li>
+
+                            <li>
+                              {% if user.is_superuser %}
+                              <a href="">Customer History</a>
+                              {% else %}
+                              <a href="">My History</a>
+                              {% endif %}
+                            </li>
+                            {% if user.is_superuser %}
+                            <li>
+                              <a href="">Manage Customers</a>
+                            </li>
+                            {% endif %}
+                            <li>
+                              <a href="{% url 'logout' %}">Logout</a>
+                            </li>
+                          </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="">Login/Register</a></li>
+                        {% endif %}
                           <li><a href="">Upload Advertisement</a></li>
 
                       </ul>
