@@ -156,5 +156,4 @@ def user_edit(request,pk):
 def user_history(request):
         #advertisment = UploadAdvetisement.objects.all().order_by('-date')
         advertisment = UploadAdvetisement.objects.all().filter(uploader = request.user).order_by('-date')
-        return render(request, 'userauth/user_history.html', {'advertisment':advertisment})
--- INSERT --                  
+        return render(request, 'userauth/user_history.html', {'advertisment':advertisment})              
