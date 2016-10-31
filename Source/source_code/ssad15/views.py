@@ -227,6 +227,37 @@ def display_advertisement(request):
             content_type="application/json"
         )
         # return render(request, 'ssad15/display_advertisement.html', context)
+# function to calculate total cost to be paid by the customer
+def total_cost(request):
+    Xcenter = float(request.bussinessPoint_longitude)
+    Ycenter = float(request.bussinessPoint_latitude)
+    left = Xcenter - DELX/2
+    right = Xcenter + DELX/2
+    bottom = Ycenter - DELY/2
+    top = Ycenter + DELY/2
+    #variable to store total_cost
+    total_cost=0
+    # starting the loop to map the request into zones and calculate total cost
+    y = bottom
+    wn = getWeekNumber(request.start_week)
+    no_of_slots=request.no_of_slots
+    sets = request.no_of_slots / cont_slots
+    for week_no in xrange(wn+int(request.no_of_weeks)) :
+        while y < top :
+            x = left
+            while x < right :
+                zone_no = getzone(x,y)
+                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+                required_bundles = (OArea/BAREA)*request.select_bundles
+                z=get_list_or_404(zone_info,zone_id=zone_no).order_by('-week')
+                while True:
+                    if z[i].week <= wn:
+                        w=z[i].week
+                zone=get_object_or_404(zone_info,zone_id=zone_no,week=w)
+                cost=zone.cost
+                total_cost=total_cost+required_bundles * cost * no_of_slots
+    return (int)total_cost
+
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
     return render(request,'ssad15/start_advertisement.html')
