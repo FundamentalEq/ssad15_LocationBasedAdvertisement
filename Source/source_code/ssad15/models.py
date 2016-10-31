@@ -37,7 +37,8 @@ class running(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     slot_no = models.IntegerField(default=0)
     alloted = models.IntegerField(default=0)
-class running_adv(models.Model) :
+class running_ads(models.Model) :
+    zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     ad = models.ForeignKey(advertisement, on_delete=models.CASCADE)
     slot_no = models.IntegerField(default=0)
     given = models.IntegerField(default=0)
