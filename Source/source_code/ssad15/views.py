@@ -75,20 +75,20 @@ def check_availability(request) :
     top = Ycenter + DELY/2
     # starting the loop to map the request into zones and check the availability
     y = bottom
-    week_no = getWeekNumber(request.start_week)
+    wn = getWeekNumber(request.start_week)
     cont_slots = math.ceil(request.time_of_advertisement/30.0)
     sets = request.no_of_slots / cont_slots
-
-    while y < top :
-        x = left
-        while x < right :
-            zone_no = getzone(x,y)
-            OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-            required_bundles = (OArea/BAREA)*request.select_bundles ;
-            if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no) :
-                return False ;
-            x += delx
-        y += dely
+    for week_no in xrange(wn+int(request.no_of_weeks)) :
+        while y < top :
+            x = left
+            while x < right :
+                zone_no = getzone(x,y)
+                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+                required_bundles = (OArea/BAREA)*request.select_bundles ;
+                if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no) :
+                    return False ;
+                x += delx
+            y += dely
     return True
 
 def update_scheduler(request) :
@@ -104,53 +104,54 @@ def update_scheduler(request) :
         bottom = Ycenter - DELY/2
         top = Ycenter + DELY/2
         y = bottom
-        week_no = getWeekNumber(request.start_week)
+        wn = getWeekNumber(request.start_week)
         cont_slots = math.ceil(request.time_of_advertisement/30.0)
         sets = request.no_of_slots / cont_slots
         ad = advertisement(upload=request.upload_Advertisement,time_len=time_of_advertisement)
         ad.save()
-        while y < top :
-            x = left
-            while x < right :
-                zone_no = getzone(x,y)
-                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                required_bundles = (OArea/BAREA)*request.select_bundles ;
-                # book_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no)
-                # Updating the database
+        for week_no in xrange(wn+int(request.no_of_weeks)) :
+            while y < top :
+                x = left
+                while x < right :
+                    zone_no = getzone(x,y)
+                    OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+                    required_bundles = (OArea/BAREA)*request.select_bundles ;
+                    # book_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no)
+                    # Updating the database
 
-                Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by(slot_no)
-                i = 0
-                while i < range(len(Slots)) :
-                    slot = Slots[i]
-                    left = sets
-                    valid = True
-                    for j in range(cont_slots) :
-                        if i+j > len(Slots) and i+j <= MAX_SLOTS :
-                            pass
-                        elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
-                            pass
-                        else :
-                            valid = False
-                            break
-                    if valid :
+                    Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by(slot_no)
+                    i = 0
+                    while i < range(len(Slots)) :
+                        slot = Slots[i]
+                        left = sets
+                        valid = True
                         for j in range(cont_slots) :
-                            slot = Slots[i+j]
-                            slot.no_of_bundles_used += required_bundles
-                            slot.save()
-                            start = False
-                            if j == 0 :
-                                start = True
-                            schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
-                            schedule.save()
-                        i += cont_slots
-                        left -= 1
-                        if left == 0 :
-                            break
-                    else :
-                        i += 1
-                #the update complete
-                x += delx
-            y += dely
+                            if i+j > len(Slots) and i+j <= MAX_SLOTS :
+                                pass
+                            elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
+                                pass
+                            else :
+                                valid = False
+                                break
+                        if valid :
+                            for j in range(cont_slots) :
+                                slot = Slots[i+j]
+                                slot.no_of_bundles_used += required_bundles
+                                slot.save()
+                                start = False
+                                if j == 0 :
+                                    start = True
+                                schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
+                                schedule.save()
+                            i += cont_slots
+                            left -= 1
+                            if left == 0 :
+                                break
+                        else :
+                            i += 1
+                    #the update complete
+                    x += delx
+                y += dely
         return True
 
 
