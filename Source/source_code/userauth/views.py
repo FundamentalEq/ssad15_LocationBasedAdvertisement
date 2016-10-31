@@ -3,7 +3,6 @@ from django.template import RequestContext
 from django.template import context
 from models import Add_Device
 from django.shortcuts import render_to_response
-#from userauth.forms import UserForm, UploadForm ,Login_Adver
 from userauth.forms import UserForm, UserProfileForm, UploadForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
@@ -13,6 +12,7 @@ from ssad15.views import check_availability
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from userauth.models import UserProfile,UploadAdvetisement
+import math
 def register(request):
 
 	registered = False
@@ -22,7 +22,6 @@ def register(request):
         	profile_form = UserProfileForm(data=request.POST)
 
         	if user_form.is_valid() and profile_form.is_valid():
-                #if user_form.is_valid():
             		user = user_form.save()
 
             		user.set_password(user.password)
@@ -44,7 +43,7 @@ def register(request):
         	user_form = UserForm()
         	profile_form = UserProfileForm()
 
-    	return render(request,'userauth/register_login.html',
+    	return render(request,'userauth/register.html',
                 {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 def user_login(request):
@@ -61,7 +60,7 @@ def user_login(request):
             else:
                 return HttpResponse("Your account is disabled.")
         else:
-            print "Invalid login details: {0}, {1}".format(email_id, password)
+            print "Invalid login details: {0}, {1}".format(username, password)
             return HttpResponse("Invalid login details supplied.")
 
     else:
@@ -76,33 +75,23 @@ def user_logout(request):
 	#return render(request,'userauth/base.html', {})
 
 def upload(request):
-	print  "inside upload"
 	uploaded = False
-	time_error = False
 	msg = "sendig nothing "
 	if request.method == "POST":
 		form = UploadForm(request.POST, request.FILES)
-		print "the requeat is post"
-		# print form
 		if form.is_valid():
 			post = form.save(commit=False)
-			post.uploader = request.user
+			if not request.user.is_superuser:
+                                post.uploader = request.user
 			uploaded = True
-			print "form has been validated"
-			if post.time_of_advertisement <= post.no_of_slots*30:
-				time_error = True
-				print "post is ", post.start_week
-				if not check_availability(post) :
-					print "THe demanded resources are not avaialable"
-				else :
-					post.save()
-		else :
-			print form.errors
+			post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30)
+			if not check_availability(post) :
+				print "THe demanded resources are not avaialable"
+			else :
+				post.save()
 	else :
 		form = UploadForm()
-	if time_error == True :
-		return home(request)
-	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded , 'time_error':time_error,'msg':msg})
+	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded ,'msg':msg})
 
 def home(request):
 	return render(request,'userauth/index.html')
@@ -153,6 +142,8 @@ def user_edit(request,pk):
                         user_form = UserForm(instance=user)
                 return render(request, 'userauth/register_edit.html', {'user_form': user_form, 'Edit':Edit})
 def user_history(request):
-        #advertisment = UploadAdvetisement.objects.all().order_by('-date')
-        advertisment = UploadAdvetisement.objects.filter(uploader = request.user).order_by('-date')
+	if  request.user.is_superuser:
+        	advertisment = UploadAdvetisement.objects.all().order_by('-uploader')
+	else:
+        	advertisment = UploadAdvetisement.objects.filter(uploader = request.user).order_by('-date')
         return render(request, 'userauth/user_history.html', {'advertisment':advertisment})
