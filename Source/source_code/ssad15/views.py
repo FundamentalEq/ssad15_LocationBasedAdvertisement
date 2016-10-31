@@ -159,12 +159,15 @@ def update_scheduler(request) :
 
 # get advertisment corresponding to the zone device is in and also the server time
 
-def find_slot_no() :
+def find_slot_no(Zone_id) :
     cur = datetime.datetime.now()
-    cur_slot = running_slot.objects.all()[0]
+    cur_slot = running_slots.objects.all.filter(zone_id=Zone_id)[0]
     diff = (cur_slot.start_time.minute - cur.minute)*60 + (cur_slot.start_time.second - cur.second)
     change = math.floor(diff/30.0)
     cur_slot.slot += change
+    max_avail_slots = len(slot.objects.filter(zone_id=Zone_id))
+    if cur_slot.slot > max_avail_slots :
+        cur_slot.slot = 1
     cur_slot.save()
     return cur_slot.slot
 
