@@ -31,7 +31,9 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
     r = float(min(topx,right))
     b = float(max(lowery,bottom))
     t = float(min(topy,top))
-    return float((r-l)*(t-b))
+    area = float((r-l)*(t-b))
+    area = area * kmTodegree * kmTodegree #converting degree to Km
+    return area
 
 def getWeekNumber(cur_date) :
     return datetime.date(cur_date.year,cur_date.month,cur_date.day).isocalendar()[1]
