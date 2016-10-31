@@ -158,28 +158,36 @@ def update_scheduler(request) :
 
 
 # get advertisment corresponding to the zone device is in and also the server time
+
+def find_slot_no() :
+    cur = datetime.datetime.now()
+    cur_slot = running_slot.objects.all()[0]
+    diff = (cur_slot.start_time.minute - cur.minute)*60 + (cur_slot.start_time.second - cur.second)
+    change = math.floor(diff/30.0)
+    cur_slot.slot += change
+    cur_slot.save()
+    return cur_slot.slot
+
 def get_advertisement(Zone_id):
-    # current_time=datetime.datetime.now()
-    #calculating slot number from 1 to 120
-    # slot_no=int((current_time.minute * 60 + current_time.second)/30)
-    Slot=running.objects.filter(zone_id=Zone_id)[0]
-    tot = slot.objects.filter(zone_id=Zone_id)
-    tot_slots = len(tot)
-    if tot_slots == 0 :
-        pass # to handeled later
-    Slot.slot_no = Slot.slot_no + 1
-    if Slot.slot_no > tot_slots :
-        Slot.slot_no=1
-    slot_no=Slot.slot_no
-    print "the current slot is ",slot_no
-    Slot.save()
-    SSlot=get_object_or_404(slot,zone_id_id=Zone_id,slot_no=slot_no)
-    ad_id=SSlot.advertisement_id_id
-    ad=get_object_or_404(advertisement,pk=ad_id)
-    print "Ad is ",ad
-    path=ad.upload.url
-    path=str(path)
-    return path
+    pass
+    # Slot=running.objects.filter(zone_id=Zone_id)[0]
+    # tot = slot.objects.filter(zone_id=Zone_id)
+    # tot_slots = len(tot)
+    # if tot_slots == 0 :
+    #     pass # to handeled later
+    # Slot.slot_no = Slot.slot_no + 1
+    # if Slot.slot_no > tot_slots :
+    #     Slot.slot_no=1
+    # slot_no=Slot.slot_no
+    # print "the current slot is ",slot_no
+    # Slot.save()
+    # SSlot=get_object_or_404(slot,zone_id_id=Zone_id,slot_no=slot_no)
+    # ad_id=SSlot.advertisement_id_id
+    # ad=get_object_or_404(advertisement,pk=ad_id)
+    # print "Ad is ",ad
+    # path=ad.upload.url
+    # path=str(path)
+    # return path
 
 #get the pinged location from the device
 #get corresponding zone no and display advertisement according to time and zone

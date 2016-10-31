@@ -42,7 +42,8 @@ class running_adv(models.Model) :
     slot_no = models.IntegerField(default=0)
     given = models.IntegerField(default=0)
 
-class running_slot(models.Model) :
+class running_slots(models.Model) :
+    zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     slot = models.IntegerField(default=1)
     start_time = models.DateTimeField('Starting week of the advertisement',default=timezone.now())
 
