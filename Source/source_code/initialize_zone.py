@@ -15,6 +15,8 @@ while y < top_extreme :
         print x,y,zone_no
         z = zone(bottom_left_coordinate_x=x,bottom_left_coordinate_y=y)
         z.save()
+        zi = zone_info(zone_id=z.id,week=0,cost=100,no_of_bundles=10)
+        zi.save()
         zone_no += 1
         x += delx
     y += dely
