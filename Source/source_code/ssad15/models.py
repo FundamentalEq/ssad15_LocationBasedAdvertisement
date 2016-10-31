@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.utils import timezone
 from django.db import models
 
 
@@ -37,7 +37,14 @@ class running(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     slot_no = models.IntegerField(default=0)
     alloted = models.IntegerField(default=0)
+class running_adv(models.Model) :
+    ad = models.ForeignKey(advertisement, on_delete=models.CASCADE)
+    slot_no = models.IntegerField(default=0)
+    given = models.IntegerField(default=0)
 
+class running_slot(models.Model) :
+    slot = models.IntegerField(default=1)
+    start_time = models.DateTimeField('Starting week of the advertisement',default=timezone.now())
 
 class devices(models.Model):
     username=models.CharField(max_length=10,unique=True)
