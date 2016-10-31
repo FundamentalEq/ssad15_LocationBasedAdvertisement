@@ -162,16 +162,16 @@ def update_scheduler(request) :
 def find_slot_no(Zone_id) :
     cur = datetime.datetime.now()
     cur_slot = running_slots.objects.all.filter(zone_id=Zone_id)[0]
-    diff = (cur_slot.start_time.minute - cur.minute)*60 + (cur_slot.start_time.second - cur.second)
+    diff = (cur.minute - cur_slot.start_time.minute)*60 + (cur.second - cur_slot.start_time.second)
     change = math.floor(diff/30.0)
     cur_slot.slot += change
     max_avail_slots = len(slot.objects.filter(zone_id=Zone_id))
     if cur_slot.slot > max_avail_slots :
         cur_slot.slot = 1
+        running.objects.filter(zone_id=Zone_id).delete()
+        running_ads.objects.filter(zone_id=Zone_id).delete()
     if change > 0 :
         cur_slot.start_time = cur
-        running.objects.filter(zone_id=Zone_id,slot_no=cur_slot.slot).delete()
-        running_ads.objects.filter(zone_id=Zone_id,slot_no=cur_slot.slot).delete()
     cur_slot.save()
     return cur_slot.slot
 
@@ -204,6 +204,22 @@ def get_advertisement(Zone_id):
     cur_ad.given += 1
     cur_ad.save()
 
+    cont_slots = math.ceil(cur_ad.time_len /30.0)
+    for sl in range(slot_no+1,slot_no+cont_slots) :
+        rs = running_slots.objects.filter(zone_id=Zone_id,slot=sl)
+        if len(rs) == 0 :
+            rs = running_slots(zone_id=Zone_id,slot=sl,alloted=0)
+        else :
+            rs = rs[0]
+        rs.alloted += 1
+        rs.save()
+        ra = running_ads(zone_id=Zone_id,ad=cur_ad.id,slot_no=sl)
+        if len(ra) == 0 :
+            ra = running_ads(zone_id=Zone_id,slot_no=sl,given=0)
+        else :
+            ra = ra[0]
+        ra.given += 1
+        ra.save()
     my_ad=get_object_or_404(advertisement,id=Ad)
     path = my_ad.upload.url
     return str(path),my_ad.time_len
