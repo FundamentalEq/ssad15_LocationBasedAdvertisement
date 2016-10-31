@@ -50,10 +50,9 @@ def register(request):
 def user_login(request):
 
     if request.method == 'POST':
-        email_id = request.POST.get('email_id')
+        username = request.POST.get('username')
         password = request.POST.get('password')
-
-        user = authenticate(email_id=email_id, password=password)
+        user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
@@ -155,5 +154,5 @@ def user_edit(request,pk):
                 return render(request, 'userauth/register_edit.html', {'user_form': user_form, 'Edit':Edit})
 def user_history(request):
         #advertisment = UploadAdvetisement.objects.all().order_by('-date')
-        advertisment = UploadAdvetisement.objects.all().filter(uploader = request.user).order_by('-date')
-        return render(request, 'userauth/user_history.html', {'advertisment':advertisment})              
+        advertisment = UploadAdvetisement.objects.filter(uploader = request.user).order_by('-date')
+        return render(request, 'userauth/user_history.html', {'advertisment':advertisment})

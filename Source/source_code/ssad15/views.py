@@ -168,11 +168,46 @@ def find_slot_no(Zone_id) :
     max_avail_slots = len(slot.objects.filter(zone_id=Zone_id))
     if cur_slot.slot > max_avail_slots :
         cur_slot.slot = 1
+    if change > 0 :
+        cur_slot.start_time = cur
+        running.objects.filter(zone_id=Zone_id,slot_no=cur_slot.slot).delete()
+        running_ads.objects.filter(zone_id=Zone_id,slot_no=cur_slot.slot).delete()
     cur_slot.save()
     return cur_slot.slot
 
 def get_advertisement(Zone_id):
-    pass
+    slot_no = find_slot_no(Zone_id)
+    all_adv = slot.objects.filter(zone_id_id=Zone_id,slot_no=slot_no,is_starting = True)
+    X = running.objects.filter(zone=Zone_id,slot_no=slot_no)
+    if len(X) == 0 :
+        X = running(zone_id=Zone_id,slot_no=slot_no,alloted=0)
+        X.save()
+    else :
+        X = X[0]
+    X.alloted += 1
+    X.save()
+    X = X.alloted
+    Ad = 0
+    priority = 0
+    for ad in all_adv :
+        given = running_ads.objects.filter(zone_id=Zone_id,ad=ad.advertisement_id,slot_no=slot_no)
+        if len(given) == 0 :
+            given = running_ads(zone_id=Zone_id,slot_no=slot_no,ad=ad.advertisement_id,given=0)
+            given.save()
+        else :
+            given = given[0]
+        if ad.bundles_tobegiven*X - given.given > priority :
+            priority = ad.bundles_tobegiven*X - given.given
+            Ad = ad.advertisement_id
+
+    cur_ad = running_ads.objects.filter(ad=Ad)[0]
+    cur_ad.given += 1
+    cur_ad.save()
+
+    my_ad=get_object_or_404(advertisement,id=Ad)
+    path = my_ad.upload.url
+    return str(path),my_ad.time_len
+    # my_ad = advertisement.objects.filter()
     # Slot=running.objects.filter(zone_id=Zone_id)[0]
     # tot = slot.objects.filter(zone_id=Zone_id)
     # tot_slots = len(tot)
@@ -186,7 +221,6 @@ def get_advertisement(Zone_id):
     # Slot.save()
     # SSlot=get_object_or_404(slot,zone_id_id=Zone_id,slot_no=slot_no)
     # ad_id=SSlot.advertisement_id_id
-    # ad=get_object_or_404(advertisement,pk=ad_id)
     # print "Ad is ",ad
     # path=ad.upload.url
     # path=str(path)
@@ -241,7 +275,6 @@ def total_cost(request):
     y = bottom
     wn = getWeekNumber(request.start_week)
     no_of_slots=request.no_of_slots
-    sets = request.no_of_slots / cont_slots
     for week_no in xrange(wn+int(request.no_of_weeks)) :
         while y < top :
             x = left
@@ -256,7 +289,7 @@ def total_cost(request):
                 zone=get_object_or_404(zone_info,zone_id=zone_no,week=w)
                 cost=zone.cost
                 total_cost=total_cost+required_bundles * cost * no_of_slots
-    return (int)total_cost
+    return int(total_cost)
 
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
