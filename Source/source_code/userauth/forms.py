@@ -15,21 +15,15 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     	class Meta:
         	model = UserProfile
-        	fields = ('phone_number','address','first_name' , 'last_name',)
+        	fields = ('phone_number','address','first_name' , 'last_name', 'ad_type','city','pincode',)
 class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement
-		# print "inside form.py class upload form"
 		fields = ('upload_Advertisement','time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','bussinessPoint_longitude'
-				,'bussinessPoint_latitude','start_week')
-		# start_week = forms.DateField(widget=extras.SelectDateWidget())
+				,'bussinessPoint_latitude','start_week','uploader','no_of_repeats',)
 		widgets = {'start_week':extras.SelectDateWidget()}
-		# widgets = {'start_week':AdminDateWidget}
-		# widgets = {'bussinessPoint_longitude': forms.HiddenInput() }
 class  Login_Adver(forms.ModelForm):
-        #password = forms.CharField(widget=forms.PasswordInput())
-        #password = forms.CharField(max_length=32, widget=forms)
     class Meta:
 		model = Add_Device
 		fields = ('Username','password')

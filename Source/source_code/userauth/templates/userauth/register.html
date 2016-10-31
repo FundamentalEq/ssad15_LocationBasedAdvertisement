@@ -19,6 +19,8 @@
                         {{ user_form.username }}
                 <label for="{{ user_form.password.id_for_label }}">Password:</label>
                         {{ user_form.password }}
+		<label for="{{ user_form.email.id_for_label }}">Email Id:</label>
+                        {{ user_form.email}}
                 <label for="{{ profile_form.subject.id_for_label }}">Phone Number:</label>
                         {{ profile_form.phone_number }}
                 <label for="{{ profile_form.address.id_for_label }}">Address:</label>
@@ -27,10 +29,13 @@
                         {{ profile_form.first_name }}
                 <label for="{{ profile_form.last_name.id_for_label }}">Last Name:</label>
                         {{ profile_form.last_name }}
-                <!--<label for="{{ profile_form.email_id.id_for_label }}">Email Id:</label>
-                        {{ profile_form.email_id}}-->
-
-            	<input type="submit" name="submit" value="Register" />
+                 <label for="{{ user_form.ad_type.id_for_label }}">Buiseness Name:</label>
+                        {{ user_form.ad_type }}
+                <label for="{{ user_form.city.id_for_label }}">City:</label>
+                        {{ user_form.city }}
+                <label for="{{ user_form.pincode.id_for_label }}">Pincode:</label>
+                        {{ user_form.pincode }}
+                <input type="submit" name="submit" value="Register" />
         </form>
         {% endif %}
         {% endif %}
