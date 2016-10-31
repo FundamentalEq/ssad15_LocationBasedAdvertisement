@@ -12,11 +12,14 @@
 
             {% csrf_token %}
                 {% if Edit == 0 or Edit == 2 %}
-                <label for="{{ user_form.username.id_for_label }}">Username:</label>
+		<label for="{{ user_form.username.id_for_label }}">User Name:</label>
                         {{ user_form.username }}
+                <label for="{{ user_form.email.id_for_label }}">Email-Id:</label>
+                        {{ user_form.email }}
                 <label for="{{ user_form.password.id_for_label }}">Password:</label>
                         {{ user_form.password }}
-		{% elif Edit == 0 %}
+		{% endif %}
+		{% if Edit == 0 %}
                 <label for="{{ profile_form.subject.id_for_label }}">Phone Number:</label>
                         {{ profile_form.phone_number }}
                 <label for="{{ profile_form.address.id_for_label }}">Address:</label>
@@ -25,43 +28,15 @@
                         {{ profile_form.first_name }}
                 <label for="{{ profile_form.last_name.id_for_label }}">Last Name:</label>
                         {{ profile_form.last_name }}
-                <label for="{{ profile_form.email_id.id_for_label }}">Email Id:</label>
-                        {{ profile_form.email_id}}
+                 <label for="{{ user_form.ad_type.id_for_label }}">Buiseness Name:</label>
+                        {{ user_form.ad_type }}
+                <label for="{{ user_form.city.id_for_label }}">City:</label>
+                        {{ user_form.city }}
+                <label for="{{ user_form.pincode.id_for_label }}">Pincode:</label>
+                        {{ user_form.pincode }}
 		 {% endif %}
                 <input type="submit" name="submit" value="Register" />
         </form>
         {% endif %}
         {% endif %}
 {% endblock %}
-<!--
-<form class="form-horizontal">
-<fieldset>
-
-
-
-<div class="form-group">
-  <label class="col-md-4 control-label" for="passwordinput">Password Input</label>
-  <div class="col-md-4">
-    <input id="passwordinput" name="passwordinput" placeholder="placeholder" class="form-control input-md" type="password">
-  </div>
-</div>
-
- Textarea 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="textarea">Text Area</label>
-  <div class="col-md-4">                     
-    <textarea class="form-control" id="textarea" name="textarea">default text</textarea>
-  </div>
-</div>
-
- Text input
-<div class="form-group">
-  <label class="col-md-4 control-label" for="textinput">Text Input</label>  
-  <div class="col-md-4">
-  <input id="textinput" name="textinput" placeholder="placeholder" class="form-control input-md" type="text">
-  <span class="help-block">help</span>  
-  </div>
-</div>
-</fieldset>
-</form>
--->
