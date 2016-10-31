@@ -1,6 +1,6 @@
 console.log("i was here") ;
 console.log("i was here") ;
-
+var time_len = 300000;
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(updateLocation);
@@ -29,7 +29,8 @@ function updateLocation(position){
             document.getElementById('my_video').src = ret.path;
             document.getElementById('my_video1').src = ret.path ;
             console.log(document.getElementById('my_video').src) ;
-
+            time_len = ret.time_len*1000 ;
+            console.log("the length of this video is ",time_len) ;
         },
         error : function(xhr, errmsg,err){
             alert(errmsg);
@@ -46,5 +47,5 @@ function updateLocation(position){
 $(document).ready( function ping(){
   console.log("i was here") ;
   getLocation() ;
-  setInterval(function(){getLocation();},30000);
+  setInterval(function(){getLocation();},time_len);
 });
