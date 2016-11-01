@@ -153,3 +153,27 @@ def user_history(request):
 	else:
         	advertisment = UploadAdvetisement.objects.filter(uploader = request.user).order_by('-date')
         return render(request, 'userauth/user_history.html', {'advertisment':advertisment})
+'''
+def edit_cost(reruest):
+	uploaded = False
+        if request.method == "POST":
+                form = UploadForm(request.POST, request.FILES)
+                if form.is_valid():
+			a = post.bussinessPoint_longitude
+                        b = post.bussinessPoint_latitude
+                        
+                        post = form.save(commit=False)
+                        if not request.user.is_superuser:
+                                post.uploader = request.user
+                        uploaded = True
+                        post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+                        #if not check_availability(post) :
+                        #       print "THe demanded resources are not avaialable"
+                        #else :
+                        post.save()
+                else:
+                        print form.errors
+        else :
+                form = UploadForm()
+        return render(request,'userauth/edit_cost.html', {'form': form , 'uploaded':uploaded ,'msg':msg})
+'''	
