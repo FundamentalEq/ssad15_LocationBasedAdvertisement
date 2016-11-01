@@ -16,6 +16,7 @@
     <th>Date of Purchase</th>
     <th>start Week</th>
     <th>Repetitions</th>
+    <th>Amount Paid</th>
     </tr>
 {% for ad in advertisment %}
 <tr>
@@ -30,6 +31,7 @@
 <td>{{ad.date}}</td>
 <td>{{ad.start_week}}</td>
 <td>{{ad.no_of_repeats}}</td>
+<td>{{ad.post.amount_paid}}</td>
 </tr>
 {% endfor %}
 </table> 

@@ -82,6 +82,14 @@ def upload(request):
 		form = UploadForm(request.POST, request.FILES)
 		if form.is_valid():
 			post = form.save(commit=False)
+			#if not checkavailable(post):
+                        #       val =1 
+                        #        print Error
+                        #else:
+                        #       print  passed
+                        #       c = cost(post)
+                        #       post.amount_paid = c
+                        #       print c
 			if not request.user.is_superuser:
                                 post.uploader = request.user
 			uploaded = True
@@ -89,6 +97,7 @@ def upload(request):
 			#if not check_availability(post) :
 			#	print "THe demanded resources are not avaialable"
 			#else :
+			post.amount_paid = cost(post)
 			post.save()
 		else:
 			print form.errors
