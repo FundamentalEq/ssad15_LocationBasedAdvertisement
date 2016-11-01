@@ -52,16 +52,16 @@ class UploadAdvetisement(models.Model):
         upload_Advertisement=models.FileField(upload_to='uploads/')
 	time_of_advertisement=models.IntegerField(default=30)
 	no_of_slots = models.IntegerField(default=1,)
-	select_bundles = (
-	(1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
-        (6, '6'),
-	)
+	# select_bundles = (
+	# (1, '1'),
+    #     (2, '2'),
+    #     (3, '3'),
+    #     (4, '4'),
+    #     (5, '5'),
+    #     (6, '6'),
+	# )
 	no_of_repeats= models.IntegerField(default=1,)
-	select_bundles = models.IntegerField(choices=select_bundles,
+	select_bundles = models.IntegerField(
         default=1,)
 	no_of_weeks=(
 	(1, '1'),

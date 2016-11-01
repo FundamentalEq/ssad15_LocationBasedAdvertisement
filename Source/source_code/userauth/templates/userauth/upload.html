@@ -17,8 +17,16 @@
         <div class="row">
 
 <div class="col-md-7">
-        <input type="text" id="address" name="FirstName" value="Enter the address" class=form-control>
+  <div class="row">
+
+      <div class="col-md-10">
+          <input type="text" id="address" name="FirstName" value="Enter the address" class=form-control>
+        </div>
+        <div class="col-md-2">
+
          <button type="button" id="find_address" class="btn btn-default">Find</button> <br>
+       </div>
+       </div>
 
 
 
@@ -57,7 +65,7 @@
                 <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement:</label>
                         {{ form.time_of_advertisement }}
                       </div>
-                      </div>
+                    </div><br />
                       <div class="row">
                       <div class="col-md-4">
 
@@ -72,7 +80,7 @@
                         <label for="{{ form.no_of_slots.id_for_label }}">Slots</label>
                         {{ form.no_of_slots}}
                       </div>
-                      </div>
+                    </div></br>
                       <div class="row">
                         <div class="col-md-8">
                           <label for="{{ form.start_week.id_for_label }}">start_week</label>

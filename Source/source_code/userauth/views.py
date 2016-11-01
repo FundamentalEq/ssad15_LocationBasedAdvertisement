@@ -12,7 +12,6 @@ from ssad15.views import check_availability
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from userauth.models import UserProfile,UploadAdvetisement
-from dal import autocomplete
 import math
 def register(request):
 
@@ -83,7 +82,7 @@ def upload(request):
 		if form.is_valid():
 			post = form.save(commit=False)
 			#if not checkavailable(post):
-                        #       val =1 
+                        #       val =1
                         #        print Error
                         #else:
                         #       print  passed
@@ -175,9 +174,9 @@ def user_history(request):
 # 		return qs
             # return auth.User.objects.none()
 def edit_cost(request):
-	# pass
-	uploaded = False
-        if request.method == "POST":
-                # form = UploadForm(request.POST, request.FILES)
-                # if form.is_valid()  :
-        return render(request,'userauth/edit_cost.html')#, {'form': form , 'uploaded':uploaded ,'msg':msg})
+	pass
+	# uploaded = False
+    #     if request.method == "POST":
+    #             # form = UploadForm(request.POST, request.FILES)
+    #             # if form.is_valid()  :
+    #     return render(request,'userauth/edit_cost.html')#, {'form': form , 'uploaded':uploaded ,'msg':msg})
