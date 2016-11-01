@@ -14,7 +14,34 @@
                 enctype="multipart/form-data">
 
             {% csrf_token %}
-
+		              {% if user_form.errors %}
+    {% for field in user_form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in user_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+                {% if profile_form.errors %}
+    {% for field in profile_form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in profile_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}                 
                 <label for="{{ user_form.username.id_for_label }}">Username:</label>
                         {{ user_form.username }}
                 <label for="{{ user_form.password.id_for_label }}">Password:</label>
@@ -29,12 +56,12 @@
                         {{ profile_form.first_name }}
                 <label for="{{ profile_form.last_name.id_for_label }}">Last Name:</label>
                         {{ profile_form.last_name }}
-                 <label for="{{ user_form.ad_type.id_for_label }}">Buiseness Name:</label>
-                        {{ user_form.ad_type }}
-                <label for="{{ user_form.city.id_for_label }}">City:</label>
-                        {{ user_form.city }}
-                <label for="{{ user_form.pincode.id_for_label }}">Pincode:</label>
-                        {{ user_form.pincode }}
+                 <label for="{{ profile_form.ad_type.id_for_label }}">Buiseness Name:</label>
+                        {{ profile_form.ad_type }}
+                <label for="{{ profile_form.city.id_for_label }}">City:</label>
+                        {{ profile_form.city }}
+                <label for="{{ profile_form.pincode.id_for_label }}">Pincode:</label>
+                        {{ profile_form.pincode }}
                 <input type="submit" name="submit" value="Register" />
         </form>
         {% endif %}

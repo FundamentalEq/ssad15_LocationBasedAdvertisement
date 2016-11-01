@@ -76,7 +76,7 @@ def user_logout(request):
 
 def upload(request):
 	uploaded = False
-	msg = "sendig nothing "
+	msg = "sendig nothing"
 	if request.method == "POST":
 		form = UploadForm(request.POST, request.FILES)
 		if form.is_valid():
@@ -84,11 +84,13 @@ def upload(request):
 			if not request.user.is_superuser:
                                 post.uploader = request.user
 			uploaded = True
-			post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30)
-			if not check_availability(post) :
-				print "THe demanded resources are not avaialable"
-			else :
-				post.save()
+			post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+			#if not check_availability(post) :
+			#	print "THe demanded resources are not avaialable"
+			#else :
+			post.save()
+		else:
+			print form.errors	
 	else :
 		form = UploadForm()
 	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded ,'msg':msg})
