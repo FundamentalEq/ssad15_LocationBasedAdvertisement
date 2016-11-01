@@ -110,36 +110,40 @@ def device_login(request):
         else:
                 return render(request,'userauth/logdiv.html', {})
 def user_edit(request,pk):
-
         if UserProfile.objects.filter(user = request.user).count()==1:
-                Edit = 0
-                user = get_object_or_404(User, pk=pk)
+                print 11
+		Edit = 0
+                user = request.user
                 userprofile = get_object_or_404(UserProfile , user=user)
                 if request.method == "POST":
+			print 22
                         user_form = UserForm(data=request.POST , instance=user)
                         profile_form = UserProfileForm(data=request.POST , instance = userprofile)
                         if user_form.is_valid() and profile_form.is_valid():
                                 Edit = 1
-                                user_form.save()
-                                profile_form.save()
-                                return HttpResponseRedirect('/userauth/')
-                        else:
-                                print user_form.errors , profile_form.errors
+				user = user_form.save()
+                        	user.set_password(user.password)
+                        	user.save()
+                        	profile = profile_form.save(commit=False)
+                        	profile.user = user
+                        	profile.save()
+                                login(request, user)
                 else:
                         user_form = UserForm(instance=user)
                         profile_form = UserProfileForm(instance=userprofile)
+		print 33
                 return render(request, 'userauth/register_edit.html', {'user_form': user_form, 'profile_form': profile_form, 'Edit':Edit})
         else:
                 Edit = 2
-                user = get_object_or_404(User, pk=pk)
+                user = request.user
                 if request.method == "POST":
                         user_form = UserForm(data=request.POST , instance=user)
                         if user_form.is_valid():
                                 Edit = 3
-                                user_form.save()
-                                return HttpResponseRedirect('/userauth/')
-                        else:
-                                print user_form.errors
+                                user = user_form.save()
+                        	user.set_password(user.password)
+				user.save()
+				login(request, user)
                 else:
                         user_form = UserForm(instance=user)
                 return render(request, 'userauth/register_edit.html', {'user_form': user_form, 'Edit':Edit})

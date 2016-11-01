@@ -6,7 +6,7 @@
         {% if Edit == 1 or Edit == 3 %}
          <strong>Your Profile is Edited!</strong>
         {% else %}
-        <form id="user_form" method="post" action="/userauth/register_edit/"
+        <form id="user_form" method="post" 
                 enctype="multipart/form-data">
  <div class="container">
     <div class="row">
@@ -79,17 +79,17 @@
 <div type="text" name="icode" placeholder="">      
                   {{ profile_form.last_name }}
 </div>
-                 <label for="{{ user_form.ad_type.id_for_label }}">Buiseness Name:</label>
-<div type="text" name="icode" placeholder="">      
-                  {{ user_form.ad_type }}
+                 <label for="{{ profile_form.ad_type.id_for_label }}">Buiseness Name:</label>
+<div  type="text" name="icode" placeholder="">
+{{ profile_form.ad_type }}
 </div>
-                <label for="{{ user_form.city.id_for_label }}">City:</label>
-<div type="text" name="icode" placeholder="">      
-                  {{ user_form.city }}
+                <label for="{{ profile_form.city.id_for_label }}">City:</label>
+<div  type="text" name="icode" placeholder="">
+   {{ profile_form.city }}
 </div>
-                <label for="{{ user_form.pincode.id_for_label }}">Pincode:</label>
-<div type="text" name="icode" placeholder="">      
-                  {{ user_form.pincode }}
+                <label for="{{ profile_form.pincode.id_for_label }}">Pincode:</label>
+<div  type="text" name="icode" placeholder="">
+                  {{ profile_form.pincode }}
 </div>
 		 {% endif %}
                 <div>
