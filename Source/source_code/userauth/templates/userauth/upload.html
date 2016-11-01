@@ -2,17 +2,11 @@
 {% load static %}
       {% block content %}
         {% if user.is_authenticated %}
-        <h1>Upload Advertisement</h1>
-        <br>
-        {% if uploaded and time_error %}
+        {% if uploaded %}
         <strong>thank you for uploading!</strong>
 	<a href="/userauth/upload">Select for Adding More Advertisements.</a><br />
-        <!--<a href="/userauth/upload">Return to the homepage.</a><br />-->
         {% else %}
-{% if uploaded and not time_error %}
-        <p> Your Time Of Ad should be less</p>
-        {% endif %}
-        userauth says: <strong>upload here!</strong><br />
+         <h1>Upload Advertisement</h1>
         <!-- code added by me -->
         <link rel="stylesheet" href="http://openlayers.org/en/v3.18.2/css/ol.css" type="text/css"></link>
         <script src="http://openlayers.org/en/v3.18.2/build/ol.js"></script>
@@ -33,16 +27,31 @@
                 enctype="multipart/form-data">
 
             {% csrf_token %}
+  {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
 
-
-            <!--{{ form.as_p }}-->
-
-		<label for="{{ form.upload_Advertisement.id_for_label }}">Upload Advertisement:</label>
+                {% if user.is_superuser %}
+                <label for="{{ form.uploader.id_for_label }}">Uploader:</label>
+                       {{ form.uploader}}
+                 {% endif %}
+                <label for="{{ form.upload_Advertisement.id_for_label }}">Upload Advertisement:</label>
                     	{{ form.upload_Advertisement }}
                 <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement:</label>
                         {{ form.time_of_advertisement }}
-                <label for="{{ form.no_of_slots.id_for_label }}">No of Slots:</label>
-                        {{ form.no_of_slots}}
+                <label for="{{ form.no_of_repeats.id_for_label }}">No of Repeats:</label>
+                        {{ form.no_of_repeats}}
                 <label for="{{ form.select_bundles.id_for_label }}">Select Bundles:</label>
                         {{ form.select_bundles}}
                 <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
@@ -54,11 +63,14 @@
                                                 {{ form.bussinessPoint_longitude}}
                 <label for="{{ form.start_week.id_for_label }}">start_week</label>
                                                                                 {{ form.start_week}}
+		 <label for="{{ form.no_of_slots.id_for_label }}">Slots</label>
+                                                                                {{ form.no_of_slots}}
+
 
             <input type="submit" name="submit" />
         </form>
 
-		 <button type="button">Total Cost</button>
+         <button type="button">Total Cost</button>
          <button type="button">Check Availablity</button>
          {% endif %}
          {% else  %}

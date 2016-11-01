@@ -5,23 +5,31 @@
 {% else %}
 <table style="width:100%">
     <tr>
-    <th>Uploader
+    {% if user.is_superuser %}
+    <th>Uploader</th>
+    {% endif  %}
     <th>File Name</th>
     <th>Time of Advertisment</th>
     <th> no_of_slots</th>
-    <th>select_bundles </th>
-    <th>no_of_weeks </th>
-    <th>date</th>
+    <th>Bundles Purchase</th>
+    <th>no_of_weeks</th>
+    <th>Date of Purchase</th>
+    <th>start Week</th>
+    <th>Repetitions</th>
     </tr>
 {% for ad in advertisment %}
 <tr>
+{% if user.is_superuser %}
 <td>{{ad.uploader}}</td>
+{% endif  %}
 <td>{{ad.upload_Advertisement}}</td>
 <td>{{ad.time_of_advertisement}}</td>
 <td>{{ad.no_of_slots}}</td>
 <td>{{ad.select_bundles}}</td>
 <td>{{ad.no_of_weeks}}</td>
 <td>{{ad.date}}</td>
+<td>{{ad.start_week}}</td>
+<td>{{ad.no_of_repeats}}</td>
 </tr>
 {% endfor %}
 </table> 
