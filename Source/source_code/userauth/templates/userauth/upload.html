@@ -6,7 +6,7 @@
         <strong>thank you for uploading!</strong>
 	<a href="/userauth/upload">Select for Adding More Advertisements.</a><br />
         {% else %}
-         <h1>Upload Advertisement</h1>
+         <h1 class="page-header">Upload Advertisement</h1>
         <!-- code added by me -->
         <link rel="stylesheet" href="http://openlayers.org/en/v3.18.2/css/ol.css" type="text/css"></link>
         <script src="http://openlayers.org/en/v3.18.2/build/ol.js"></script>
@@ -20,7 +20,7 @@
   <div class="row">
 
       <div class="col-md-10">
-          <input type="text" id="address" name="FirstName" value="Enter the address" class=form-control>
+          <input type="text" id="address" name="FirstName" placeholder="Enter the address" class=form-control>
         </div>
         <div class="col-md-2">
 
@@ -29,7 +29,7 @@
        </div>
 
 
-
+<br/>
 
         <form  method="post" action="/userauth/upload/"
                 enctype="multipart/form-data">
@@ -51,29 +51,29 @@
 {% endif %}
 
                 {% if user.is_superuser %}
-                <label for="{{ form.uploader.id_for_label }}">Uploader:</label>
+                <label for="{{ form.uploader.id_for_label }}">Uploader</label>
                        {{ form.uploader}} <br />
                  {% endif %}
                  <div class="row">
                  <div class="col-md-6">
 
-                <label for="{{ form.upload_Advertisement.id_for_label }}">Upload Advertisement:</label>
+                <label for="{{ form.upload_Advertisement.id_for_label }}">Upload Advertisement</label>
                     	{{ form.upload_Advertisement }}
                     </div>
                     <div class="col-md-6">
 
-                <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement:</label>
+                <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement</label>
                         {{ form.time_of_advertisement }}
                       </div>
                     </div><br />
                       <div class="row">
                       <div class="col-md-4">
 
-                <label for="{{ form.no_of_repeats.id_for_label }}">No of Repeats:</label>
+                <label for="{{ form.no_of_repeats.id_for_label }}">Number of Repeats</label>
                         {{ form.no_of_repeats}}
                       </div>
                       <div class="col-md-4">
-                <label for="{{ form.select_bundles.id_for_label }}">Select Bundles:</label>
+                <label for="{{ form.select_bundles.id_for_label }}">Select Bundles</label>
                         {{ form.select_bundles}}
                       </div>
                       <div class="col-md-4">
@@ -83,7 +83,7 @@
                     </div></br>
                       <div class="row">
                         <div class="col-md-8">
-                          <label for="{{ form.start_week.id_for_label }}">start_week</label>
+                          <label for="{{ form.start_week.id_for_label }}">Start Week</label>
                             {{ form.start_week}}
 
                       </div>
@@ -96,7 +96,8 @@
                                                                     </div>
 
 <br /><br />
-
+{{ form.bussinessPoint_longitude }}
+{{ form.bussinessPoint_latitude }}
             <input type="submit" name="submit" class="btn btn-primary" />
         </form>
 
