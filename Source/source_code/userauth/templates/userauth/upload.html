@@ -16,7 +16,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <div class="row">
 
-<div class="col-md-8">
+<div class="col-md-7">
         <input type="text" id="address" name="FirstName" value="Enter the address" class=form-control>
          <button type="button" id="find_address" class="btn btn-default">Find</button> <br>
 
@@ -44,27 +44,52 @@
 
                 {% if user.is_superuser %}
                 <label for="{{ form.uploader.id_for_label }}">Uploader:</label>
-                       {{ form.uploader}}
+                       {{ form.uploader}} <br />
                  {% endif %}
+                 <div class="row">
+                 <div class="col-md-6">
+
                 <label for="{{ form.upload_Advertisement.id_for_label }}">Upload Advertisement:</label>
                     	{{ form.upload_Advertisement }}
+                    </div>
+                    <div class="col-md-6">
+
                 <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement:</label>
                         {{ form.time_of_advertisement }}
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col-md-4">
+
                 <label for="{{ form.no_of_repeats.id_for_label }}">No of Repeats:</label>
                         {{ form.no_of_repeats}}
+                      </div>
+                      <div class="col-md-4">
                 <label for="{{ form.select_bundles.id_for_label }}">Select Bundles:</label>
                         {{ form.select_bundles}}
-                <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
-                        {{ form.no_of_weeks}}
+                      </div>
+                      <div class="col-md-4">
+                        <label for="{{ form.no_of_slots.id_for_label }}">Slots</label>
+                        {{ form.no_of_slots}}
+                      </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <label for="{{ form.start_week.id_for_label }}">start_week</label>
+                            {{ form.start_week}}
 
-                
-                <label for="{{ form.start_week.id_for_label }}">start_week</label>
-                                                                                {{ form.start_week}}
-		 <label for="{{ form.no_of_slots.id_for_label }}">Slots</label>
-                                                                                {{ form.no_of_slots}}
+                      </div>
+<div class="col-md-4">
 
+  <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
+          {{ form.no_of_weeks}}
 
-            <input type="submit" name="submit" />
+                                                                      </div>
+                                                                    </div>
+
+<br /><br />
+
+            <input type="submit" name="submit" class="btn btn-primary" />
         </form>
 
 
@@ -77,8 +102,8 @@
 <div class="col-md-4">
     <div id="map" class="map" tabindex="0" style="height:500px;width:500px"></div>
 
-    <button id="zoom-out">Zoom out</button>
-    <button id="zoom-in">Zoom in</button>
+    <button id="zoom-out" class="btn btn-default">Zoom out</button>
+    <button id="zoom-in" class="btn btn-default">Zoom in</button>
 </div>
      </div>
      <!--script to automatically detect no of slots -->

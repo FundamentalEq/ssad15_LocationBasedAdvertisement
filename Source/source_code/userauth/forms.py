@@ -24,7 +24,6 @@ class UserProfileForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
 	    'address': forms.Textarea(attrs={'class': 'form-control'}),
    	    'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-	    #'ad_type': forms.DropdownInput(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'pincode': forms.NumberInput(attrs={'class': 'form-control'}),
 	    }
@@ -35,6 +34,9 @@ class UploadForm(forms.ModelForm):
 		fields = ('upload_Advertisement','time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','start_week','uploader','no_of_repeats',)
 		widgets = {'start_week':extras.SelectDateWidget(),
+		'start_week': forms.DateInput(attrs={'class':'form-control'}),
+		'uploader': forms.Select(attrs={'class': 'form-control'}),
+		#'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
 		'time_of_advertisement': forms.NumberInput(attrs={'class': 'form-control'}),
 		'no_of_weeks': forms.NumberInput(attrs={'class': 'form-control'}),
 		'no_of_slots': forms.NumberInput(attrs={'class': 'form-control'}),
