@@ -33,9 +33,13 @@ class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement
 		fields = ('upload_Advertisement','time_of_advertisement'
-		   		,'no_of_slots','select_bundles','no_of_weeks','bussinessPoint_longitude'
-				,'bussinessPoint_latitude','start_week','uploader','no_of_repeats',)
-		widgets = {'start_week':extras.SelectDateWidget()}
+		   		,'no_of_slots','select_bundles','no_of_weeks','start_week','uploader','no_of_repeats',)
+		widgets = {'start_week':extras.SelectDateWidget(),
+		'time_of_advertisement': forms.NumberInput(attrs={'class': 'form-control'}),
+		'no_of_weeks': forms.NumberInput(attrs={'class': 'form-control'}),
+		'no_of_slots': forms.NumberInput(attrs={'class': 'form-control'}),
+		'no_of_repeats': forms.NumberInput(attrs={'class': 'form-control'}),
+		}
 class  Login_Adver(forms.ModelForm):
     class Meta:
 		model = Add_Device

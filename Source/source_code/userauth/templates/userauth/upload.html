@@ -17,10 +17,10 @@
         <div class="row">
 
 <div class="col-md-8">
-        <input type="text" id="address" name="FirstName" value="Enter the address">
-         <button type="button" id="find_address">Find</button> <br>
+        <input type="text" id="address" name="FirstName" value="Enter the address" class=form-control>
+         <button type="button" id="find_address" class="btn btn-default">Find</button> <br>
 
-        <a class="skiplink" href="#map">Go to map</a>
+
 
 
         <form  method="post" action="/userauth/upload/"
@@ -57,10 +57,7 @@
                 <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
                         {{ form.no_of_weeks}}
 
-                <label for="{{ form.bussinessPoint_latitude.id_for_label }}">latitde:</label>
-                                {{ form.bussinessPoint_latitude}}
-                <label for="{{ form.bussinessPoint_longitude.id_for_label }}">longitutde:</label>
-                                                {{ form.bussinessPoint_longitude}}
+                
                 <label for="{{ form.start_week.id_for_label }}">start_week</label>
                                                                                 {{ form.start_week}}
 		 <label for="{{ form.no_of_slots.id_for_label }}">Slots</label>
@@ -70,8 +67,7 @@
             <input type="submit" name="submit" />
         </form>
 
-         <button type="button">Total Cost</button>
-         <button type="button">Check Availablity</button>
+
          {% endif %}
          {% else  %}
           <p>Your don't have access to this page. To proceed,
