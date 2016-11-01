@@ -14,6 +14,8 @@
     <th>Bundles Purchase</th>
     <th>no_of_weeks</th>
     <th>Date of Purchase</th>
+    <th>start Week</th>
+    <th>Repetitions</th>
     </tr>
 {% for ad in advertisment %}
 <tr>
@@ -26,6 +28,8 @@
 <td>{{ad.select_bundles}}</td>
 <td>{{ad.no_of_weeks}}</td>
 <td>{{ad.date}}</td>
+<td>{{ad.start_week}}</td>
+<td>{{ad.no_of_repeats}}</td>
 </tr>
 {% endfor %}
 </table> 

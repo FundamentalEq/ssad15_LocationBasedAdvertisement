@@ -6,37 +6,109 @@
         {% if Edit == 1 or Edit == 3 %}
          <strong>Your Profile is Edited!</strong>
         {% else %}
-         <strong>Edit Your  Profile!</strong><br />
         <form id="user_form" method="post" action="/userauth/register_edit/"
                 enctype="multipart/form-data">
-
+ <div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Edit Your Profile</div>
+                <div class="panel-body">
             {% csrf_token %}
+{% if Edit == 0 or Edit == 2 %}
+                {% if user_form.errors %}
+    {% for field in user_form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in user_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endif %}
+{% if Edit == 0 %}
+{% if profile_form.errors %}
+    {% for field in profile_form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in profile_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endif %} 
+                  <br>   
                 {% if Edit == 0 or Edit == 2 %}
 		<label for="{{ user_form.username.id_for_label }}">User Name:</label>
+                       <div type="text" name="icode" placeholder="">
                         {{ user_form.username }}
+                        </div>
                 <label for="{{ user_form.email.id_for_label }}">Email-Id:</label>
+                           <div type="text" name="icode" placeholder="">
                         {{ user_form.email }}
+                        </div>
                 <label for="{{ user_form.password.id_for_label }}">Password:</label>
+                          <div type="text" name="icode" placeholder="">
                         {{ user_form.password }}
+</div>
 		{% endif %}
 		{% if Edit == 0 %}
                 <label for="{{ profile_form.subject.id_for_label }}">Phone Number:</label>
-                        {{ profile_form.phone_number }}
+<div type="text" name="icode" placeholder="">                 
+       {{ profile_form.phone_number }}
+</div>
                 <label for="{{ profile_form.address.id_for_label }}">Address:</label>
-                        {{ profile_form.address }}
+<div type="text" name="icode" placeholder="">                   
+     {{ profile_form.address }}
+</div>
                 <label for="{{ profile_form.first_name.id_for_label }}">First Name:</label>
-                        {{ profile_form.first_name }}
+<div type="text" name="icode" placeholder="">      
+                  {{ profile_form.first_name }}
+</div>
                 <label for="{{ profile_form.last_name.id_for_label }}">Last Name:</label>
-                        {{ profile_form.last_name }}
+<div type="text" name="icode" placeholder="">      
+                  {{ profile_form.last_name }}
+</div>
                  <label for="{{ user_form.ad_type.id_for_label }}">Buiseness Name:</label>
-                        {{ user_form.ad_type }}
+<div type="text" name="icode" placeholder="">      
+                  {{ user_form.ad_type }}
+</div>
                 <label for="{{ user_form.city.id_for_label }}">City:</label>
-                        {{ user_form.city }}
+<div type="text" name="icode" placeholder="">      
+                  {{ user_form.city }}
+</div>
                 <label for="{{ user_form.pincode.id_for_label }}">Pincode:</label>
-                        {{ user_form.pincode }}
+<div type="text" name="icode" placeholder="">      
+                  {{ user_form.pincode }}
+</div>
 		 {% endif %}
-                <input type="submit" name="submit" value="Register" />
+                <div>
+		<center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Register" /></center>
+
+		</div>
+            </div>
+        </div>
+    </div>
+</div>
+
         </form>
         {% endif %}
         {% endif %}
 {% endblock %}
+
+
+
+
+
+
+

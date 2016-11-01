@@ -10,11 +10,24 @@ class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput())
    	class Meta:
         	model = User
+		widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control','placeholder': 'First-Name'}),
+	    'email': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Email-Id'}),
+	    }
         	fields = ('username','password','email')
 
 class UserProfileForm(forms.ModelForm):
     	class Meta:
         	model = UserProfile
+		widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control','placeholder': 'First-Name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+	    'address': forms.Textarea(attrs={'class': 'form-control'}),
+   	    'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+	    #'ad_type': forms.DropdownInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'pincode': forms.NumberInput(attrs={'class': 'form-control'}),
+	    }
         	fields = ('phone_number','address','first_name' , 'last_name', 'ad_type','city','pincode',)
 class UploadForm(forms.ModelForm):
 	class Meta:
