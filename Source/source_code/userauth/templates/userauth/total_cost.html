@@ -1,0 +1,11 @@
+{% extends 'userauth/base.html' %}
+{% load static %}
+      {% block content %}
+        {% if user.is_authenticated %}
+        <div class="panel panel-primary">
+      <div class="panel-heading">Total Amount To Be Paid</div>
+      <div class="panel-body">Rs.(including taxes) {{cost}} </div>
+      <button class="btn btn-primary"><a href="">Cancel</a></button> <button class="btn btn-primary"><a href="">Confirm</a></button>
+    </div>
+{% endif %}
+{% endblock %}
