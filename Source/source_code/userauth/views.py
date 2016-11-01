@@ -12,6 +12,7 @@ from ssad15.views import check_availability
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from userauth.models import UserProfile,UploadAdvetisement
+from dal import autocomplete
 import math
 def register(request):
 
@@ -90,7 +91,7 @@ def upload(request):
 			#else :
 			post.save()
 		else:
-			print form.errors	
+			print form.errors
 	else :
 		form = UploadForm()
 	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded ,'msg':msg})
@@ -153,27 +154,21 @@ def user_history(request):
 	else:
         	advertisment = UploadAdvetisement.objects.filter(uploader = request.user).order_by('-date')
         return render(request, 'userauth/user_history.html', {'advertisment':advertisment})
-'''
-def edit_cost(reruest):
+
+# auto complete feature that help selects the username
+# class autocompleteUser(autocomplete.Select2QuerySetView) :
+# 	def get_queryset(self):
+# 		if not self.request.user.is_superuser:
+# 			return User.objects.none()
+# 		qs = User.objects.all()
+# 		if self.q :
+# 			qs = qs.filter(email__istartswith=self.q)
+# 		return qs
+            # return auth.User.objects.none()
+def edit_cost(request):
+	# pass
 	uploaded = False
         if request.method == "POST":
-                form = UploadForm(request.POST, request.FILES)
-                if form.is_valid():
-			a = post.bussinessPoint_longitude
-                        b = post.bussinessPoint_latitude
-                        
-                        post = form.save(commit=False)
-                        if not request.user.is_superuser:
-                                post.uploader = request.user
-                        uploaded = True
-                        post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-                        #if not check_availability(post) :
-                        #       print "THe demanded resources are not avaialable"
-                        #else :
-                        post.save()
-                else:
-                        print form.errors
-        else :
-                form = UploadForm()
-        return render(request,'userauth/edit_cost.html', {'form': form , 'uploaded':uploaded ,'msg':msg})
-'''	
+                # form = UploadForm(request.POST, request.FILES)
+                # if form.is_valid()  :
+        return render(request,'userauth/edit_cost.html')#, {'form': form , 'uploaded':uploaded ,'msg':msg})
