@@ -13,6 +13,10 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from userauth.models import UserProfile,UploadAdvetisement
 import math
+from global_values import *
+from ssad15.views import *
+from ssad15.views import check_availability as checkavailable
+from ssad15.views import total_cost as cost
 def register(request):
 
 	registered = False
@@ -76,33 +80,33 @@ def user_logout(request):
 
 def upload(request):
 	uploaded = False
-	msg = "sendig nothing"
+	msg = "sending nothing"
+	val = 0
 	if request.method == "POST":
 		form = UploadForm(request.POST, request.FILES)
 		if form.is_valid():
+			global post
 			post = form.save(commit=False)
-			#if not checkavailable(post):
-                        #       val =1
-                        #        print Error
-                        #else:
-                        #       print  passed
-                        #       c = cost(post)
-                        #       post.amount_paid = c
-                        #       print c
-			if not request.user.is_superuser:
-                                post.uploader = request.user
-			uploaded = True
-			post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-			#if not check_availability(post) :
-			#	print "THe demanded resources are not avaialable"
-			#else :
-			post.amount_paid = cost(post)
-			post.save()
+			if not checkavailable(post):
+                        	val = 1
+                                print Error
+                        else:
+			       val = 2 
+                               c = cost(post)
+                               post.amount_paid = c
+                               print c
+			       return render(request,'userauth/total_cost.html',{'post':post, 'c':c,})
+			#if not request.user.is_superuser:
+                        #       post.uploader = request.user
+			#uploaded = True
+			#post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+			#post.amount_paid = cost(post)
+			#post.save()
 		else:
 			print form.errors
 	else :
 		form = UploadForm()
-	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded ,'msg':msg})
+	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded ,'msg':msg ,  'val':val,})
 
 def home(request):
 	return render(request,'userauth/index.html')
@@ -180,3 +184,14 @@ def edit_cost(request):
     #             # form = UploadForm(request.POST, request.FILES)
     #             # if form.is_valid()  :
     #     return render(request,'userauth/edit_cost.html')#, {'form': form , 'uploaded':uploaded ,'msg':msg})
+
+def total_cost(request):
+	if not request.user.is_superuser:
+        	post.uploader = request.user
+        uploaded = True
+        post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+        post.amount_paid = cost(post)
+        post.save()
+	return render(request,'userauth/base.html', {})
+def not_confirm_cost(request):
+	return render(request,'userauth/base.html', {})
