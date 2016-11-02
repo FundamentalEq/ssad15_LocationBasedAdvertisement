@@ -1,0 +1,9 @@
+{% extends 'ssad15/base.html' %}
+{% load static %}
+  {% block content %}
+    <form action="/ssad15/edit_zone/{{zone_no}}/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+      {% endblock %}
