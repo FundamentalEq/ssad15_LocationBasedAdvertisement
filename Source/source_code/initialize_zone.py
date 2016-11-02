@@ -1,4 +1,4 @@
-from ssad15.models import zone #the databse where the entries will be stored
+from ssad15.models import zone,zone_info,running_slots #the databse where the entries will be stored
 from global_values import *
 
 # assming that for both longitutde and latitude  1 degree = 111 Km
