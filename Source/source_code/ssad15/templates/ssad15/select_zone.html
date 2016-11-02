@@ -2,35 +2,30 @@
 {% load static %}
       {% block content %}
         {% if  user.is_superuser %}
-        {% if edit %}
-        <strong>thank you for editing!</strong>
-        <a href="/userauth/upload">Select for Adding More Advertisements.</a><br />
-        {% else %}
          <h1>Upload Advertisement</h1>
         <!-- code added by me -->
         <link rel="stylesheet" href="http://openlayers.org/en/v3.18.2/css/ol.css" type="text/css"></link>
         <script src="http://openlayers.org/en/v3.18.2/build/ol.js"></script>
         <link rel="stylesheet" type="text/css" href="{%static 'userauth/css/upload_advertisement/getUserLocation.css' %}"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <div class="row">
-<div class="col-md-8">
-        <input type="text" id="address" name="FirstName" value="Enter the address">
-         <button type="button" id="find_address">Find</button> <br>
+            <div class="col-md-8">
+                <input type="text" id="address" name="FirstName" value="Enter the address">
+                <button type="button" id="find_address">Find</button> <br>
+                <a class="skiplink" href="#map">Go to map</a>
 
-        <a class="skiplink" href="#map">Go to map</a>
-        <form  method="post" 
-                enctype="multipart/form-data">
-
+                <form  method="post" enctype="multipart/form-data">
             {% csrf_token %}
-                <label for="{{ form.bussinessPoint_latitude.id_for_label }}">latitde:</label>
+                 <input type="hidden" id="id_bussinessPoint_latitude" name="latitude" value="-1">
+                 <input type="hidden" id="id_bussinessPoint_longitude" name="longitude" value="-1">
+                <!-- <label for="{{ form.bussinessPoint_latitude.id_for_label }}">latitde:</label>
                                             {{ form.bussinessPoint_latitude}}
                 <label for="{{ form.bussinessPoint_longitude.id_for_label }}">longitutde:</label>
-                                            {{ form.bussinessPoint_longitude}}
+                                            {{ form.bussinessPoint_longitude}} -->
                  <input type="submit" name="submit" />
-        </form>
-         {% endif %}
+             </form>
          {% else  %}
           <p>Your don't have access to this page. To proceed,
      please login with an account that has access.</p>
