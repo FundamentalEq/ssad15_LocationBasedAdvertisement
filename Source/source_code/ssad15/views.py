@@ -7,7 +7,7 @@ from django.shortcuts import get_list_or_404,get_object_or_404,redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 import datetime
-
+from forms import *
 def index(request):
     return HttpResponse("Location Based Advertising")
 
@@ -42,7 +42,7 @@ def getWeekNumber(cur_date) :
 
 def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no) :
     Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by(slot_no)
-    total_bundles = DEFULT_BUNDLES
+    total_bundles = DEFAULT_BUNDLES
     info = zone_info.objects.filter(zone_id = zone_no).order_by(~week)
     if len(info)!=0 :
         for inf in info :
@@ -327,15 +327,43 @@ def select_zone(request) :
             return HttpResponse("Error in getting location !")
         else :
             zone_no=getzone(longitude,latitude)
-    #         # request.zone_no=zone_no
             return redirect(edit_zone,zone_no=zone_no)
     else :
         pass
     return render(request,'ssad15/select_zone.html')
 
 def edit_zone(request,zone_no) :
-    pass
-    return render(request,'ssad15/edit_zone.html')
+    print "iside edit_zone = ", zone_no
+    zi = zone_info.objects.filter(zone_id=int(zone_no)).order_by('-week')
+    editing_done=False
+    if len(zi)!=0 :
+        zi = zi[0]
+    else :
+        zi = None
+    if request.method == 'POST' :
+        form =zone_info_form(request.POST)
+        if form.is_valid() :
+            form = form.cleaned_data
+            if zi :
+                zi.cost = form['cost']
+                zi.no_of_bundles = form['no_of_bundles']
+                zi.week = getWeekNumber(form['week'])
+            else :
+                zi = zone_info(zone_id=zone_no,cost = form['cost'],no_of_bundles=form['no_of_bundles'],week=getWeekNumber(form['week']))
+            zi.save()
+            editing_done = True
+            print "changes done by the admin are valid"
+        else :
+            pass
+    else :
+        form = zone_info_form()
+        if zi :
+            form.cost = zi.cost
+            form.no_of_bundles = zi.no_of_bundles
+        else :
+            form.cost = DEFAULT_COST
+            form.no_of_bundles = DEFAULT_BUNDLES
+    return render(request,'ssad15/edit_zone.html',{'form':form,'editing_done':editing_done,'zone_no':zone_no})
 
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
