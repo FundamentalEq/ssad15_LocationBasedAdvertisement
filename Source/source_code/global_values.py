@@ -22,4 +22,5 @@ zonesAlongY = math.ceil((top_extreme - bottom_extreme)/dely)
 BAREA= 25.0
 
 MAX_SLOTS = 120
-DEFULT_BUNDLES = 10
+DEFAULT_BUNDLES = 10
+DEFAULT_COST = 100
