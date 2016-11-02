@@ -42,10 +42,13 @@ def getWeekNumber(cur_date) :
 
 def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no) :
     Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by(slot_no)
-    total_bundles = 10
-    info = zone_info.objects.filter(zone_id = zone_no ,week = week_no)
-    if info :
-        total_bundles = info.no_of_bundles
+    total_bundles = DEFULT_BUNDLES
+    info = zone_info.objects.filter(zone_id = zone_no).order_by(~week)
+    if len(info)!=0 :
+        for inf in info :
+            if inf.week < week_no :
+                total_bundles = inf.no_of_bundles
+                break
     i=0
     while i < len(Slots) :
         slot = Slots[i]
@@ -308,14 +311,6 @@ def total_cost(request):
                 cost=zone.cost
                 total_cost=total_cost+required_bundles * cost * no_of_slots
     return int(total_cost)
-def edit_zone(request,zone_no) :
-    pass
-    # if request.method == 'POST' :
-    #
-    # else :
-    #     zi = zone_info.objects.filter(zone_id=int(zone_no))
-    #     form =zone_info_form(instance=zi)
-
 def select_zone(request) :
     error = 0
     if request.method == 'POST':
@@ -333,10 +328,14 @@ def select_zone(request) :
         else :
             zone_no=getzone(longitude,latitude)
     #         # request.zone_no=zone_no
-            return redirect('edit_zone',kwargs={'zone_no':zone_no})
+            return redirect(edit_zone,zone_no=zone_no)
     else :
         pass
     return render(request,'ssad15/select_zone.html')
+
+def edit_zone(request,zone_no) :
+    pass
+    return render(request,'ssad15/edit_zone.html')
 
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
