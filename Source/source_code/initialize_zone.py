@@ -16,7 +16,7 @@ while y < top_extreme :
         z = zone(bottom_left_coordinate_x=x,bottom_left_coordinate_y=y)
         z.save()
         zone_info(zone_id=z.id,week=0,cost=100,no_of_bundles=10).save()
-        running_slots(zone_id=z.id,slot_no=1,start_time=datetime.datetime.now()).save()
+        running_slots(zone_id=z.id,slot=1,start_time=datetime.datetime.now()).save()
         zone_no += 1
         x += delx
     y += dely
