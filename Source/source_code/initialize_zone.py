@@ -1,6 +1,6 @@
 from ssad15.models import zone,zone_info,running_slots #the databse where the entries will be stored
 from global_values import *
-
+import datetime
 # assming that for both longitutde and latitude  1 degree = 111 Km
 # thought the distance between 2 longitutde and latitude is not constant
 # but since The India lies near equator and our size of each zone = 1Km
