@@ -3,9 +3,18 @@
       {% block content %}
         {% if user.is_authenticated %}
         <div class="panel panel-primary">
-      <div class="panel-heading">Total Amount To Be Paid</div>
-      <div class="panel-body">Rs.(including taxes) {{cost}} </div>
-      <button class="btn btn-primary"><a href="">Cancel</a></button> <button class="btn btn-primary"><a href="">Confirm</a></button>
+        <div class="panel-heading">Total Amount To Be Paid</div>
+        <div class="panel-body">Rs.(including taxes) {{c}} </div>
+        <form id="user_form" method="post" action="/userauth/total_cost/"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Confirm" /></center>
+        </form>
+          <form id="user_form" method="post" action="/userauth/not_confirm_cost/"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+                <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Cancel" /></center>
+          </form>
     </div>
 {% endif %}
 {% endblock %}

@@ -18,5 +18,5 @@ urlpatterns = [
     url(r'^password_reset_complete/$', password_reset_complete, {'template_name': 'registration/password_reset_complete.html'},name='password_reset_complete'),
     url(r'^register_edit/(?P<pk>\d+)/edit/$', views.user_edit, name='register_edit'),
     url(r'^history/$', views.user_history, name='user_history'),
-
-   ]
+    url(r'^total_cost/$', views.total_cost, name='total_cost'), 
+]

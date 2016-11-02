@@ -35,6 +35,11 @@
                 enctype="multipart/form-data">
 
             {% csrf_token %}
+  {% if val == 1 %}
+           <div class="alert alert-danger">
+                <strong>These Fields are not Available.</strong>
+            </div>
+	{% endif %}
   {% if form.errors %}
     {% for field in form %}
         {% for error in field.errors %}
