@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from global_values import *
 from django.template import loader
 from .models import *
-from django.shortcuts import get_list_or_404,get_object_or_404
+from django.shortcuts import get_list_or_404,get_object_or_404,redirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 import datetime
 
 def index(request):
@@ -267,11 +269,11 @@ def display_advertisement(request):
     else :
         zone_no=getzone(longitude,latitude)
         print "zone no is ",zone_no
-        path=get_advertisement(zone_no)
+        path,time_len=get_advertisement(zone_no)
         # path = "media/" + path
         print "path fron db is",path
         # path = "chaitanya"
-        context={'path':path}
+        context={'path':path,'time_len':time_len}
         return HttpResponse(
             json.dumps(context),
             content_type="application/json"
@@ -306,6 +308,35 @@ def total_cost(request):
                 cost=zone.cost
                 total_cost=total_cost+required_bundles * cost * no_of_slots
     return int(total_cost)
+def edit_zone(request,zone_no) :
+    pass
+    # if request.method == 'POST' :
+    #
+    # else :
+    #     zi = zone_info.objects.filter(zone_id=int(zone_no))
+    #     form =zone_info_form(instance=zi)
+
+def select_zone(request) :
+    error = 0
+    if request.method == 'POST':
+        if 'longitude' in request.POST:
+            longitude = float(request.POST['longitude'])
+        else :
+            error=1
+        if 'latitude' in request.POST :
+            latitude= float(request.POST['latitude'])
+        else :
+            error=1
+        print float(longitude),float(latitude)
+        if error:
+            return HttpResponse("Error in getting location !")
+        else :
+            zone_no=getzone(longitude,latitude)
+    #         # request.zone_no=zone_no
+            return redirect('edit_zone',kwargs={'zone_no':zone_no})
+    else :
+        pass
+    return render(request,'ssad15/select_zone.html')
 
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
