@@ -97,7 +97,7 @@ def upload(request):
                         	val = 1
                         else:
 			       global c
-			       val = 2 
+			       val = 2
                                c = cost(post)
                                post.amount_paid = c
 			       if not request.user.is_superuser:
@@ -182,13 +182,7 @@ def user_history(request):
 # 			qs = qs.filter(email__istartswith=self.q)
 # 		return qs
             # return auth.User.objects.none()
-def edit_cost(request):
-	pass
-	# uploaded = False
-    #     if request.method == "POST":
-    #             # form = UploadForm(request.POST, request.FILES)
-    #             # if form.is_valid()  :
-    #     return render(request,'userauth/edit_cost.html')#, {'form': form , 'uploaded':uploaded ,'msg':msg})
+
 
 def total_cost(request):
 	if request.method == "POST":
@@ -208,3 +202,9 @@ def total_cost(request):
 	return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
 def not_confirm_cost(request):
 	return render(request,'userauth/base.html', {})
+
+def upload_advertisement(request):
+	if user.is_authenticated:
+		return redirect(upload,request=request)
+	else:
+		return redirect(user_login,request=request)
