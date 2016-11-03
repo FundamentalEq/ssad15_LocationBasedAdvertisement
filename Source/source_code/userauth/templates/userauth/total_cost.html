@@ -8,6 +8,12 @@
         <form id="user_form" method="post" action="/userauth/total_cost/"
                 enctype="multipart/form-data">
                 {% csrf_token %}
+		<div class="col-md-6">
+                        <label for="{{ p.upload_Advertisement.id_for_label }}">Upload Advertisement</label>
+                                    {{ p.upload_Advertisement }}
+                  </div>
+
+		
                 <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Confirm" /></center>
         </form>
           <form id="user_form" method="post" action="/userauth/not_confirm_cost/"
@@ -16,5 +22,8 @@
                 <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Cancel" /></center>
           </form>
     </div>
+{% else %}
+<p>Please Log-In</p>
 {% endif %}
+
 {% endblock %}

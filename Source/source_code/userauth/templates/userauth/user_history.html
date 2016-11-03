@@ -3,12 +3,12 @@
 {% if not user.is_authenticated %}
 <p>Please Logged-In</p>
 {% else %}
-<table style="width:100%">
-    <tr>
+<table style="width:100%" class="table">
+        <thead>
+    <tr >
     {% if user.is_superuser %}
     <th>Uploader</th>
     {% endif  %}
-    <th>File Name</th>
     <th>Time of Advertisment</th>
     <th> no_of_slots</th>
     <th>Bundles Purchase</th>
@@ -18,12 +18,13 @@
     <th>Repetitions</th>
     <th>Amount Paid</th>
     </tr>
+</thead>
 {% for ad in advertisment %}
+<tbody>
 <tr>
 {% if user.is_superuser %}
 <td>{{ad.uploader}}</td>
 {% endif  %}
-<td>{{ad.upload_Advertisement}}</td>
 <td>{{ad.time_of_advertisement}}</td>
 <td>{{ad.no_of_slots}}</td>
 <td>{{ad.select_bundles}}</td>
@@ -31,9 +32,35 @@
 <td>{{ad.date}}</td>
 <td>{{ad.start_week}}</td>
 <td>{{ad.no_of_repeats}}</td>
-<td>{{ad.post.amount_paid}}</td>
+<td>{{ad.amount_paid}}</td>
 </tr>
+<tbody>
 {% endfor %}
-</table> 
+</table>
+
+<center><p><b>File Names</mark></b></center>
+
+<table style="width:100%" class="table">
+<thead>
+<tr>
+{% if user.is_superuser %}
+    <th>Uploader</th>
+    {% endif  %}
+    <th>File Name</th>
+    <th>Time when Uploaded</th>
+</tr>
+</thead>
+{% for ad in ads %}
+<tbody>
+<tr>
+{% if user.is_superuser %}
+<td>{{ad.uploader}}</td>
+{% endif  %}
+<td>{{ad.upload_Advertisement}}</td>
+<td>{{ad.date}}</td>
+</tr>
+</tbody>
+{% endfor %}
+</table>
 {% endif %}
 {% endblock %}

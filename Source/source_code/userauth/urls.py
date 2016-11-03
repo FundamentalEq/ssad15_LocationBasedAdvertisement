@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^register_edit/(?P<pk>\d+)/edit/$', views.user_edit, name='register_edit'),
     url(r'^history/$', views.user_history, name='user_history'),
     url(r'^total_cost/$', views.total_cost, name='total_cost'), 
+    url(r'^not_confirm_cost/$', views.not_confirm_cost, name='not_confirm_cost'),
 ]

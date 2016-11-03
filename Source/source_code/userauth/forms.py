@@ -3,7 +3,7 @@ from django.forms import extras
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
 from userauth.models import UserProfile
-from userauth.models import UploadAdvetisement,Add_Device
+from userauth.models import UploadAdvetisement,Add_Device,UploadFile
 from django.contrib.admin.widgets import AdminDateWidget
 
 class UserForm(forms.ModelForm):
@@ -31,7 +31,7 @@ class UserProfileForm(forms.ModelForm):
 class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement
-		fields = ('upload_Advertisement','time_of_advertisement'
+		fields = ('time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','start_week','uploader','no_of_repeats','bussinessPoint_latitude','bussinessPoint_longitude',)
 		widgets = {'start_week':extras.SelectDateWidget(),
 		'start_week': forms.DateInput(attrs={'class':'form-control'}),
@@ -45,6 +45,13 @@ class UploadForm(forms.ModelForm):
 		'bussinessPoint_latitude' : forms.HiddenInput ,
 		'bussinessPoint_longitude' : forms.HiddenInput ,
 		}
+class UploadFileForm(forms.ModelForm):
+        class Meta:
+                model = UploadFile
+                fields = ('upload_Advertisement',)
+                widgets = {
+                 'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
+                }
 class  Login_Adver(forms.ModelForm):
     class Meta:
 		model = Add_Device

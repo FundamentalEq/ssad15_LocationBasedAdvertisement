@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.template import context
 from models import Add_Device
 from django.shortcuts import render_to_response
-from userauth.forms import UserForm, UserProfileForm, UploadForm
+from userauth.forms import UserForm, UserProfileForm, UploadForm, UploadFileForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
@@ -11,12 +11,17 @@ from django.contrib.auth.decorators import login_required
 from ssad15.views import check_availability
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
-from userauth.models import UserProfile,UploadAdvetisement
+from userauth.models import UserProfile, UploadAdvetisement, UploadFile
 import math
 from global_values import *
 from ssad15.views import *
 from ssad15.views import check_availability as checkavailable
 from ssad15.views import total_cost as cost
+import os
+import zipfile
+import StringIO
+import itertools
+from django.contrib.auth.models import UserManager
 def register(request):
 
 	registered = False
@@ -79,6 +84,7 @@ def user_logout(request):
 	#return render(request,'userauth/base.html', {})
 
 def upload(request):
+	global uploaded
 	uploaded = False
 	msg = "sending nothing"
 	val = 0
@@ -89,19 +95,16 @@ def upload(request):
 			post = form.save(commit=False)
 			if not checkavailable(post):
                         	val = 1
-                                print Error
                         else:
+			       global c
 			       val = 2 
                                c = cost(post)
                                post.amount_paid = c
-                               print c
-			       return render(request,'userauth/total_cost.html',{'post':post, 'c':c,})
-			#if not request.user.is_superuser:
-                        #       post.uploader = request.user
-			#uploaded = True
-			#post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-			#post.amount_paid = cost(post)
-			#post.save()
+			       if not request.user.is_superuser:
+                               	post.uploader = request.user
+			       post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+			       p = UploadFileForm()
+			       return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
 		else:
 			print form.errors
 	else :
@@ -163,9 +166,11 @@ def user_edit(request,pk):
 def user_history(request):
 	if  request.user.is_superuser:
         	advertisment = UploadAdvetisement.objects.all().order_by('-uploader')
+		ads = UploadFile.objects.all().order_by('-date')
 	else:
         	advertisment = UploadAdvetisement.objects.filter(uploader = request.user).order_by('-date')
-        return render(request, 'userauth/user_history.html', {'advertisment':advertisment})
+		ads = UploadFile.objects.filter(uploader = request.user).order_by('-date')
+        return render(request, 'userauth/user_history.html', {'advertisment':advertisment , 'ads':ads})
 
 # auto complete feature that help selects the username
 # class autocompleteUser(autocomplete.Select2QuerySetView) :
@@ -186,12 +191,20 @@ def edit_cost(request):
     #     return render(request,'userauth/edit_cost.html')#, {'form': form , 'uploaded':uploaded ,'msg':msg})
 
 def total_cost(request):
-	if not request.user.is_superuser:
-        	post.uploader = request.user
-        uploaded = True
-        post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-        post.amount_paid = cost(post)
-        post.save()
-	return render(request,'userauth/base.html', {})
+	if request.method == "POST":
+		p = UploadFileForm(request.POST, request.FILES)
+                if upload.is_valid():
+                        p = upload.save(commit=False)
+                        if  request.user.is_superuser:
+                                p.uploader = post.uploader
+                        else:
+                                p.uploader = request.user
+			post.save()
+                	p.uploadby = post
+                	p.save()
+                        return render(request,'userauth/base.html', {})
+	else:
+		p = UploadFileForm()
+	return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
 def not_confirm_cost(request):
 	return render(request,'userauth/base.html', {})
