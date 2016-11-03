@@ -57,3 +57,20 @@ class  Login_Adver(forms.ModelForm):
 		model = Add_Device
 		fields = ('Username','password')
 		widgets = {'password': forms.PasswordInput(),}
+
+class UploadForm1(forms.ModelForm):
+        class Meta:
+                model = UploadAdvetisement
+                fields = ('time_of_advertisement'
+                                ,'no_of_slots','select_bundles','no_of_weeks','start_week','no_of_repeats','bussinessPoint_latitude','bussinessPoint_longitude',)
+                widgets = {'start_week':extras.SelectDateWidget(),
+                'start_week': forms.DateInput(attrs={'class':'form-control'}),
+                #'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
+                'time_of_advertisement': forms.NumberInput(attrs={'class': 'form-control'}),
+                'no_of_weeks': forms.NumberInput(attrs={'class': 'form-control'}),
+                'no_of_slots': forms.NumberInput(attrs={'class': 'form-control'}),
+                'no_of_repeats': forms.NumberInput(attrs={'class': 'form-control'}),
+                'select_bundles': forms.NumberInput(attrs={'class': 'form-control'}),
+                'bussinessPoint_latitude' : forms.HiddenInput ,
+                'bussinessPoint_longitude' : forms.HiddenInput ,
+                }
