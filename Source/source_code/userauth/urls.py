@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
-    url(r'^upload/$', views.upload, name='upload'),
+    url(r'^upload/$', views.upload_advertisement, name='upload'),
     url(r'^$', views.home, name='home'),
     url(r'^device/$', views.device_login, name='device_login'),
     # url( r'^user-autocomplete/$',views.autocompleteUser.as_view(),name='user-autocomplete'),
@@ -18,6 +18,6 @@ urlpatterns = [
     url(r'^password_reset_complete/$', password_reset_complete, {'template_name': 'registration/password_reset_complete.html'},name='password_reset_complete'),
     url(r'^register_edit/(?P<pk>\d+)/edit/$', views.user_edit, name='register_edit'),
     url(r'^history/$', views.user_history, name='user_history'),
-    url(r'^total_cost/$', views.total_cost, name='total_cost'), 
+    url(r'^total_cost/$', views.total_cost, name='total_cost'),
     url(r'^not_confirm_cost/$', views.not_confirm_cost, name='not_confirm_cost'),
 ]
