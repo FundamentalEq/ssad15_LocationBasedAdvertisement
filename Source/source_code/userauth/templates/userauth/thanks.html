@@ -1,0 +1,14 @@
+{% extends 'userauth/base.html' %}
+{% load static %}
+      {% block content %}
+        {% if user.is_authenticated %}
+        <div class="panel panel-primary">
+        <div class="panel-heading">Thanks of Uploading Advertisements</div>
+        <div class="panel-body">You Have Paid Total Amount {{c}} </div>
+    </div>
+{% else %}
+<p>Please Log-In</p>
+{% endif %}
+
+{% endblock %}
+

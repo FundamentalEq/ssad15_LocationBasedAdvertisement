@@ -11,20 +11,20 @@ class UserProfile(models.Model):
 	 phone_number = models.CharField(max_length=10,validators=[phone_regex], blank=True)
 	 ad_type= (
         ('1', 'RealEstate'),
-        ('2', 'clothing'),
+        ('2', 'Clothing'),
         ('3', 'Jewellery'),
         ('4', 'Movies'),
         ('5', 'TV'),
-        ('6', 'radio'),
-        ('7', 'footwear'),
-        ('8', 'malls'),
-        ('9', 'airport'),
-        ('10', 'food'),
-        ('11', 'fashion'),
-        ('12', 'electronics'),
-        ('13', 'pharmacy'),
-        ('14', 'hospital'),
-        ('15', 'print_media'),
+        ('6', 'Radio'),
+        ('7', 'Footwear'),
+        ('8', 'Malls'),
+        ('9', 'Airport'),
+        ('10', 'Food'),
+        ('11', 'Fashion'),
+        ('12', 'Electronics'),
+        ('13', 'Pharmacy'),
+        ('14', 'Hospital'),
+        ('15', 'Print_media'),
         ('16', 'Banks'),
         ('17', 'Theme parks'),
         ('18', 'Tourism'),
@@ -36,7 +36,7 @@ class UserProfile(models.Model):
         ('25', 'Computers & Accesories'),
         ('26', 'Sports-Outdoors'),
         ('27', 'Furniture'),
-        ('28', 'others')
+        ('28', 'Others')
         )
          ad_type = models.CharField(max_length=120,choices=ad_type,default=1,)
          address = models.TextField(max_length=500,blank=False,default="Address")

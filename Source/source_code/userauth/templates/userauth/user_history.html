@@ -17,6 +17,8 @@
     <th>start Week</th>
     <th>Repetitions</th>
     <th>Amount Paid</th>
+    <th>Buiseness Latitude</th>
+    <th>Buiseness Longitude</th>
     </tr>
 </thead>
 {% for ad in advertisment %}
@@ -33,6 +35,8 @@
 <td>{{ad.start_week}}</td>
 <td>{{ad.no_of_repeats}}</td>
 <td>{{ad.amount_paid}}</td>
+<td>{{ad.bussinessPoint_latitude}}</td>
+<td>{{ad.bussinessPoint_longitude}}</td>
 </tr>
 <tbody>
 {% endfor %}

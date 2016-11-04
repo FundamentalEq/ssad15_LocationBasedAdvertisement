@@ -1,0 +1,13 @@
+{% extends 'userauth/base.html' %}
+{% load static %}
+      {% block content %}
+        {% if user.is_authenticated %}
+        <div class="panel panel-primary">
+        <div class="panel-heading">Your Transaction is Cancelled</div>
+    </div>
+{% else %}
+<p>Please Log-In</p>
+{% endif %}
+
+{% endblock %}
+

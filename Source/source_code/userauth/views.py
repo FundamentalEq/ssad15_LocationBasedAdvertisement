@@ -264,12 +264,12 @@ def total_cost(request):
 			post.save()
                 	p.uploadby = post
                 	p.save()
-                        return render(request,'userauth/base.html', {})
+                        return render(request,'userauth/thanks.html', {})
 	else:
 		p = UploadFileForm()
 	return render(request,'userauth/total_cost.html',{'p': p ,'c':c})
 def not_confirm_cost(request):
-	return render(request,'userauth/base.html', {})
+	return render(request,'userauth/nothanks.html', {})
 
 def upload_advertisement(request):
 	if user.is_authenticated:
