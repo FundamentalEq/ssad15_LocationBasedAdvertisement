@@ -98,7 +98,7 @@ def upload(request):
                         else:
 <<<<<<< HEAD
 				global c
-			       	val = 2 
+			       	val = 2
                                	c = cost(post)
                                	post.amount_paid = c
 			       	if not request.user.is_superuser:
@@ -272,7 +272,7 @@ def not_confirm_cost(request):
 	return render(request,'userauth/nothanks.html', {})
 
 def upload_advertisement(request):
-	if user.is_authenticated:
-		return redirect(upload,request=request)
+	if request.user.is_authenticated:
+		return redirect(upload)
 	else:
-		return redirect(user_login,request=request)
+		return redirect(login)

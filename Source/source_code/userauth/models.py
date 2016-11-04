@@ -48,8 +48,7 @@ class UserProfile(models.Model):
 	 def __unicode__(self):
 		 return self.user.username
 class UploadAdvetisement(models.Model):
-        uploader = models.ForeignKey('auth.User')
-        upload_Advertisement=models.FileField(upload_to='uploads/',blank=True,null=True)
+	uploader = models.ForeignKey('auth.User')
 	time_of_advertisement=models.IntegerField(default=30)
 	no_of_slots = models.IntegerField(default=1,)
 	# select_bundles = (
@@ -78,6 +77,7 @@ class UploadAdvetisement(models.Model):
 	bussinessPoint_latitude=models.DecimalField(max_digits=18,decimal_places=15,default=0)
 	start_week = models.DateTimeField('Starting week of the advertisement',default=timezone.now())
 	amount_paid = models.IntegerField()
+	
 class UploadFile(models.Model):
         uploadby = models.ForeignKey('UploadAdvetisement')
         uploader = models.ForeignKey('auth.User')

@@ -44,7 +44,7 @@
               <div class="" width="100%">
                   <div class="brand put-left" float="left">
                       <h1>
-                          <a href="index.html">
+                          <a href="{% url 'home' %}">
                               <img src="{% static 'userauth/images/logo.jpg' %}" alt="Logo" width="300px" height="49px"/>
                           </a>
                       </h1>
@@ -59,33 +59,34 @@
                           <li><a href="">How It Works</a></li>
 
                           {% if user.is_authenticated %}
-                          <li><a href="myaccount.html">My Account</a>
+                          <li><a href="{% url 'home' %}">My Account</a>
                           <ul>
                             <li>
-                              <a href="">My Profile</a>
+                              <a href="{% url 'register_edit' pk=request.user.pk %}">My Profile</a>
                             </li>
 
                             <li>
                               {% if user.is_superuser %}
-                              <a href="">Customer History</a>
+                              <a href="{% url 'user_history' %}">Customer History</a>
                               {% else %}
-                              <a href="">Customer History</a>
+                              <a href="{% url 'user_history' %}">User History</a>
+                               <a href="{% url 'select_zone' %}">Edit Zone</a>
                               {% endif %}
                             </li>
                             {% if user.is_superuser %}
                             <li>
-                              <a href="">Manage Customers</a>
+                              <a href="/admin/">Manage Customers</a>
                             </li>
                             {% endif %}
                             <li>
-                              <a href="">Logout</a>
+                              <a href="{% url 'logout' %}">Logout</a>
                             </li>
                           </ul>
                         </li>
                         {% else %}
-                        <li><a href="">Login/Register</a></li>
+                        <li><a href="{% url 'login' %}">Login/Register</a></li>
                         {% endif %}
-                          <li><a href="">Upload Advertisement</a></li>
+                          <li><a href="{% url 'upload' %}">Upload Advertisement</a></li>
 
                       </ul>
                   </nav>
@@ -128,7 +129,7 @@
         <div class="b_row">
             <div class="grid_7" align=centre>
                 <p class="info text_4 color_4">
-                  <a href="#">Terms and Conditions</a> | <a href="#">Privacy</a>| <a href="">Contact us</a>| <a href="">Device Login</a> <br />Copyright@InnovatAd
+                  <a href="#">Terms and Conditions</a> | <a href="#">Privacy</a>| <a href="">Contact us</a>| <a href="/userauth/device">Device Login</a> <br />Copyright@InnovatAd
                 </p>
 
             </div>
