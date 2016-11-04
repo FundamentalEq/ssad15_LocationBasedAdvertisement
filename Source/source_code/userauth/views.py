@@ -30,7 +30,7 @@ def register(request):
         	user_form = UserForm(data=request.POST)
         	profile_form = UserProfileForm(data=request.POST)
 
-        	if user_form.is_valid() and profile_form.is_valid():
+        	if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['password_confirm']:
             		user = user_form.save()
 
             		user.set_password(user.password)
