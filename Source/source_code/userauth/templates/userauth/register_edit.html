@@ -61,6 +61,10 @@
                           <div type="text" name="icode" placeholder="">
                         {{ user_form.password }}
 </div>
+ <label for="{{ user_form.password_confirm.id_for_label }}">Confirm Password:</label>
+                          <div  type="text" name="icode" placeholder="">
+                        {{ user_form.password_confirm }}
+                          </div>
 		{% endif %}
 		{% if Edit == 0 %}
                 <label for="{{ profile_form.subject.id_for_label }}">Phone Number:</label>

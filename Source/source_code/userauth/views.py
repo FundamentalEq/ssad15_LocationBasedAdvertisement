@@ -203,7 +203,7 @@ def user_edit(request,pk):
 			print 22
                         user_form = UserForm(data=request.POST , instance=user)
                         profile_form = UserProfileForm(data=request.POST , instance = userprofile)
-                        if user_form.is_valid() and profile_form.is_valid():
+                        if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['password_confirm']:
                                 Edit = 1
 				user = user_form.save()
                         	user.set_password(user.password)
@@ -222,7 +222,7 @@ def user_edit(request,pk):
                 user = request.user
                 if request.method == "POST":
                         user_form = UserForm(data=request.POST , instance=user)
-                        if user_form.is_valid():
+                        if user_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['password_confirm'] :
                                 Edit = 3
                                 user = user_form.save()
                         	user.set_password(user.password)
