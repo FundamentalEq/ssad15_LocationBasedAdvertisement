@@ -98,7 +98,7 @@ def upload(request):
                         else:
 <<<<<<< HEAD
 				global c
-			       	val = 2 
+			       	val = 2
                                	c = cost(post)
                                	post.amount_paid = c
 			       	if not request.user.is_superuser:
@@ -255,8 +255,8 @@ def user_history(request):
 def total_cost(request):
 	if request.method == "POST":
 		p = UploadFileForm(request.POST, request.FILES)
-                if upload.is_valid():
-                        p = upload.save(commit=False)
+                if p.is_valid():
+                        p = p.save(commit=False)
                         if  request.user.is_superuser:
                                 p.uploader = post.uploader
                         else:
@@ -267,12 +267,12 @@ def total_cost(request):
                         return render(request,'userauth/base.html', {})
 	else:
 		p = UploadFileForm()
-	return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
+	return render(request,'userauth/total_cost.html',{'p': p ,'c':c})
 def not_confirm_cost(request):
 	return render(request,'userauth/base.html', {})
 
 def upload_advertisement(request):
-	if user.is_authenticated:
-		return redirect(upload,request=request)
+	if request.user.is_authenticated:
+		return redirect(upload)
 	else:
-		return redirect(user_login,request=request)
+		return redirect(login)

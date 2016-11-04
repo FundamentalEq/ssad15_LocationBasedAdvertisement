@@ -41,12 +41,12 @@ def getWeekNumber(cur_date) :
     return datetime.date(cur_date.year,cur_date.month,cur_date.day).isocalendar()[1]
 
 def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no) :
-    Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by(slot_no)
+    Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by('slot_no')
     total_bundles = DEFAULT_BUNDLES
-    info = zone_info.objects.filter(zone_id = zone_no).order_by(~week)
+    info = zone_info.objects.filter(zone_id = zone_no).order_by('-week')
     if len(info)!=0 :
         for inf in info :
-            if inf.week < week_no :
+            if inf.week <= week_no :
                 total_bundles = inf.no_of_bundles
                 break
     i=0
@@ -284,6 +284,7 @@ def display_advertisement(request):
         # return render(request, 'ssad15/display_advertisement.html', context)
 # function to calculate total cost to be paid by the customer
 def total_cost(request):
+    print "total cost has been called"
     Xcenter = float(request.bussinessPoint_longitude)
     Ycenter = float(request.bussinessPoint_latitude)
     left = Xcenter - DELX/2
@@ -303,13 +304,22 @@ def total_cost(request):
                 zone_no = getzone(x,y)
                 OArea = getOverLappingArea(left,right,bottom,top,zone_no)
                 required_bundles = (OArea/BAREA)*request.select_bundles
-                z=get_list_or_404(zone_info,zone_id=zone_no).order_by('-week')
-                while True:
-                    if z[i].week <= wn:
+                z=zone_info.objects.filter(zone_id=zone_no).order_by('-week')
+                i = 0
+                while i< len(z):
+                    if z[i].week <= week_no:
                         w=z[i].week
-                zone=get_object_or_404(zone_info,zone_id=zone_no,week=w)
-                cost=zone.cost
+                        break
+                    else :
+                        i += 1
+                if i!= len(z) :
+                    zone=get_object_or_404(zone_info,zone_id=zone_no,week=w)
+                    cost=zone.cost
+                else :
+                    cost = 100
                 total_cost=total_cost+required_bundles * cost * no_of_slots
+                x += delx
+            y += dely
     return int(total_cost)
 def select_zone(request) :
     error = 0
@@ -353,6 +363,7 @@ def edit_zone(request,zone_no) :
             zi.save()
             editing_done = True
             print "changes done by the admin are valid"
+            # return render(request,'/userauth')
         else :
             pass
     else :
