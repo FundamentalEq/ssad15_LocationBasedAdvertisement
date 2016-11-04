@@ -8,7 +8,7 @@ class UserProfile(models.Model):
 	 user = models.OneToOneField(User,  on_delete=models.CASCADE)
 	 date = models.DateTimeField(default=timezone.now, blank=True)
 	 phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 10 digits allowed.")
-	 phone_number = models.CharField(max_length=10,validators=[phone_regex], blank=True)
+	 phone_number = models.CharField(max_length=10,validators=[phone_regex], blank=True, unique=True )
 	 ad_type= (
         ('1', 'RealEstate'),
         ('2', 'Clothing'),

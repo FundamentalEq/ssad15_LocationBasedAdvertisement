@@ -25,24 +25,22 @@ from django.contrib.auth.models import UserManager
 def register(request):
 
 	registered = False
-
+	val = 0
     	if request.method == 'POST':
         	user_form = UserForm(data=request.POST)
         	profile_form = UserProfileForm(data=request.POST)
 
         	if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['password_confirm']:
-            		user = user_form.save()
-
-            		user.set_password(user.password)
-            		user.save()
-
-            		profile = profile_form.save(commit=False)
-            		profile.user = user
-
-
-            		profile.save()
-
-            		registered = True
+            		user = user_form.save(commit=False)
+                        profile = profile_form.save(commit=False)
+			if User.objects.filter(email = user.email).count()>=1:
+                                val = 1
+			else:
+            			user.set_password(user.password)
+            			user.save()
+            			profile.user = user
+                        	profile.save()
+				registered = True
 
 
         	else:
@@ -53,7 +51,7 @@ def register(request):
         	profile_form = UserProfileForm()
 
     	return render(request,'userauth/register.html',
-                {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+                {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'val': val,})
 
 def user_login(request):
 

@@ -45,7 +45,13 @@
             <strong>{{ error|escape }}</strong>
         </div>
     {% endfor %}
-{% endif %}      
+{% endif %} 
+{% if val == 1 %}
+<div class="alert alert-danger">
+            <strong>Email Should Be Unique</strong>
+        </div>
+{% endif %}
+     
                 <br> 
                     <label for="{{ profile_form.first_name.id_for_label }}">First Name:</label>
 			<div type="text" name="icode" placeholder=""> 
