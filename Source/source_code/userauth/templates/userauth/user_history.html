@@ -9,6 +9,7 @@
     {% if user.is_superuser %}
     <th>Uploader</th>
     {% endif  %}
+    <th>Uploader ID</th>
     <th>Time of Advertisment</th>
     <th> no_of_slots</th>
     <th>Bundles Purchase</th>
@@ -27,6 +28,7 @@
 {% if user.is_superuser %}
 <td>{{ad.uploader}}</td>
 {% endif  %}
+<td>{{ad.id}}</td>
 <td>{{ad.time_of_advertisement}}</td>
 <td>{{ad.no_of_slots}}</td>
 <td>{{ad.select_bundles}}</td>
