@@ -1,72 +1,54 @@
 {% extends 'userauth/base.html' %}
       {% block content %}
 {% if not user.is_authenticated %}
-<p>Please Logged-In</p>
+<p>Please Log-In</p>
 {% else %}
-<table style="width:100%" class="table">
-        <thead>
-    <tr style="background-color: blue; font-weight: 800;">
-    {% if user.is_superuser %}
-    <th>Uploader</th>
-    {% endif  %}
-    <th>Advertisment ID</th>
-    <th>Time of Advertisment</th>
-    <th> no_of_slots</th>
-    <th>Bundles Purchase</th>
-    <th>no_of_weeks</th>
-    <th>Date of Purchase</th>
-    <th>start Week</th>
-    <th>Repetitions</th>
-    <th>Amount Paid</th>
-    <th>Buiseness Latitude</th>
-    <th>Buiseness Longitude</th>
-    </tr>
-</thead>
-{% for ad in advertisment %}
-<tbody>
-<tr>
-{% if user.is_superuser %}
-<td>{{ad.uploader}}</td>
-{% endif  %}
-<td>{{ad.id}}</td>
-<td>{{ad.time_of_advertisement}}</td>
-<td>{{ad.no_of_slots}}</td>
-<td>{{ad.select_bundles}}</td>
-<td>{{ad.no_of_weeks}}</td>
-<td>{{ad.date}}</td>
-<td>{{ad.start_week}}</td>
-<td>{{ad.no_of_repeats}}</td>
-<td>{{ad.amount_paid}}</td>
-<td>{{ad.bussinessPoint_latitude}}</td>
-<td>{{ad.bussinessPoint_longitude}}</td>
-</tr>
-<tbody>
-{% endfor %}
-</table>
+<div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>
+            User History
+          </h4>
+        </div>
+        <table class="table table-fixed">
+          <thead>
+            <tr>
+              {% if user.is_superuser %}
+              <th class="col-xs-1">Uploader</th>
+              {% endif  %}
+              <th class="col-xs-1">Advertisement ID</th>
+              <th class="col-xs-1">Advertisement Time</th>
+              <th class="col-xs-1">Slots Purchased</th>
+              <th class="col-xs-1">Bundles Purchased</th>
+              <th class="col-xs-1">No of Weeks</th>
+              <th class="col-xs-1">Date of Purchase</th>
+              <th class="col-xs-1">Start Week</th>
+              <th class="col-xs-1">Repetitions</th>
+              <th class="col-xs-1">Amount Paid</th>
+              <th class="col-xs-1">Business Longitude</th>
+              <th class="col-xs-1">Business Latitude</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ad in advertisment %}
+                      <tr>
+                        {% if user.is_superuser %}
+                        <td class="col-xs-1">{{ad.uploader}}</td>
+                        {% endif %}
+                        <td class="col-xs-1">{{ad.id}}</td>
+                        <td class="col-xs-1">{{ad.time_of_advertisement}}</td>
+                        <td class="col-xs-1">{{ad.no_of_slots}}</td>
+                        <td class="col-xs-1">{{ad.select_bundles}}</td>
+                        <td class="col-xs-1">{{ad.no_of_weeks}}</td>
+                        <td class="col-xs-1">{{ad.date}}</td>
+                        <td class="col-xs-1">{{ad.start_week}}</td>
+                        <td class="col-xs-1">{{ad.no_of_repeats}}</td>
+                        <td class="col-xs-1">{{ad.amount_paid}}</td>
+                        <td class="col-xs-1">{{ad.bussinessPoint_longitude}}</td>
+                        <td class="col-xs-1">{{ad.bussinessPoint_latitude}}</td>
 
-<center><p style="font-weight: 800;" ><b>File Names</mark></b></center>
-
-<table style="width:100%" class="table">
-<thead>
-<tr style="background-color: blue; font-weight: 800;">
-{% if user.is_superuser %}
-    <th>Uploader</th>
-    {% endif  %}
-    <th>File Name</th>
-    <th>Time when Uploaded</th>
-</tr>
-</thead>
-{% for ad in ads %}
-<tbody>
-<tr>
-{% if user.is_superuser %}
-<td>{{ad.uploader}}</td>
-{% endif  %}
-<td>{{ad.upload_Advertisement}}</td>
-<td>{{ad.date}}</td>
-</tr>
-</tbody>
-{% endfor %}
-</table>
-{% endif %}
-{% endblock %}
+                      </tr>
+                    </tbody>
+      </table>
+    </div>
+</div>
