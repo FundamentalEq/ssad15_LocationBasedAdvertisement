@@ -53,10 +53,10 @@
                        <div type="text" name="icode" placeholder="">
                         {{ user_form.username }}
                         </div>
-                <label for="{{ user_form.email.id_for_label }}">Email-Id:</label>
+                {% comment %}<label for="{{ user_form.email.id_for_label }}">Email-Id:</label>
                            <div type="text" name="icode" placeholder="">
                         {{ user_form.email }}
-                        </div>
+                        </div>{% endcomment %}
                 <label for="{{ user_form.password.id_for_label }}">Password:</label>
                           <div type="text" name="icode" placeholder="">
                         {{ user_form.password }}

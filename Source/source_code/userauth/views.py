@@ -33,7 +33,7 @@ def register(request):
         	if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data['password'] == user_form.cleaned_data['password_confirm']:
             		user = user_form.save(commit=False)
                         profile = profile_form.save(commit=False)
-			if User.objects.filter(email = user.email).count()>=1:
+			if User.objects.filter(email = user.email).count()>=1 or user.email == "":
                                 val = 1
 			else:
             			user.set_password(user.password)
@@ -56,19 +56,21 @@ def register(request):
 def user_login(request):
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/userauth/')
-            else:
-                return HttpResponse("Your account is disabled.")
+    	if User.objects.filter(email = request.POST['email']).count() ==1:
+                a = User.objects.filter(email = request.POST['email'])
+                for i in a :
+                        username = i.username
+                password = request.POST.get('password')
+                user = authenticate(username=username, password=password)
+        	if user:
+            		if user.is_active:
+                		login(request, user)
+                		return HttpResponseRedirect('/userauth/')
+            		else:
+                		return HttpResponse("Your account is disabled.")
         else:
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+        	print "Invalid login details: {0}, {1}".format(username, password)
+            	return HttpResponse("Invalid login details supplied.")
 
     else:
         return render(request,'userauth/login.html', {})
