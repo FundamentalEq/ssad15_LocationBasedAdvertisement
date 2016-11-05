@@ -41,8 +41,8 @@ class UploadForm(forms.ModelForm):
 		model = UploadAdvetisement
 		fields = ('time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','start_week','uploader','no_of_repeats','bussinessPoint_latitude','bussinessPoint_longitude',)
-		widgets = {
-		'start_week':forms.DateField(widget = AdminDateWidget , attrs={'class':'form-control'}),
+		widgets = {'start_week':AdminDateWidget(),
+
 		'uploader': forms.Select(attrs={'class': 'form-control'}),
 		#'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
 		'time_of_advertisement': forms.NumberInput(attrs={'class': 'form-control'}),

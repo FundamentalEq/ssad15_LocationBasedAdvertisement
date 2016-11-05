@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'ssad.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aim',
+        'NAME': 'lba',
         'USER': 'root',
-        'PASSWORD': 'the c-13',
+        'PASSWORD': 'whyso123098',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '',
     }
