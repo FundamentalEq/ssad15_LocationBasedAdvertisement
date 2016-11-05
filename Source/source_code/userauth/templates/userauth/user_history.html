@@ -48,7 +48,65 @@
                         <td class="col-xs-1">{{ad.bussinessPoint_latitude}}</td>
 
                       </tr>
+                      {% endfor %}
                     </tbody>
+      </table>
+    </div>
+</div>
+<div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>
+          Files Uploaded
+          </h4>
+        </div>
+        <table class="table table-fixed">
+          <thead>
+            <tr>
+              {% if user.is_superuser %}
+              <th class="col-xs-2">Advertisement ID</th><th class="col-xs-4">Uploader</th><th class="col-xs-3">File</th><th class="col-xs-3">
+                Date
+              </th>
+              {% else %}
+              <th class="col-xs-2">Advertisement ID</th><th class="col-xs-5">File</th><th class="col-xs-5">
+                Date
+              </th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for ad in ads %}
+            {% if user.is_superuser %}
+            <tr>
+              <td class="col-xs-2">
+                {{ad.id}}
+              </td>
+              <td class="col-xs-4">
+                {{ad.uploader}}
+              </td>
+              <td class="col-xs-3">
+                {{ad.UploadAdvetisement}}
+              </td>
+              <td class="col-xs-3">
+                {{ad.date}}
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td class="col-xs-2">
+                {{ad.id}}
+              </td>
+
+              <td class="col-xs-5">
+                {{ad.UploadAdvetisement}}
+              </td>
+              <td class="col-xs-5">
+                {{ad.date}}
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
       </table>
     </div>
 </div>
