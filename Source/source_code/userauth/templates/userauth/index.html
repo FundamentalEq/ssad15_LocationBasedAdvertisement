@@ -70,7 +70,7 @@
                               <a href="{% url 'user_history' %}">Customer History</a>
                               <a href="{% url 'select_zone' %}">Edit Zone</a>
                               {% else %}
-                              <a href="{% url 'user_history' %}">My History</a>
+                              <a href="{% url 'user_history' %}">User History</a>
                               {% endif %}
                             </li>
                             {% if user.is_superuser %}

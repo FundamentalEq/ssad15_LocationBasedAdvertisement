@@ -68,9 +68,9 @@
                             <li>
                               {% if user.is_superuser %}
                               <a href="{% url 'user_history' %}">Customer History</a>
+                              <a href="{% url 'select_zone' %}">Edit Zone</a>
                               {% else %}
                               <a href="{% url 'user_history' %}">User History</a>
-                               <a href="{% url 'select_zone' %}">Edit Zone</a>
                               {% endif %}
                             </li>
                             {% if user.is_superuser %}

@@ -1,0 +1,72 @@
+{% extends 'userauth/base.html' %}
+      {% block content %}
+{% if not user.is_authenticated %}
+<p>Please Log-In</p>
+{% else %}
+<table style="width:100%" class="table">
+        <thead>
+    <tr style="background-color: blue; font-weight: 800;">
+    {% if user.is_superuser %}
+    <th>Uploader</th>
+    {% endif  %}
+    <th>Advertisment ID</th>
+    <th>Time of Advertisment</th>
+    <th> no_of_slots</th>
+    <th>Bundles Purchase</th>
+    <th>no_of_weeks</th>
+    <th>Date of Purchase</th>
+    <th>start Week</th>
+    <th>Repetitions</th>
+    <th>Amount Paid</th>
+    <th>Buiseness Latitude</th>
+    <th>Buiseness Longitude</th>
+    </tr>
+</thead>
+{% for ad in advertisment %}
+<tbody>
+<tr>
+{% if user.is_superuser %}
+<td>{{ad.uploader}}</td>
+{% endif  %}
+<td>{{ad.id}}</td>
+<td>{{ad.time_of_advertisement}}</td>
+<td>{{ad.no_of_slots}}</td>
+<td>{{ad.select_bundles}}</td>
+<td>{{ad.no_of_weeks}}</td>
+<td>{{ad.date}}</td>
+<td>{{ad.start_week}}</td>
+<td>{{ad.no_of_repeats}}</td>
+<td>{{ad.amount_paid}}</td>
+<td>{{ad.bussinessPoint_latitude}}</td>
+<td>{{ad.bussinessPoint_longitude}}</td>
+</tr>
+<tbody>
+{% endfor %}
+</table>
+
+<center><p style="font-weight: 800;" ><b>File Names</mark></b></center>
+
+<table style="width:100%" class="table">
+<thead>
+<tr style="background-color: blue; font-weight: 800;">
+{% if user.is_superuser %}
+    <th>Uploader</th>
+    {% endif  %}
+    <th>File Name</th>
+    <th>Time when Uploaded</th>
+</tr>
+</thead>
+{% for ad in ads %}
+<tbody>
+<tr>
+{% if user.is_superuser %}
+<td>{{ad.uploader}}</td>
+{% endif  %}
+<td>{{ad.upload_Advertisement}}</td>
+<td>{{ad.date}}</td>
+</tr>
+</tbody>
+{% endfor %}
+</table>
+{% endif %}
+{% endblock %}
