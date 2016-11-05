@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from userauth.models import UserProfile
 from userauth.models import UploadAdvetisement,Add_Device,UploadFile
 from django.contrib.admin.widgets import AdminDateWidget
-
 class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput())
 	password_confirm = forms.CharField(widget=forms.PasswordInput())
@@ -42,8 +41,8 @@ class UploadForm(forms.ModelForm):
 		model = UploadAdvetisement
 		fields = ('time_of_advertisement'
 		   		,'no_of_slots','select_bundles','no_of_weeks','start_week','uploader','no_of_repeats','bussinessPoint_latitude','bussinessPoint_longitude',)
-		widgets = {'start_week':extras.SelectDateWidget(),
-		'start_week': forms.DateInput(attrs={'class':'form-control'}),
+		widgets = {
+		'start_week':forms.DateField(widget = AdminDateWidget , attrs={'class':'form-control'}),
 		'uploader': forms.Select(attrs={'class': 'form-control'}),
 		#'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
 		'time_of_advertisement': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -54,6 +53,7 @@ class UploadForm(forms.ModelForm):
 		'bussinessPoint_latitude' : forms.HiddenInput ,
 		'bussinessPoint_longitude' : forms.HiddenInput ,
 		}
+
 class UploadFileForm(forms.ModelForm):
         class Meta:
                 model = UploadFile
