@@ -264,7 +264,7 @@ def total_cost(request):
 			post.save()
                 	p.uploadby = post
                 	p.save()
-                        return render(request,'userauth/thanks.html', {})
+                        return render(request,'userauth/thanks.html', {'c':c})
 	else:
 		p = UploadFileForm()
 	return render(request,'userauth/total_cost.html',{'p': p ,'c':c})
