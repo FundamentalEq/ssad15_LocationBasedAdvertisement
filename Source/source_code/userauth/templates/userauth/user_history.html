@@ -64,11 +64,11 @@
           <thead>
             <tr>
               {% if user.is_superuser %}
-              <th class="col-xs-2">Advertisement ID</th><th class="col-xs-4">Uploader</th><th class="col-xs-3">File</th><th class="col-xs-3">
+              <th class="col-xs-2">Ad ID</th><th class="col-xs-4">Uploader</th><th class="col-xs-3">File</th><th class="col-xs-3">
                 Date
               </th>
               {% else %}
-              <th class="col-xs-2">Advertisement ID</th><th class="col-xs-5">File</th><th class="col-xs-5">
+              <th class="col-xs-2">Ad ID</th><th class="col-xs-5">File</th><th class="col-xs-5">
                 Date
               </th>
               {% endif %}
@@ -85,7 +85,7 @@
                 {{ad.uploader}}
               </td>
               <td class="col-xs-3">
-                {{ad.UploadAdvetisement}}
+                {{ad.UploadAdvertisement}}
               </td>
               <td class="col-xs-3">
                 {{ad.date}}
@@ -98,7 +98,7 @@
               </td>
 
               <td class="col-xs-5">
-                {{ad.UploadAdvetisement}}
+                {{ad.upload_Advertisement}}
               </td>
               <td class="col-xs-5">
                 {{ad.date}}
