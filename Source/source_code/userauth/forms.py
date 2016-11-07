@@ -1,12 +1,18 @@
 from django import forms
+from django.contrib import auth
 from django.forms import extras
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
 from userauth.models import UserProfile
 from userauth.models import UploadAdvetisement,Add_Device,UploadFile
 from django.contrib.admin.widgets import AdminDateWidget
+import re
+import string
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
+from django.utils.translation import ugettext_lazy as _
 class UserForm(forms.ModelForm):
-	password = forms.CharField(widget=forms.PasswordInput())
+	password = forms.CharField(widget=forms.PasswordInput(),validators=[RegexValidator(regex='^[A-Za-z0-9@#$%^&+=]{8,}', message="Password should be a combination of Alphabets and Numbers and atleat 8 digit long",code='invalid_password'),])
 	password_confirm = forms.CharField(widget=forms.PasswordInput())
    	class Meta:
         	model = User
@@ -23,7 +29,6 @@ class UserForm(forms.ModelForm):
                         raise forms.ValidationError(
                                 "password and confirm password does not match"
                 )
-
 class UserProfileForm(forms.ModelForm):
     	class Meta:
         	model = UserProfile
