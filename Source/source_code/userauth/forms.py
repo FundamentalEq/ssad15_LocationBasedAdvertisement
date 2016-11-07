@@ -21,7 +21,7 @@ class UserForm(forms.ModelForm):
                 confirm_password = cleaned_data.get("password_confirm")
                 if password != confirm_password:
                         raise forms.ValidationError(
-                                "password and confirm_password does not match"
+                                "password and confirm password does not match"
                 )
 
 class UserProfileForm(forms.ModelForm):
