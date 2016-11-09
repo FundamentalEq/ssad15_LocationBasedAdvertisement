@@ -5,10 +5,9 @@ from django.contrib.auth.models import User
 from userauth.models import UserProfile
 from userauth.models import UploadAdvetisement,Add_Device
 from django.contrib.admin.widgets import AdminDateWidget
-import datetime
+from global_values import *
 class zone_info_form(forms.Form) :
-    week = forms.DateField(initial=datetime.date.today)
-    cost = forms.IntegerField(initial=100)
-    no_of_bundles = forms.IntegerField(initial=10)
-    widgets = {'week':extras.SelectDateWidget(),
-    'week': forms.DateInput(attrs={'class':'form-control'}),}
+    week = forms.DateField(widget=extras.SelectDateWidget)
+    cost = forms.IntegerField(initial=DEFAULT_COST)
+    no_of_bundles = forms.IntegerField(initial=DEFAULT_BUNDLES)
+    # widgets = {'week':extras.SelectDateWidget(),}
