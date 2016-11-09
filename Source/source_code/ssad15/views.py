@@ -367,7 +367,8 @@ def edit_zone(request,longitude,latitude) :
                     zone_info(zone_id=zone_no,week=wn,cost=form['cost'],no_of_bundles=form['no_of_bundles']).save()
                     x += delx
                 y += dely
-            return render('ssad15/changesdone.html')
+            print "calling render"
+            return render(request,'ssad15/changesdone.html')
         else :
             print form.errors
     else :
