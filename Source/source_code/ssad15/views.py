@@ -350,7 +350,24 @@ def edit_zone(request,longitude,latitude) :
         if form.is_valid() :
             print "changes done by the admin are valid"
             form = form.cleaned_data
-            
+            Xcenter = float(longitude)
+            Ycenter = float(latitude)
+            left = Xcenter - DELX/2
+            right = Xcenter + DELX/2
+            bottom = Ycenter - DELY/2
+            top = Ycenter + DELY/2
+            #variable to store total_cost
+            # starting the loop to map the request into zones and calculate total cost
+            y = bottom
+            wn = getWeekNumber(form['week'])
+            while y < top :
+                x = left
+                while x < right :
+                    zone_no = getzone(x,y)
+                    zone_info(zone_id=zone_no,week=wn,cost=form['cost'],no_of_bundles=form['no_of_bundles']).save()
+                    x += delx
+                y += dely
+            return render('ssad15/changesdone.html')
         else :
             print form.errors
     else :
