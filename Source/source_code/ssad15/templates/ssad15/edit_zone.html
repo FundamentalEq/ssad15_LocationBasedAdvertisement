@@ -6,15 +6,39 @@
   <div class="panel panel-primary">
     <div class="panel-heading">Enter New Values For Cost and Bundles</div>
     <div class="panel-body">
-          <form action="/ssad15/edit_zone/{{zone_no}}/" method="post">
+          <form action="/ssad14/edit_zone/{{zone_no}}/" method="post">
         {% csrf_token %}
-        
+        <div class="row">
+        <div class="col-md-4">
+
         New Cost:
-          {{ form.cost }}<br /><br />
-        Number of Bundles:
-          {{ form.no_of_bundles }}<br /><br />
-        Week no. :
-           {{ form.week }}<br /><br />
+      </div>
+      <div class="col-md-4">
+
+          {{ form.cost }}
+        </div>
+      </div> <br />
+        <div class="row">
+        <div class="col-md-4">
+
+        Select number of bundles:
+      </div>
+      <div class="col-md-4">
+
+          {{ form.no_of_bundles }}
+        </div>
+      </div><br />
+        <div class="row">
+        <div class="col-md-4">
+
+        Select week no.:
+      </div>
+      <div class="col-md-4">
+
+          {{ form.week }}
+        </div>
+        </div>
+<br /><br />
 
         <input type="submit" value="Submit" class="btn btn-primary" />
     </form>
