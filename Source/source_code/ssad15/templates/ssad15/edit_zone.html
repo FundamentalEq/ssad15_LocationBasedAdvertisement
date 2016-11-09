@@ -1,9 +1,23 @@
-{% extends 'ssad15/base.html' %}
+{% extends 'userauth/base.html' %}
 {% load static %}
   {% block content %}
-    <form action="/ssad15/edit_zone/{{zone_no}}/" method="post">
+  <br /><br />
+  <br /><br />
+  <div class="panel panel-primary">
+    <div class="panel-heading">Enter New Values For Cost and Bundles</div>
+    <div class="panel-body">
+          <form action="/ssad15/edit_zone/{{zone_no}}/" method="post">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit" />
+        
+        New Cost:
+          {{ form.cost }}<br /><br />
+        Number of Bundles:
+          {{ form.no_of_bundles }}<br /><br />
+        Week no. :
+           {{ form.week }}<br /><br />
+
+        <input type="submit" value="Submit" class="btn btn-primary" />
     </form>
+</div>
+  </div>
       {% endblock %}
