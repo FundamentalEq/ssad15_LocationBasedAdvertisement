@@ -4,7 +4,7 @@
 <p>Please Log-In</p>
 {% else %}
 <div class="row">
-      <div class="panel panel-default">
+      <div class="panel panel-primary">
         <div class="panel-heading">
           <h4>
             User History
@@ -53,6 +53,7 @@
       </table>
     </div>
 </div>
+<br />
 <div class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -78,29 +79,29 @@
             {% for ad in ads %}
             {% if user.is_superuser %}
             <tr>
-              <td class="col-xs-2">
+              <td class="col-xs-2" align="centre">
                 {{ad.id}}
               </td>
-              <td class="col-xs-4">
+              <td class="col-xs-4" align="centre">
                 {{ad.uploader}}
               </td>
-              <td class="col-xs-3">
+              <td class="col-xs-3" align="centre">
                 {{ad.upload_Advertisement}}
               </td>
-              <td class="col-xs-3">
+              <td class="col-xs-3" align="centre">
                 {{ad.date}}
               </td>
             </tr>
             {% else %}
             <tr>
-              <td class="col-xs-2">
+              <td class="col-xs-2" align="centre">
                 {{ad.id}}
               </td>
 
-              <td class="col-xs-5">
+              <td class="col-xs-5" align="centre">
                 {{ad.upload_Advertisement}}
               </td>
-              <td class="col-xs-5">
+              <td class="col-xs-5" align="centre">
                 {{ad.date}}
               </td>
             </tr>
