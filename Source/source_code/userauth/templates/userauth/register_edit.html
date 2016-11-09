@@ -6,7 +6,8 @@
         {% if Edit == 1 or Edit == 3 %}
          <strong>Your Profile is Edited!</strong>
         {% else %}
-        <form id="user_form" method="post" 
+        <br /><br />
+        <form id="user_form" method="post"
                 enctype="multipart/form-data">
  <div class="container">
     <div class="row">
@@ -46,8 +47,8 @@
         </div>
     {% endfor %}
 {% endif %}
-{% endif %} 
-                  <br>   
+{% endif %}
+                  <br>
                 {% if Edit == 0 or Edit == 2 %}
 		<label for="{{ user_form.username.id_for_label }}">User Name:</label>
                        <div type="text" name="icode" placeholder="">
@@ -68,19 +69,19 @@
 		{% endif %}
 		{% if Edit == 0 %}
                 <label for="{{ profile_form.subject.id_for_label }}">Phone Number:</label>
-<div type="text" name="icode" placeholder="">                 
+<div type="text" name="icode" placeholder="">
        {{ profile_form.phone_number }}
 </div>
                 <label for="{{ profile_form.address.id_for_label }}">Address:</label>
-<div type="text" name="icode" placeholder="">                   
+<div type="text" name="icode" placeholder="">
      {{ profile_form.address }}
 </div>
                 <label for="{{ profile_form.first_name.id_for_label }}">First Name:</label>
-<div type="text" name="icode" placeholder="">      
+<div type="text" name="icode" placeholder="">
                   {{ profile_form.first_name }}
 </div>
                 <label for="{{ profile_form.last_name.id_for_label }}">Last Name:</label>
-<div type="text" name="icode" placeholder="">      
+<div type="text" name="icode" placeholder="">
                   {{ profile_form.last_name }}
 </div>
                  <label for="{{ profile_form.ad_type.id_for_label }}">Buiseness Name:</label>
@@ -109,10 +110,3 @@
         {% endif %}
         {% endif %}
 {% endblock %}
-
-
-
-
-
-
-
