@@ -68,6 +68,8 @@ def user_login(request):
                 		return HttpResponseRedirect('/userauth/')
             		else:
                 		return HttpResponse("Your account is disabled.")
+		else:
+			return HttpResponse("Invalid login details supplied.")
         else:
             	return HttpResponse("Invalid login details supplied.")
 
