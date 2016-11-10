@@ -65,7 +65,12 @@
                 <label for="{{ form.time_of_advertisement.id_for_label }}">Time Of Advertisement</label>
                         {{ form.time_of_advertisement }}
                       </div>
-                    </div><br />
+                      <div class="col-md-6">
+                        <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
+                                {{ form.no_of_weeks}}
+                      </div>
+                    </div>
+                    <br />
                       <div class="row">
                       <div class="col-md-4">
 
@@ -89,8 +94,7 @@
                       </div>
 <div class="col-md-4">
 
-  <label for="{{ form.no_of_weeks.id_for_label }}">Number of Weeks:</label>
-          {{ form.no_of_weeks}}
+
 
                                                                       </div>
                                                                     </div>
@@ -118,7 +122,7 @@
      <!--script to automatically detect no of slots -->
           <script src="{%static 'userauth/js/no_slots.js' %}"></script>
          <script src="{%static 'userauth/js/upload_advertisement/getUserLocation.js' %}"></script>
-         <!-- coded added by me ends here -->
+         
 
 
 {% endblock %}

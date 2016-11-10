@@ -82,48 +82,7 @@ def restricted(request):
 def user_logout(request):
     	logout(request)
 	return HttpResponseRedirect('/userauth/')
-	#return render(request,'userauth/base.html', {})
-'''
-def upload(request):
-	global uploaded
-	uploaded = False
-	msg = "sending nothing"
-	val = 0
-	if request.method == "POST":
-		form = UploadForm(request.POST, request.FILES)
-		if form.is_valid():
-			global post
-			post = form.save(commit=False)
-			if not checkavailable(post):
-                        	val = 1
-                        else:
-<<<<<<< HEAD
-				global c
-			       	val = 2
-                               	c = cost(post)
-                               	post.amount_paid = c
-			       	if not request.user.is_superuser:
-                               		post.uploader = request.user
-			       	post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-			       	p = UploadFileForm()
-			       	return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
-=======
-			       global c
-			       val = 2
-                               c = cost(post)
-                               post.amount_paid = c
-			       if not request.user.is_superuser:
-                               	post.uploader = request.user
-			       post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-			       p = UploadFileForm()
-			       return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
->>>>>>> f5e3affb22da1e92f2a334be45e2fb12c5fa097c
-		else:
-			print form.errors
-	else :
-		form = UploadForm()
-	return render(request,'userauth/upload.html', {'form': form , 'uploaded':uploaded ,'msg':msg ,  'val':val,})
-'''
+
 def upload(request):
         if  request.user.is_superuser:
                 global uploaded

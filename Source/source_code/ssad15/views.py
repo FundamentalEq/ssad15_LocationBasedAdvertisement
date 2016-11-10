@@ -316,7 +316,7 @@ def total_cost(request):
                     zone=get_object_or_404(zone_info,zone_id=zone_no,week=w)
                     cost=zone.cost
                 else :
-                    cost = 100
+                    cost
                 total_cost=total_cost+required_bundles * cost * no_of_slots
                 x += delx
             y += dely
@@ -336,45 +336,44 @@ def select_zone(request) :
         if error:
             return HttpResponse("Error in getting location !")
         else :
-            zone_no=getzone(longitude,latitude)
-            return redirect(edit_zone,zone_no=zone_no)
+            return redirect(edit_zone,longitude=longitude,latitude=latitude)
     else :
         pass
     return render(request,'ssad15/select_zone.html')
 
-def edit_zone(request,zone_no) :
-    print "iside edit_zone = ", zone_no
-    zi = zone_info.objects.filter(zone_id=int(zone_no)).order_by('-week')
+def edit_zone(request,longitude,latitude) :
+    print longitude
+    print latitude
     editing_done=False
-    if len(zi)!=0 :
-        zi = zi[0]
-    else :
-        zi = None
     if request.method == 'POST' :
         form =zone_info_form(request.POST)
         if form.is_valid() :
-            form = form.cleaned_data
-            if zi :
-                zi.cost = form['cost']
-                zi.no_of_bundles = form['no_of_bundles']
-                zi.week = getWeekNumber(form['week'])
-            else :
-                zi = zone_info(zone_id=zone_no,cost = form['cost'],no_of_bundles=form['no_of_bundles'],week=getWeekNumber(form['week']))
-            zi.save()
-            editing_done = True
             print "changes done by the admin are valid"
-            # return render(request,'/userauth')
+            form = form.cleaned_data
+            Xcenter = float(longitude)
+            Ycenter = float(latitude)
+            left = Xcenter - DELX/2
+            right = Xcenter + DELX/2
+            bottom = Ycenter - DELY/2
+            top = Ycenter + DELY/2
+            #variable to store total_cost
+            # starting the loop to map the request into zones and calculate total cost
+            y = bottom
+            wn = getWeekNumber(form['week'])
+            while y < top :
+                x = left
+                while x < right :
+                    zone_no = getzone(x,y)
+                    zone_info(zone_id=zone_no,week=wn,cost=form['cost'],no_of_bundles=form['no_of_bundles']).save()
+                    x += delx
+                y += dely
+            print "calling render"
+            return render(request,'ssad15/changesdone.html')
         else :
-            pass
+            print form.errors
     else :
         form = zone_info_form()
-        if zi :
-            form.cost = zi.cost
-            form.no_of_bundles = zi.no_of_bundles
-        else :
-            form.cost = DEFAULT_COST
-            form.no_of_bundles = DEFAULT_BUNDLES
-    return render(request,'ssad15/edit_zone.html',{'form':form,'editing_done':editing_done,'zone_no':zone_no})
+    return render(request,'ssad15/edit_zone.html',{'form':form,'editing_done':editing_done,'longitude':longitude,'latitude':latitude})
 
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
