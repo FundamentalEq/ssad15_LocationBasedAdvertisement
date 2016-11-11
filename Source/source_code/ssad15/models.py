@@ -7,14 +7,24 @@ class advertisement(models.Model):
     upload = models.FileField(upload_to='uploads/')
     time_len = models.IntegerField(default=30)
 
+
+# will store the georaphical location of each zone
+# affected by initilize_zone.py
 class zone(models.Model):
     bottom_left_coordinate_x=models.DecimalField(max_digits=20,decimal_places=17,default=0)
     bottom_left_coordinate_y=models.DecimalField(max_digits=20,decimal_places=17,default=0)
+
+
+# will store the information about cost of advertisemnt and max number of bundles per zone
+# and also the starting time when the change have to be taken into consideration
+# at the start it contatins the default values of cost of advertisement and max number of bundles
 class zone_info(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     week = models.IntegerField(default=0)
     cost = models.IntegerField(default=-1)
     no_of_bundles = models.IntegerField(default=10)
+
+
 class slots(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     week = models.IntegerField(default=0)
