@@ -24,7 +24,17 @@ def getzone(longitude,latitude):
 
 def getOverLappingArea(left,right,bottom,top,zone_no):
     print "required zone no is ",zone_no
-    Zone = zone.objects.filter(id=zone_no)[0]
+    Zone = zone.objects.filter(id=zone_no)
+    # error handling
+    if len(Zone) == 0 :
+        # => that an invalid location has been picked
+        # raise error
+        print "Invalid location has been entered by the user"
+        return False
+    else :
+        # select the required zone
+        Zone = Zone[0]
+
     lowerx = Zone.bottom_left_coordinate_x
     lowery = Zone.bottom_left_coordinate_y
     topx = float(lowerx) + float(delx)
@@ -34,7 +44,8 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
     b = float(max(lowery,bottom))
     t = float(min(topy,top))
     area = float((r-l)*(t-b))
-    area = area * kmTodegree * kmTodegree #converting degree to Km
+    #converting degree to Km
+    area = area * kmTodegree * kmTodegree
     return area
 
 def getWeekNumber(cur_date) :
