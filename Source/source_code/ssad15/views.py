@@ -159,7 +159,38 @@ def check_availability(request) :
 
 
 def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
-    pass
+    # algorithm for Updating the database
+    Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
+    i = 0
+    while i < range(len(Slots)) :
+        slot = Slots[i]
+        left = sets
+        valid = True
+        for j in range(cont_slots) :
+            if i+j > len(Slots) and i+j <= MAX_SLOTS :
+                pass
+            elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
+                pass
+            else :
+                valid = False
+                break
+        if valid :
+            for j in range(cont_slots) :
+                slot = Slots[i+j]
+                slot.no_of_bundles_used += required_bundles
+                slot.save()
+                start = False
+                if j == 0 :
+                    start = True
+                schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
+                schedule.save()
+            i += cont_slots
+            left -= 1
+            if left == 0 :
+                break
+        else :
+            i += 1
+    #the update complete
 
 def update_scheduler(request) :
     # making sure that the slot is still avaialable
