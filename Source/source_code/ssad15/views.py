@@ -101,6 +101,7 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
         # if the demand can be met
         return True
 
+    # slots are not avaialable in the given zone
     return False
 
 def check_availability(request) :
@@ -121,12 +122,14 @@ def check_availability(request) :
     # the number of slots that must be given in continuous
     # eg a 45 second add must be given 2 slots at min in continuous to be displayed
     cont_slots = math.ceil(request.time_of_advertisement/30.0)
+    cont_slots = int(cont_slots)
 
     # sets is the times an advertisement have to be displayed
     sets = request.no_of_slots / cont_slots
     sets = int(sets)
 
-    for week_no in xrange(wn+int(request.no_of_weeks)) :
+    for week_no in range(int(request.no_of_weeks)) :
+        week_no += wn
         while y < top :
             x = left
             while x < right :
@@ -154,64 +157,66 @@ def check_availability(request) :
             y += dely
     return True
 
+
+def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
+    pass
+
 def update_scheduler(request) :
     # making sure that the slot is still avaialable
     if not check_availability(request) :
+        # slots are no longer available
         return False
+
     else :
+        # availability still holds good
+        # intializing the variables need for the calculations
         Xcenter = float(request.bussinessPoint_longitude)
         Ycenter = float(request.bussinessPoint_latitude)
         left = Xcenter - DELX/2
         right = Xcenter + DELX/2
         bottom = Ycenter - DELY/2
         top = Ycenter + DELY/2
+
+        # starting the loop to map the request into zones and check the availability
         y = bottom
         wn = getWeekNumber(request.start_week)
+        wn = int(wn)
+
+        # the number of slots that must be given in continuous
+        # eg a 45 second add must be given 2 slots at min in continuous to be displayed
         cont_slots = math.ceil(request.time_of_advertisement/30.0)
+        cont_slots = int(cont_slots)
+
+        # sets is the times an advertisement have to be displayed
         sets = request.no_of_slots / cont_slots
+        sets = int(sets)
+
+        # add the advertisement to advertisement table
         ad = advertisement(upload=request.upload_Advertisement,time_len=request.time_of_advertisement)
         ad.save()
-        for week_no in xrange(wn+int(request.no_of_weeks)) :
+
+        for week_no in range(int(request.no_of_weeks)) :
+            week_no += wn
             while y < top :
                 x = left
                 while x < right :
-                    zone_no = getzone(x,y)
-                    OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                    required_bundles = (OArea/BAREA)*request.select_bundles ;
-                    # book_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no)
-                    # Updating the database
 
-                    Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
-                    i = 0
-                    while i < range(len(Slots)) :
-                        slot = Slots[i]
-                        left = sets
-                        valid = True
-                        for j in range(cont_slots) :
-                            if i+j > len(Slots) and i+j <= MAX_SLOTS :
-                                pass
-                            elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
-                                pass
-                            else :
-                                valid = False
-                                break
-                        if valid :
-                            for j in range(cont_slots) :
-                                slot = Slots[i+j]
-                                slot.no_of_bundles_used += required_bundles
-                                slot.save()
-                                start = False
-                                if j == 0 :
-                                    start = True
-                                schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
-                                schedule.save()
-                            i += cont_slots
-                            left -= 1
-                            if left == 0 :
-                                break
-                        else :
-                            i += 1
-                    #the update complete
+                    # find the zone no based the coordinates
+                    zone_no = getzone(x,y)
+
+                    # get the overlap area between the bussiness area wrt to the current point and the zone
+                    OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+                    if OArea == False :
+                        # error has been raised
+                        # the user has inputed an invalid location
+                        redirect(invalid_location)
+
+                    # the number of bundles that needs to be given to the current advertisement in the current zone
+                    required_bundles = (OArea/BAREA)*request.select_bundles
+
+                    #update the current slot
+                    update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad)
+
                     x += delx
                 y += dely
         return True
