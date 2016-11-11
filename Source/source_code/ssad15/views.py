@@ -55,20 +55,36 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
     Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by('slot_no')
     total_bundles = DEFAULT_BUNDLES
 
+    # pre condition : zone_info should have been populated atleast once : initilize_zone.py
     info = zone_info.objects.filter(zone_id = zone_no).order_by('-week')
     if len(info)!=0 :
+
+        # find if the total no of bundles have been modified by the Admin
+        # if yes find the most recent modification and use that
         for inf in info :
             if inf.week <= week_no :
                 total_bundles = inf.no_of_bundles
                 break
+
+    else :
+
+        #error raised
+        # probable cause database has not been populated
+        #displaying appropriate warnings
+        print "Warning : Admin : Database has not been populated"
+        print "Run initilize_zone.py to rectify the error"
+        redirect(invalid_empty_database)
+
     i=0
+
+    # algorithm to check avaialable availability of slots
     while i < len(Slots) :
         slot = Slots[i]
         valid = True
         for j in range(cont_slots) :
-            if i+j > len(Slots) and i+j <= MAX_SLOTS :
+            if i+j+1 > len(Slots) and i+j+1 <= MAX_SLOTS :
                 pass
-            elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
+            elif i+j+1 <= len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
                 pass
             else :
                 valid = False
@@ -77,11 +93,14 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
             sets -= 1
             i += cont_slots
             if sets == 0 :
+                # if the demand has been met return true
                 return True
         else :
             i += 1
     if len(Slots) + sets*cont_slots <= MAX_SLOTS :
+        # if the demand can be met
         return True
+
     return False
 
 def check_availability(request) :
@@ -418,4 +437,7 @@ def render_advertisement(request):
     return render(request,'ssad15/render_advertisement.html')
 
 def invalid_location(request) :
+    pass
+
+def invalid_empty_database(request) :
     pass
