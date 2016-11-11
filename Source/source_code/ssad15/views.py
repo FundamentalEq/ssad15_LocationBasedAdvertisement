@@ -128,33 +128,34 @@ def check_availability(request) :
     sets = request.no_of_slots / cont_slots
     sets = int(sets)
 
-    for week_no in range(int(request.no_of_weeks)) :
-        week_no += wn
-        while y < top :
-            x = left
-            while x < right :
+    while y < top :
+        x = left
+        while x < right :
 
-                # find the zone no based the coordinates
-                zone_no = getzone(x,y)
+            # find the zone no based the coordinates
+            zone_no = getzone(x,y)
 
-                # get the overlap area between the bussiness area wrt to the current point and the zone
-                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                if OArea == False :
-                    # error has been raised
-                    # the user has inputed an invalid location
-                    redirect(invalid_location)
+            # get the overlap area between the bussiness area wrt to the current point and the zone
+            OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+            if OArea == False :
+                # error has been raised
+                # the user has inputed an invalid location
+                redirect(invalid_location)
 
-                # the number of bundles that needs to be given to the current advertisement in the current zone
-                required_bundles = (OArea/BAREA)*request.select_bundles
+            # the number of bundles that needs to be given to the current advertisement in the current zone
+            required_bundles = (OArea/BAREA)*request.select_bundles
 
-                # calls the check_for_slot() to check for availability of slots in the current zone
+            # calls the check_for_slot() to check for availability of slots in the current zone for all the required weeks
+            for week_no in range(int(request.no_of_weeks)) :
+                week_no += wn
                 if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no) :
                     # no slots are avaialable in the current zone
                     # rasie error
                     return False
 
-                x += delx
-            y += dely
+            x += delx
+        y += dely
+
     return True
 
 
