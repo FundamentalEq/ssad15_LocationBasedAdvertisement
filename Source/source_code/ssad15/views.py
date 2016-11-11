@@ -54,6 +54,7 @@ def getWeekNumber(cur_date) :
 def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_no) :
     Slots = slots.objects.filter(zone_id = zone_no,week = week_no).order_by('slot_no')
     total_bundles = DEFAULT_BUNDLES
+
     info = zone_info.objects.filter(zone_id = zone_no).order_by('-week')
     if len(info)!=0 :
         for inf in info :
@@ -84,27 +85,52 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
     return False
 
 def check_availability(request) :
-    print "***************************the check function has been called"
+
+    # intializing the variables need for the calculations
     Xcenter = float(request.bussinessPoint_longitude)
     Ycenter = float(request.bussinessPoint_latitude)
     left = Xcenter - DELX/2
     right = Xcenter + DELX/2
     bottom = Ycenter - DELY/2
     top = Ycenter + DELY/2
+
     # starting the loop to map the request into zones and check the availability
     y = bottom
     wn = getWeekNumber(request.start_week)
+    wn = int(wn)
+
+    # the number of slots that must be given in continuous
+    # eg a 45 second add must be given 2 slots at min in continuous to be displayed
     cont_slots = math.ceil(request.time_of_advertisement/30.0)
+
+    # sets is the times an advertisement have to be displayed
     sets = request.no_of_slots / cont_slots
+    sets = int(sets)
+
     for week_no in xrange(wn+int(request.no_of_weeks)) :
         while y < top :
             x = left
             while x < right :
+
+                # find the zone no based the coordinates
                 zone_no = getzone(x,y)
+
+                # get the overlap area between the bussiness area wrt to the current point and the zone
                 OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                required_bundles = (OArea/BAREA)*request.select_bundles ;
+                if OArea == False :
+                    # error has been raised
+                    # the user has inputed an invalid location
+                    redirect(invalid_location)
+
+                # the number of bundles that needs to be given to the current advertisement in the current zone
+                required_bundles = (OArea/BAREA)*request.select_bundles
+
+                # calls the check_for_slot() to check for availability of slots in the current zone
                 if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no) :
-                    return False ;
+                    # no slots are avaialable in the current zone
+                    # rasie error
+                    return False
+
                 x += delx
             y += dely
     return True
@@ -390,3 +416,6 @@ def start_advertisement(request):
     return render(request,'ssad15/start_advertisement.html')
 def render_advertisement(request):
     return render(request,'ssad15/render_advertisement.html')
+
+def invalid_location(request) :
+    pass
