@@ -99,7 +99,6 @@ def check_availability(request) :
     return True
 
 def update_scheduler(request) :
-    print "adding request to database " , request
     # making sure that the slot is still avaialable
     if not check_availability(request) :
         return False
@@ -114,7 +113,7 @@ def update_scheduler(request) :
         wn = getWeekNumber(request.start_week)
         cont_slots = math.ceil(request.time_of_advertisement/30.0)
         sets = request.no_of_slots / cont_slots
-        ad = advertisement(upload=request.upload_Advertisement,time_len=time_of_advertisement)
+        ad = advertisement(upload=request.upload_Advertisement,time_len=request.time_of_advertisement)
         ad.save()
         for week_no in xrange(wn+int(request.no_of_weeks)) :
             while y < top :
@@ -126,7 +125,7 @@ def update_scheduler(request) :
                     # book_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no)
                     # Updating the database
 
-                    Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by(slot_no)
+                    Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
                     i = 0
                     while i < range(len(Slots)) :
                         slot = Slots[i]
