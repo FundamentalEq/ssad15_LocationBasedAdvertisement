@@ -337,35 +337,56 @@ def find_slot_no(Zone_id) :
         return cur_slot.slot
 
 def get_advertisement(Zone_id):
+
+    #finding the current slot no for the current zone based on the server time and
+    #total number of active slots in that zone
     slot_no = find_slot_no(Zone_id)
+
+    # get all the advertisement in the current zone , whos display start in the
+    # current zone
     all_adv = slot.objects.filter(zone_id_id=Zone_id,slot_no=slot_no,is_starting = True)
+
+    if len(all_adv) == 0 :
+        # no advertisement to be displayed in the current zone that starts in the current slot
+        # need to pass some default advertisement
+        pass
+
+# to find the number of devices that have already been in the current zone current slot
     X = running.objects.filter(zone=Zone_id,slot_no=slot_no)
     if len(X) == 0 :
         X = running(zone_id=Zone_id,slot_no=slot_no,alloted=0)
-        X.save()
     else :
         X = X[0]
     X.alloted += 1
     X.save()
+
     X = X.alloted
+
+    # algorithm to find advertisement that should be displayed
     Ad = 0
     priority = 0
     for ad in all_adv :
+
+        # no of devices that are already showing the current advertisement
         given = running_ads.objects.filter(zone_id=Zone_id,ad=ad.advertisement_id,slot_no=slot_no)
+
         if len(given) == 0 :
+            # => no device has been alloted to current device in this slot
+            # make a new entry in the table
             given = running_ads(zone_id=Zone_id,slot_no=slot_no,ad=ad.advertisement_id,given=0)
             given.save()
         else :
             given = given[0]
+
         if ad.bundles_tobegiven*X - given.given > priority :
             priority = ad.bundles_tobegiven*X - given.given
             Ad = ad.advertisement_id
 
-    cur_ad = running_ads.objects.filter(ad=Ad)[0]
-    cur_ad.given += 1
-    cur_ad.save()
+    # Ad will have id of the advertisement that should be displayed
 
     cont_slots = math.ceil(cur_ad.time_len /30.0)
+    cont_slots = int(cont_slots)
+
     for sl in range(slot_no+1,slot_no+cont_slots) :
         rs = running_slots.objects.filter(zone_id=Zone_id,slot=sl)
         if len(rs) == 0 :
@@ -384,24 +405,6 @@ def get_advertisement(Zone_id):
     my_ad=get_object_or_404(advertisement,id=Ad)
     path = my_ad.upload.url
     return str(path),my_ad.time_len
-    # my_ad = advertisement.objects.filter()
-    # Slot=running.objects.filter(zone_id=Zone_id)[0]
-    # tot = slot.objects.filter(zone_id=Zone_id)
-    # tot_slots = len(tot)
-    # if tot_slots == 0 :
-    #     pass # to handeled later
-    # Slot.slot_no = Slot.slot_no + 1
-    # if Slot.slot_no > tot_slots :
-    #     Slot.slot_no=1
-    # slot_no=Slot.slot_no
-    # print "the current slot is ",slot_no
-    # Slot.save()
-    # SSlot=get_object_or_404(slot,zone_id_id=Zone_id,slot_no=slot_no)
-    # ad_id=SSlot.advertisement_id_id
-    # print "Ad is ",ad
-    # path=ad.upload.url
-    # path=str(path)
-    # return path
 
 #get the pinged location from the device
 #get corresponding zone no and display advertisement according to time and zone
