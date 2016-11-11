@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 import datetime
 from forms import *
+import json
+
 def index(request):
     return HttpResponse("Location Based Advertising")
 
@@ -408,8 +410,8 @@ def get_advertisement(Zone_id):
 
 #get the pinged location from the device
 #get corresponding zone no and display advertisement according to time and zone
-#this function to be changed for scheduling in R2
-import json
+
+
 def display_advertisement(request):
     #checking if location is posted or not
     #error set to 1 represents an error in getting location of the device
@@ -430,17 +432,17 @@ def display_advertisement(request):
         return HttpResponse("Error in getting location !")
     else :
         zone_no=getzone(longitude,latitude)
-        print "zone no is ",zone_no
+
+        # get the required details about the advertisement to be displayed
         path,time_len=get_advertisement(zone_no)
-        # path = "media/" + path
-        print "path fron db is",path
-        # path = "chaitanya"
+
         context={'path':path,'time_len':time_len}
         return HttpResponse(
             json.dumps(context),
             content_type="application/json"
         )
-        # return render(request, 'ssad15/display_advertisement.html', context)
+
+
 # function to calculate total cost to be paid by the customer
 def total_cost(request):
     print "total cost has been called"
@@ -480,6 +482,8 @@ def total_cost(request):
                 x += delx
             y += dely
     return int(total_cost)
+
+
 def select_zone(request) :
     error = 0
     if request.method == 'POST':
