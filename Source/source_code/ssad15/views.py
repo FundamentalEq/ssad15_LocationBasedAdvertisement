@@ -302,20 +302,39 @@ def update_scheduler(request) :
 # get advertisment corresponding to the zone device is in and also the server time
 
 def find_slot_no(Zone_id) :
+    # taking the current server time
     cur = datetime.datetime.now()
-    cur_slot = running_slots.objects.all.filter(zone_id=Zone_id)[0]
-    diff = (cur.minute - cur_slot.start_time.minute)*60 + (cur.second - cur_slot.start_time.second)
-    change = math.floor(diff/30.0)
-    cur_slot.slot += change
-    max_avail_slots = len(slot.objects.filter(zone_id=Zone_id))
-    if cur_slot.slot > max_avail_slots :
-        cur_slot.slot = 1
-        running.objects.filter(zone_id=Zone_id).delete()
-        running_ads.objects.filter(zone_id=Zone_id).delete()
-    if change > 0 :
-        cur_slot.start_time = cur
-    cur_slot.save()
-    return cur_slot.slot
+
+    cur_slot = running_slots.objects.all.filter(zone_id=Zone_id)
+    if len(cur_slot) == 0 :
+
+        # error raised
+        # probable cause database has not been populated
+        #displaying appropriate warnings
+        print "Warning : Admin : Database has not been populated"
+        print "Run initilize_zone.py to rectify the error"
+        redirect(invalid_empty_database)
+
+    else :
+
+        # algorithm for calculating the current slot based on total number of slots present
+        # and the time elapsed since the start of the current slot
+        diff = (cur.minute - cur_slot.start_time.minute)*60 + (cur.second - cur_slot.start_time.second)
+        change = math.floor(diff/30.0)
+        change = int(change)
+
+        if change > 0 :
+            running.objects.filter(zone_id=Zone_id).delete()
+            running_ads.objects.filter(zone_id=Zone_id).delete()
+
+            # formula cur_slot = (pre_cur_slot + change - 1)%total_no_of_slots + 1
+            max_avail_slots = len(slot.objects.filter(zone_id=Zone_id))
+            cur_slot.slot = (cur_slot.slot + change - 1)%max_avail_slots + 1
+
+            # updating the database
+            cur_slot.save()
+
+        return cur_slot.slot
 
 def get_advertisement(Zone_id):
     slot_no = find_slot_no(Zone_id)
