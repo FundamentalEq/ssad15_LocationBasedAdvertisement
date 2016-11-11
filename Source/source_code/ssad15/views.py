@@ -267,30 +267,34 @@ def update_scheduler(request) :
         ad = advertisement(upload=request.upload_Advertisement,time_len=request.time_of_advertisement)
         ad.save()
 
-        for week_no in range(int(request.no_of_weeks)) :
-            week_no += wn
-            while y < top :
-                x = left
-                while x < right :
+        # looping through the map
+        while y < top :
+            x = left
+            while x < right :
 
-                    # find the zone no based the coordinates
-                    zone_no = getzone(x,y)
+                # find the zone no based the coordinates
+                zone_no = getzone(x,y)
 
-                    # get the overlap area between the bussiness area wrt to the current point and the zone
-                    OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                    if OArea == False :
-                        # error has been raised
-                        # the user has inputed an invalid location
-                        redirect(invalid_location)
+                # get the overlap area between the bussiness area wrt to the current point and the zone
+                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+                if OArea == False :
+                    # error has been raised
+                    # the user has inputed an invalid location
+                    redirect(invalid_location)
 
-                    # the number of bundles that needs to be given to the current advertisement in the current zone
-                    required_bundles = (OArea/BAREA)*request.select_bundles
+                # the number of bundles that needs to be given to the current advertisement in the current zone
+                required_bundles = (OArea/BAREA)*request.select_bundles
 
-                    #update the current slot
+                #update the slots for all the required weeks for the current zone
+                for week_no in range(int(request.no_of_weeks)) :
+                    week_no += wn
                     update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad)
 
-                    x += delx
-                y += dely
+                x += delx
+            y += dely
+        for week_no in range(int(request.no_of_weeks)) :
+            week_no += wn
+
         return True
 
 
