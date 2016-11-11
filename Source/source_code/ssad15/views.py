@@ -75,9 +75,9 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
         print "Run initilize_zone.py to rectify the error"
         redirect(invalid_empty_database)
 
-    i=0
-
     # algorithm to check avaialable availability of slots
+
+    i=0
     while i < len(Slots) :
         slot = Slots[i]
         valid = True
@@ -161,35 +161,53 @@ def check_availability(request) :
 def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
     # algorithm for Updating the database
     Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
-    i = 0
-    while i < range(len(Slots)) :
-        slot = Slots[i]
-        left = sets
+
+    i=0
+    while i < len(Slots) :
+
         valid = True
         for j in range(cont_slots) :
-            if i+j > len(Slots) and i+j <= MAX_SLOTS :
+            if i+j+1 > len(Slots) and i+j+1 <= MAX_SLOTS :
                 pass
-            elif i+j < len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
+            elif i+j+1 <= len(Slots) and total_bundles - Slots[i+j].no_of_bundles_used >= required_bundles :
                 pass
             else :
                 valid = False
                 break
+
         if valid :
+            # found the slot ,where the entery can be made
             for j in range(cont_slots) :
-                slot = Slots[i+j]
-                slot.no_of_bundles_used += required_bundles
-                slot.save()
-                start = False
-                if j == 0 :
-                    start = True
-                schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
-                schedule.save()
+                # if the i+j+1 slot already exist
+                if i+j+1 <= len(Slots) :
+                    slot = Slots[i+j]
+                    slot.no_of_bundles_used += required_bundles
+                    slot.save()
+                    start = False
+                    if j == 0 :
+                        start = True
+                    schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
+                    schedule.save()
+
+                else :
+                    slot = slots(zone_id=zone_no,week=week_no,slot_no=int(i+j+1),no_of_bundles_used=0)
+                    slot.no_of_bundles_used += required_bundles
+                    slot.save()
+                    start = False
+                    if j == 0 :
+                        start = True
+                    schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,bundles_tobegiven=required_bundles,is_starting=start)
+                    schedule.save()
+
             i += cont_slots
-            left -= 1
-            if left == 0 :
+            sets -= 1
+            if sets == 0 :
                 break
         else :
             i += 1
+    if sets > 0 :
+        pass
+
     #the update complete
 
 def update_scheduler(request) :
