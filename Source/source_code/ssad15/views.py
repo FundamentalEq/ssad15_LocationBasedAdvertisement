@@ -51,7 +51,7 @@ def getzone(longitude,latitude):
     return zone_no
 
 def getOverLappingArea(left,right,bottom,top,zone_no):
-    print "required zone no is ",zone_no
+
     Zone = zone.objects.filter(id=zone_no)
     # error handling
     if len(Zone) == 0 :
@@ -83,7 +83,7 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
         print "Warning : Area is negative"
         print "Check formula"
         redirect(internal_server_error)
-        
+
     return area
 
 def getWeekNumber(cur_date) :
@@ -201,7 +201,6 @@ def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info
     # changing data type to avoid precision errors
     required_bundles = Decimal(required_bundles)
     # algorithm for Updating the database
-    print "required_bundles = ",required_bundles
     Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
 
     total_bundles = DEFAULT_BUNDLES
@@ -369,7 +368,7 @@ def find_slot_no(Zone_id) :
     # taking the current server time
     cur = datetime.datetime.now()
 
-    cur_slot = running_slots.objects.all.filter(zone_id=Zone_id)
+    cur_slot = running_slots.objects.filter(zone_id=Zone_id)
     if len(cur_slot) == 0 :
 
         # error raised
@@ -380,7 +379,7 @@ def find_slot_no(Zone_id) :
         redirect(invalid_empty_database)
 
     else :
-
+        cur_slot = cur_slot[0]
         # algorithm for calculating the current slot based on total number of slots present
         # and the time elapsed since the start of the current slot
         diff = (cur.minute - cur_slot.start_time.minute)*60 + (cur.second - cur_slot.start_time.second)
@@ -413,6 +412,7 @@ def get_advertisement(Zone_id):
     if len(all_adv) == 0 :
         # no advertisement to be displayed in the current zone that starts in the current slot
         # need to pass some default advertisement
+        print "No advertisement to displayed"
         pass
 
 # to find the number of devices that have already been in the current zone current slot
@@ -444,10 +444,10 @@ def get_advertisement(Zone_id):
 
         if ad.bundles_tobegiven*X - given.given > priority :
             priority = ad.bundles_tobegiven*X - given.given
-            Ad = ad.advertisement_id
+            Ad = ad.advertisement_id_id
 
     # Ad will have id of the advertisement that should be displayed
-
+    cur_ad = advertisement.objects.filter(id=Ad)[0]
     cont_slots = math.ceil(cur_ad.time_len /30.0)
     cont_slots = int(cont_slots)
 
@@ -489,12 +489,12 @@ def display_advertisement(request):
             error=1
     else :
         error = 1
-    print Decimal(longitude),Decimal(latitude)
+    print "incoming = " , Decimal(longitude),Decimal(latitude)
     if error:
         return HttpResponse("Error in getting location !")
     else :
         zone_no=getzone(longitude,latitude)
-
+        print "the zone no is = ",zone_no
         # get the required details about the advertisement to be displayed
         path,time_len=get_advertisement(zone_no)
 
