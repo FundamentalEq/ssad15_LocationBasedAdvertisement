@@ -446,41 +446,72 @@ def display_advertisement(request):
 # function to calculate total cost to be paid by the customer
 def total_cost(request):
     print "total cost has been called"
+    # intializing the variables need for the calculations
     Xcenter = float(request.bussinessPoint_longitude)
     Ycenter = float(request.bussinessPoint_latitude)
     left = Xcenter - DELX/2
     right = Xcenter + DELX/2
     bottom = Ycenter - DELY/2
     top = Ycenter + DELY/2
-    #variable to store total_cost
-    total_cost=0
-    # starting the loop to map the request into zones and calculate total cost
+
+    # starting the loop to map the request into zones and check the availability
     y = bottom
     wn = getWeekNumber(request.start_week)
+    wn = int(wn)
+
+    #variable to store total_cost
+    total_cost=0
+
+    # starting the loop to map the request into zones and calculate total cost
+    # no of slots requested by the user
     no_of_slots=request.no_of_slots
-    for week_no in xrange(wn+int(request.no_of_weeks)) :
-        while y < top :
-            x = left
-            while x < right :
-                zone_no = getzone(x,y)
-                OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                required_bundles = (OArea/BAREA)*request.select_bundles
-                z=zone_info.objects.filter(zone_id=zone_no).order_by('-week')
+    no_of_slots = int(no_of_slots)
+
+    while y < top :
+        x = left
+        while x < right :
+
+            # find the zone no based the coordinates
+            zone_no = getzone(x,y)
+
+            # get the overlap area between the bussiness area wrt to the current point and the zone
+            OArea = getOverLappingArea(left,right,bottom,top,zone_no)
+            if OArea == False :
+                # error has been raised
+                # the user has inputed an invalid location
+                redirect(invalid_location)
+
+            # the number of bundles that needs to be given to the current advertisement in the current zone
+            required_bundles = (OArea/BAREA)*request.select_bundles
+
+            zone_information = zone_info.objects.filter(zone_id=zone_no).order_by('-week')
+            for week_no in range(int(request.no_of_weeks)) :
+                week_no += wn
                 i = 0
+                select_week = -1
+                cost = 0
+
                 while i< len(z):
-                    if z[i].week <= week_no:
-                        w=z[i].week
+                    if zone_information[i].week <= week_no:
+                        select_week = zone_information[i].week
+                        cost = zone_information[i].cost
                         break
                     else :
                         i += 1
-                if i!= len(z) :
-                    zone=get_object_or_404(zone_info,zone_id=zone_no,week=w)
-                    cost=zone.cost
-                else :
-                    cost
-                total_cost=total_cost+required_bundles * cost * no_of_slots
-                x += delx
-            y += dely
+
+                if select_week == -1 :
+                    # error raised
+                    # no cost available for the the given zone
+                    #displaying appropriate warnings
+                    print "Warning : Admin : Database has not been populated"
+                    print "Run initilize_zone.py to rectify the error"
+                    redirect(invalid_empty_database)
+
+                total_cost = total_cost + required_bundles * cost * no_of_slots
+            x += delx
+        y += dely
+
+    # returning the total cost that the merchant will have to pay
     return int(total_cost)
 
 
