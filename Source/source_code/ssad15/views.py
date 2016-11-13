@@ -391,7 +391,7 @@ def find_slot_no(Zone_id) :
             running_ads.objects.filter(zone_id=Zone_id).delete()
 
             # formula cur_slot = (pre_cur_slot + change - 1)%total_no_of_slots + 1
-            max_avail_slots = len(slot.objects.filter(zone_id=Zone_id))
+            max_avail_slots = len(slot.objects.filter(zone_id=Zone_id).values('slot_no').distinct())
             cur_slot.slot = (cur_slot.slot + change - 1)%max_avail_slots + 1
 
             # updating the database
@@ -428,7 +428,7 @@ def get_advertisement(Zone_id):
 
     # algorithm to find advertisement that should be displayed
     Ad = 0
-    priority = 0
+    priority = -10000000000
     for ad in all_adv :
 
         # no of devices that are already showing the current advertisement
