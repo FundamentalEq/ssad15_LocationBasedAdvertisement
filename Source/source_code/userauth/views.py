@@ -152,7 +152,7 @@ def device_login(request):
                 else:
                         return HttpResponse("Invalid Login")
         else:
-                return render(request,'userauth/logdiv.html', {})
+                return render(request,'userauth/device_login.html', {})
 def user_edit(request,pk):
         if UserProfile.objects.filter(user = request.user).count()==1:
                 print 11
