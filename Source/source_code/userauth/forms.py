@@ -30,17 +30,19 @@ class UserForm(forms.ModelForm):
                                 "password and confirm password does not match"
                 )
 class UserProfileForm(forms.ModelForm):
-    	class Meta:
-        	model = UserProfile
+	class Meta:
+		model = UserProfile
 		widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control','placeholder': 'First-Name'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last-Name'}),
-	    'address': forms.Textarea(attrs={'class': 'form-control' }),
-   	    'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'city': forms.TextInput(attrs={'class': 'form-control'}),
-            'pincode': forms.NumberInput(attrs={'class': 'form-control'}),
-	    }
-        	fields = ('phone_number','address','first_name' , 'last_name', 'ad_type','city','pincode',)
+				'first_name': forms.TextInput(attrs={'class': 'form-control','placeholder': 'First-Name'}),
+				'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last-Name'}),
+				'address': forms.Textarea(attrs={'class': 'form-control','placeholder':'Address' }),
+				'phone_number': forms.TextInput(attrs={'class': 'form-control','placeholder':'Enter 10 digit phone number'}),
+				'city': forms.TextInput(attrs={'class': 'form-control','placeholder':'Enter the city where you do bussiness'}),
+				'pincode': forms.NumberInput(attrs={'class': 'form-control','placeholder':'Enter the pincode of your area'}),
+				}
+		fields = ('phone_number','address','first_name' , 'last_name', 'ad_type','city','pincode',)
+
+
 class UploadForm(forms.ModelForm):
 	class Meta:
 		model = UploadAdvetisement
