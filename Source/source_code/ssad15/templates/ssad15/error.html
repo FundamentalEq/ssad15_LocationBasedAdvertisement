@@ -1,0 +1,7 @@
+{% extends 'userauth/base.html' %}
+{% load static %}
+  {% block content %}
+  <img src="{% static 'userauth/images/error.jpg' %}" alt="error"/>
+  <h2>ERROR</h2>
+  <h4>{{ error_message }}</h4>
+{% endblock %}
