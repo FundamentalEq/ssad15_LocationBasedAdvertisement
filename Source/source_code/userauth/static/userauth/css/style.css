@@ -10,6 +10,7 @@ body {
   color: #363535;
   font: 300 18px/36px 'Open Sans', sans-serif;
 }
+#forgot { color: #ffffff }
 .navigat { background: #b3f0ff}
 .ho_line { width:100%; height:10px; background: #fff }
 .ic {
