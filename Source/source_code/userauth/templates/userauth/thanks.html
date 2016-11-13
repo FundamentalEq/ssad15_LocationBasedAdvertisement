@@ -2,8 +2,9 @@
 {% load static %}
       {% block content %}
         {% if user.is_authenticated %}
+        <br /><br /><br />
         <div class="panel panel-primary">
-        <div class="panel-heading">Thanks of Uploading Advertisements</div>
+        <div class="panel-heading">Thanks for Uploading Advertisements</div>
         <div class="panel-body">You Have Paid Total Amount {{c}} </div>
     </div>
 {% else %}
@@ -11,4 +12,3 @@
 {% endif %}
 
 {% endblock %}
-

@@ -4,10 +4,23 @@
       <br /><br /><br />
       <div class="panel panel-primary">
       <div class="panel-heading"><b>Invalid Login Details </b></div>
-      <div class="panel-body">Either username or password is incorrect.
-      <br />
-    Try login again <a href="">Here</a> <br />
-  Forgot your Password. <a href="">Click Here </a> <br />
-If not signed up.<a href="">Sign Up Here</a></div> <br />
+      <div class="panel-body">
+      <div class="row">
+<div class="col-md-3">
+
+            <img src="{%static 'userauth/images/error.png' %}" width="90px" height="90px" float="left" />
+          </div>
+
+            <b>Either username or password is incorrect.
+          <div class="col-md-8">
+
+          </b>
+    Try login again <a href="{% url 'login' %}">Here</a> <br />
+  Forgot your Password? <a href="{% url 'password_reset' %}">Click Here </a> <br />
+If not signed up.<a href="{% url 'register' %}">Sign Up Here</a> <br />
+</div>
+
+</div>
   </div>
+</div>
   {% endblock %}
