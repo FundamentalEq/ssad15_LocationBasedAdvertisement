@@ -2,6 +2,7 @@
 {% load static %}
       {% block content %}
         {% if user.is_authenticated %}
+        <br /><br /><br />
         <div class="panel panel-primary">
         <div class="panel-heading">Total Amount To Be Paid</div>
         <div class="panel-body">Rs.(including taxes) {{c}} </div>
@@ -13,7 +14,7 @@
                                     {{ p.upload_Advertisement }}
                   </div>
 
-		
+
                 <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Confirm" /></center>
         </form>
           <form id="user_form" method="post" action="/userauth/not_confirm_cost/"

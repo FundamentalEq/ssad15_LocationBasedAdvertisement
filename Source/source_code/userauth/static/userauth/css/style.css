@@ -73,7 +73,7 @@ img {
 }
 /*============  Colors  =============*/
 .color_1 {
-  color: #ffffff;
+  color: #e6fff7;
 }
 .color_1 a {
   color: inherit;
@@ -94,7 +94,7 @@ img {
   color: #a0d6d4;
 }
 .color_4 a {
-  color: #ffffff;
+  color: #e6fff7;
 }
 .color_5 {
   color: #413d3d;
@@ -121,7 +121,7 @@ img {
 }
 /*============  Page  =============*/
 .page {
-  background: #ffffff;
+  background: #e6fff7;
 }
 /*========================================================
                     HEADER styles
@@ -202,7 +202,7 @@ img {
   width: 220px;
   padding: 10px 0;
   text-align: left;
-  background: #ffffff;
+  background: #e6fff7;
   z-index: 2;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -219,7 +219,7 @@ img {
 .sf-menu ul li.current > a,
 .sf-menu ul li a:hover {
   background: #00ccff;
-  color: #ffffff;
+  color: #e6fff7;
   text-decoration: none;
 }
 .sf-menu ul li + li {
@@ -375,7 +375,7 @@ img {
 /* Stuck menu styles
 ========================================================*/
 .isStuck {
-  background: #ffffff;
+  background: #e6fff7;
   z-index: 999;
   border-bottom: 1px solid #199b97;
 }
@@ -527,7 +527,7 @@ img {
   background: #00ccff;
 }
 .btn_1:hover {
-  color: #ffffff;
+  color: #e6fff7;
   background: #249f9c;
   text-decoration: none;
 }
@@ -539,7 +539,7 @@ img {
   background: #00ccff;
 }
 .btn_2:hover {
-  color: #ffffff;
+  color: #e6fff7;
   background: #249f9c;
   text-decoration: none;
 }
@@ -551,7 +551,7 @@ img {
   background: #00ccff;
 }
 .btn_3:hover {
-  color: #ffffff;
+  color: #e6fff7;
   background: #249f9c;
   text-decoration: none;
 }
@@ -707,7 +707,7 @@ img {
   height: 50px;
   border-radius: 25px;
   text-align: center;
-  color: #ffffff;
+  color: #e6fff7;
   background: #00ccff;
   font: 700 36px/48px 'Open Sans', sans-serif;
 }
@@ -786,7 +786,7 @@ img {
   display: inline-block;
   width: 50px;
   height: 50px;
-  color: #ffffff;
+  color: #e6fff7;
   background: #dcd9d9;
   text-align: center;
   border-radius: 25px;

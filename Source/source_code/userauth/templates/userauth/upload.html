@@ -111,6 +111,21 @@
           <p>Your don't have access to this page. To proceed,
      please login with an account that has access.</p>
          {% endif %}
+         <br />
+         <b>NOTE:</b> <ul>
+           <li>
+             Time of advertisement is total running time for your advertisement.
+           </li>
+           <li>
+             Each slot is of 30 seconds.You have to pay in terms of number of slots purchased.
+           </li>
+           <li>
+             Advertisement will be live from monday of the week selected by you.
+           </li>
+           <li>
+             Number of bundles will be proportional to the number of devices which will display your advertisement.
+           </li>
+         </ul>
 </div>
 <div class="col-md-4">
     <div id="map" class="map" tabindex="0" style="height:500px;width:500px"></div>
@@ -122,7 +137,7 @@
      <!--script to automatically detect no of slots -->
           <script src="{%static 'userauth/js/no_slots.js' %}"></script>
          <script src="{%static 'userauth/js/upload_advertisement/getUserLocation.js' %}"></script>
-         
+
 
 
 {% endblock %}

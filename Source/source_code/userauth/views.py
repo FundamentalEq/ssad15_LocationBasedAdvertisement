@@ -69,9 +69,9 @@ def user_login(request):
             		else:
                 		return HttpResponse("Your account is disabled.")
 		else:
-			return HttpResponse("Invalid login details supplied.")
+			return render(request,'userauth/invalid_login.html', {})
         else:
-            	return HttpResponse("Invalid login details supplied.")
+            	return render(request,'userauth/invalid_login.html', {})
 
     else:
         return render(request,'userauth/login.html', {})
