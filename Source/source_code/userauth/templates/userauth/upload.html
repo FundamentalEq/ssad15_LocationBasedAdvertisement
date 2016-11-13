@@ -105,27 +105,30 @@
             <input type="submit" name="submit" class="btn btn-primary" />
         </form>
 
-
+        <br />
+        <b>NOTE:</b> <ul>
+          <li>
+            Time of advertisement is total running time for your advertisement.
+          </li>
+          <li>
+            Each slot is of 30 seconds.You have to pay in terms of number of slots purchased.
+          </li>
+          <li>
+            Advertisement will be live from monday of the week selected by you.
+          </li>
+          <li>
+            Number of bundles will be proportional to the number of devices which will display your advertisement.
+          </li>
+        </ul>
          {% endif %}
          {% else  %}
-          <p>Your don't have access to this page. To proceed,
-     please login with an account that has access.</p>
+          <p align="centre">Your don't have access to this page. To proceed,
+     please login with an account that has access.
+   <h4><a href="{% url 'login' %}">LOGIN HERE </a></h4>
+   <h4>New User ? <a href="{% url 'register' %}">Register HERE </a></h4>
+ </p>
          {% endif %}
-         <br />
-         <b>NOTE:</b> <ul>
-           <li>
-             Time of advertisement is total running time for your advertisement.
-           </li>
-           <li>
-             Each slot is of 30 seconds.You have to pay in terms of number of slots purchased.
-           </li>
-           <li>
-             Advertisement will be live from monday of the week selected by you.
-           </li>
-           <li>
-             Number of bundles will be proportional to the number of devices which will display your advertisement.
-           </li>
-         </ul>
+
 </div>
 <div class="col-md-4">
     <div id="map" class="map" tabindex="0" style="height:500px;width:500px"></div>
