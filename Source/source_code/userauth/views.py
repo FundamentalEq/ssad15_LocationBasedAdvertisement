@@ -215,19 +215,22 @@ def user_history(request):
 def total_cost(request):
 	if request.method == "POST":
 		p = UploadFileForm(request.POST, request.FILES)
-                if p.is_valid():
-                        p = p.save(commit=False)
-                        if  request.user.is_superuser:
-                                p.uploader = post.uploader
-                        else:
-                                p.uploader = request.user
+		if p.is_valid():
+			p = p.save(commit=False)
+			if request.user.is_superuser:
+				p.uploader = post.uploader
+			else:
+				p.uploader = request.user
 			post.save()
-                	p.uploadby = post
-                	p.save()
-                        return render(request,'userauth/thanks.html', {'c':c})
+			post.upload_Advertisement = p.upload_Advertisement
+			update_scheduler(post)
+			p.uploadby = post
+			p.save()
+			return render(request,'userauth/thanks.html', {'c':c})
 	else:
 		p = UploadFileForm()
 	return render(request,'userauth/total_cost.html',{'p': p ,'c':c})
+
 def not_confirm_cost(request):
 	return render(request,'userauth/nothanks.html', {})
 
