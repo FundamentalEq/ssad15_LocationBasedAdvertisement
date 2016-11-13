@@ -142,17 +142,20 @@ def upload(request):
 def home(request):
 	return render(request,'userauth/index.html')
 def device_login(request):
-        if request.method == "POST":
-                username = request.POST.get('username')
-                password = request.POST.get('password')
-                #if Add_Device.objects.filter(Username=request.POST['username'], password=request.POST['password']).exists():
-                if Add_Device.objects.filter(Username=request.POST['username'],password=request.POST['password']).count()==1:
-                        #return render(request,'/userauth/')
-                        return HttpResponseRedirect('/ssad15/start_advertisement')
-                else:
-                        return HttpResponse("Invalid Login")
-        else:
-                return render(request,'userauth/device_login.html', {})
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		print Add_Device.objects.filter(Username=username,password=password).count()
+		#if Add_Device.objects.filter(Username=request.POST['username'], password=request.POST['password']).exists():
+		if Add_Device.objects.filter(Username=username,password=password).count() > 0:
+				#return render(request,'/userauth/')
+				return HttpResponseRedirect('/ssad15/start_advertisement')
+		else:
+				return HttpResponse("Invalid Login")
+
+	else:
+		return render(request,'userauth/device_login.html', {})
+
 def user_edit(request,pk):
         if UserProfile.objects.filter(user = request.user).count()==1:
                 print 11
