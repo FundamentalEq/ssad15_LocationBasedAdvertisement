@@ -12,12 +12,12 @@ def do_transfer() :
     running.objects.all().delete()
     #all the stale data has been deleted
     for s in slots.objects.filter(week=week_no) :
-        for schedule in scheduler.objects.filter(slot_id=s.id) :
-            entery = slot(zone_id_id=s.zone,slot_no=s.slot_no,
+        for schedule in scheduler.objects.filter(slots_id=s.id) :
+            entery = slot(zone_id_id=s.zone_id,slot_no=s.slot_no,
                           advertisement_id=schedule.advertisement_id,
                           is_starting=schedule.is_starting,
                           bundles_tobegiven=schedule.bundles_tobegiven)
             entery.save()
         #remove the data from the sceduler as it has already been copied to the current state database
-        scheduler.objects.filter(slot_id=s.id).delete()
+        scheduler.objects.filter(slots_id=s.id).delete()
     slots.objects.filter(week=week_no).delete()
