@@ -660,8 +660,8 @@ def edit_zone(request,longitude,latitude) :
             form = form.cleaned_data
 
             # intializing the variables need for the calculations
-            Xcenter = Decimal(request.bussinessPoint_longitude)
-            Ycenter = Decimal(request.bussinessPoint_latitude)
+            Xcenter = Decimal(longitude)
+            Ycenter = Decimal(latitude)
             left = Xcenter - DELX/2
             right = Xcenter + DELX/2
             bottom = Ycenter - DELY/2
@@ -678,7 +678,7 @@ def edit_zone(request,longitude,latitude) :
                     zone_no = getzone(x,y)
 
                     # check if this a valid zone_no
-                    check_zone = zone.objects.all.filter(id=zone_no)
+                    check_zone = zone.objects.filter(id=zone_no)
 
                     if len(check_zone) == 0 :
                         # raise error
