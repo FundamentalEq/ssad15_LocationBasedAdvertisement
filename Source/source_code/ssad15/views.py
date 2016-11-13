@@ -161,9 +161,28 @@ def check_availability(request) :
     return True
 
 
-def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
+def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info):
     # algorithm for Updating the database
     Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
+
+    total_bundles = DEFAULT_BUNDLES
+    if len(bundles_info)!=0 :
+
+        # find if the total no of bundles have been modified by the Admin
+        # if yes find the most recent modification and use that
+        for inf in bundles_info :
+            if inf.week <= week_no :
+                total_bundles = inf.no_of_bundles
+                break
+
+    else :
+
+        #error raised
+        # probable cause database has not been populated
+        #displaying appropriate warnings
+        print "Warning : Admin : Database has not been populated"
+        print "Run initilize_zone.py to rectify the error"
+        redirect(invalid_empty_database)
 
     i=0
     while i < len(Slots) :
@@ -189,7 +208,7 @@ def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
                     start = False
                     if j == 0 :
                         start = True
-                    schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,
+                    schedule = scheduler(slots_id_id=slot.id,advertisement_id_id=ad.id,
                                          bundles_tobegiven=required_bundles,
                                          is_starting=start)
                     schedule.save()
@@ -204,7 +223,7 @@ def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
                     start = False
                     if j == 0 :
                         start = True
-                    schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,
+                    schedule = scheduler(slots_id_id=slot.id,advertisement_id_id=ad.id,
                                          bundles_tobegiven=required_bundles,
                                          is_starting=start)
                     schedule.save()
@@ -228,11 +247,11 @@ def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad):
                 start = False
                 if j == 0 :
                     start = True
-                schedule = scheduler(slots_id=slot.id,advertisement_id=ad.id,
+                schedule = scheduler(slots_id_id=slot.id,advertisement_id_id=ad.id,
                                      bundles_tobegiven=required_bundles,
                                      is_starting=start)
                 schedule.save()
-            sets -=1
+            sets -= 1
             i += cont_slots
     #the update complete
 
@@ -288,10 +307,14 @@ def update_scheduler(request) :
                 # the number of bundles that needs to be given to the current advertisement in the current zone
                 required_bundles = (OArea/BAREA)*request.select_bundles
 
+                # geting data about max available bundles in the current zone
+                # pre condition : zone_info should have been populated atleast once : initilize_zone.py
+                bundles_info = zone_info.objects.filter(zone_id = zone_no).order_by('-week')
+
                 #update the slots for all the required weeks for the current zone
                 for week_no in range(int(request.no_of_weeks)) :
                     week_no += wn
-                    update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad)
+                    update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info)
 
                 x += delx
             y += dely
@@ -491,7 +514,7 @@ def total_cost(request):
                 select_week = -1
                 cost = 0
 
-                while i< len(z):
+                while i< len(zone_information):
                     if zone_information[i].week <= week_no:
                         select_week = zone_information[i].week
                         cost = zone_information[i].cost
