@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 import datetime
 from forms import *
-from decimal import * 
+from decimal import *
 import json
 
 def index(request):
@@ -22,8 +22,33 @@ def getzone(longitude,latitude):
     y = latitude
     rows_done = math.floor((y- bottom_extreme)/dely)
     in_a_row = math.floor((x - left_extreme)/delx)
-    zone_no = rows_done*zonesAlongX + in_a_row
-    return int(zone_no)
+    zone_no = rows_done*zonesAlongX + in_a_row + 1
+    zone_no = int(zone_no)
+    # test code
+    Zone = zone.objects.filter(id=zone_no)
+    # error handling
+    if len(Zone) == 0 :
+        # => that an invalid location has been picked
+        # raise error
+        print "Invalid location has been entered by the user"
+        return 0
+    else :
+        # select the required zone
+        Zone = Zone[0]
+
+    lowerx = Zone.bottom_left_coordinate_x
+    lowery = Zone.bottom_left_coordinate_y
+    topx = Decimal(lowerx) + Decimal(delx)
+    topy = Decimal(lowery) + Decimal(dely)
+    if lowery <= latitude and latitude <=topy  and lowerx <= longitude and longitude <= topx :
+        print "Valid zone number"
+    else :
+        print "the zone number so caluclated does not match the records"
+        print "lowerx = ",lowerx
+        print "topx = " ,topx
+        print "lowery = ",lowery
+        print "topy = ",topy
+    return zone_no
 
 def getOverLappingArea(left,right,bottom,top,zone_no):
     print "required zone no is ",zone_no
@@ -49,6 +74,13 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
     area = Decimal((r-l)*(t-b))
     #converting degree to Km
     area = area * kmTodegree * kmTodegree
+
+    if area < 0.0 :
+        # this zone does not overlap with the required bussiness area
+        # area = 0
+        print "Warning : area is -ve"
+        area = Decimal(0)
+
     return area
 
 def getWeekNumber(cur_date) :
@@ -650,7 +682,7 @@ def edit_zone(request,longitude,latitude) :
             print "errors in the form submitted by the user ",request.user," = ", form.errors
     else :
         form = zone_info_form()
-    return render(request,'ssad15/edit_zone.html',{'form':form,'editing_done':editing_done,'longitude':longitude,'latitude':latitude})
+    return render(request,'ssad15/edit_zone.html',{'form':form,'longitude':longitude,'latitude':latitude})
 
 #after device is logged in,it will be redirected to this controller
 def start_advertisement(request):
