@@ -514,25 +514,53 @@ def total_cost(request):
     # returning the total cost that the merchant will have to pay
     return int(total_cost)
 
+# to allow the admin to change the specifications about a zones :
+# 1) cost of advertisement
+# 2) Maxmimum number of budnles in that zones
+# All the changes will take place starting the week specified
 
 def select_zone(request) :
+
+    # check for the proper authentication
+    # only admin has access to select_zone
+    if not request.user.is_superuser :
+        # unauthorised access
+        # raise error
+        print "unauthorised access attempted by ",request.user
+        redirect(unauthorised_access)
+
+    else :
+        # the user is the superuser
+        print "Admin accessing select_zone at ", datetime.datetime.now()
+
+    # error variable turns one if the location is not recieved
     error = 0
+
     if request.method == 'POST':
+        # get the longitude
         if 'longitude' in request.POST:
             longitude = float(request.POST['longitude'])
         else :
             error=1
+
+        # get the latitude
         if 'latitude' in request.POST :
             latitude= float(request.POST['latitude'])
         else :
             error=1
-        print float(longitude),float(latitude)
+
+        # if the location was not recieved :
         if error:
-            return HttpResponse("Error in getting location !")
+            # raise error
+            return redirect(invalid_location)
+
         else :
+            # the coordinate of the point around which the changes have to made
+            # have been successfully selected
             return redirect(edit_zone,longitude=longitude,latitude=latitude)
     else :
-        pass
+        # else simply allow the admin to select the zone
+        return render(request,'ssad15/select_zone.html')
     return render(request,'ssad15/select_zone.html')
 
 def edit_zone(request,longitude,latitude) :
@@ -579,4 +607,7 @@ def invalid_location(request) :
     pass
 
 def invalid_empty_database(request) :
+    pass
+
+def unauthorised_access(request) :
     pass
