@@ -564,35 +564,63 @@ def select_zone(request) :
     return render(request,'ssad15/select_zone.html')
 
 def edit_zone(request,longitude,latitude) :
-    print longitude
-    print latitude
-    editing_done=False
+
+    # check for the proper authentication
+    # only admin has access to select_zone
+    if not request.user.is_superuser :
+        # unauthorised access
+        # raise error
+        print "unauthorised access attempted by ",request.user
+        redirect(unauthorised_access)
+
+    else :
+        # the user is the superuser
+        print "Admin accessing edit_zone at ", datetime.datetime.now()
+
     if request.method == 'POST' :
+
+        # form to collect the info form the admin about the new changed values
         form =zone_info_form(request.POST)
+
         if form.is_valid() :
             print "changes done by the admin are valid"
             form = form.cleaned_data
-            Xcenter = float(longitude)
-            Ycenter = float(latitude)
+
+            # intializing the variables need for the calculations
+            Xcenter = float(request.bussinessPoint_longitude)
+            Ycenter = float(request.bussinessPoint_latitude)
             left = Xcenter - DELX/2
             right = Xcenter + DELX/2
             bottom = Ycenter - DELY/2
             top = Ycenter + DELY/2
-            #variable to store total_cost
-            # starting the loop to map the request into zones and calculate total cost
+
             y = bottom
             wn = getWeekNumber(form['week'])
+
             while y < top :
                 x = left
                 while x < right :
+
+                    # find the zone no based the coordinates
                     zone_no = getzone(x,y)
-                    zone_info(zone_id=zone_no,week=wn,cost=form['cost'],no_of_bundles=form['no_of_bundles']).save()
+
+                    # check if this a valid zone_no
+                    check_zone = zone.objects.all.filter(id=zone_no)
+
+                    if len(check_zone) == 0 :
+                        # raise error
+                        # invalid_location
+                        redirect(invalid_location)
+
+                    else :
+                        zone_info(zone_id=zone_no,week=wn,cost=form['cost'],no_of_bundles=form['no_of_bundles']).save()
+
                     x += delx
                 y += dely
-            print "calling render"
+
             return render(request,'ssad15/changesdone.html')
         else :
-            print form.errors
+            print "errors in the form submitted by the user ",request.user," = ", form.errors
     else :
         form = zone_info_form()
     return render(request,'ssad15/edit_zone.html',{'form':form,'editing_done':editing_done,'longitude':longitude,'latitude':latitude})
