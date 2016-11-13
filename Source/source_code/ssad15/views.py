@@ -384,9 +384,9 @@ def find_slot_no(Zone_id) :
         # algorithm for calculating the current slot based on total number of slots present
         # and the time elapsed since the start of the current slot
         timediff = now - cur_slot.start_time
-        print "time diff == " ,timediff
         print timediff.total_seconds()
         diff = timediff.total_seconds()
+
         change = math.floor(diff/30.0)
         change = int(change)
         print cur_slot.start_time
@@ -394,7 +394,7 @@ def find_slot_no(Zone_id) :
         if change > 0 :
             running.objects.filter(zone_id=Zone_id).delete()
             running_ads.objects.filter(zone_id=Zone_id).delete()
-            print "running and running_ads have been emptied for the current zone"
+
             # formula cur_slot = (pre_cur_slot + change - 1)%total_no_of_slots + 1
             max_avail_slots = len(slot.objects.filter(zone_id=Zone_id).values('slot_no').distinct())
             cur_slot.slot = (cur_slot.slot + change - 1)%max_avail_slots + 1
@@ -434,7 +434,7 @@ def get_advertisement(Zone_id):
     # algorithm to find advertisement that should be displayed
     Ad = 0
     priority = -10000000000
-    print "total no of ads to choose from = " ,len(all_adv)
+
     for ad in all_adv :
 
         # no of devices that are already showing the current advertisement
@@ -448,26 +448,29 @@ def get_advertisement(Zone_id):
         else :
             given = given[0]
 
-        print "id = ",ad.advertisement_id_id
-        print "p = ",ad.bundles_tobegiven*X - given.given ,"And priority is ",priority
         if ad.bundles_tobegiven*X - given.given > priority :
             priority = ad.bundles_tobegiven*X - given.given
             Ad = ad.advertisement_id_id
-    print "the add so selected is ",Ad," in slot_no = ",slot_no
+
     # Ad will have id of the advertisement that should be displayed
     cur_ad = advertisement.objects.filter(id=Ad)[0]
     cont_slots = math.ceil(cur_ad.time_len /30.0)
     cont_slots = int(cont_slots)
 
+    # update the record corresponding to all the slots for which the current device
+    # is now booked
+    # it also update the information about how many device have already been
+    # alloted to each advertisement per zone per slot
+    # this information is needed to calculate the priority
     for sl in range(slot_no,slot_no+cont_slots) :
-        rs = running_slots.objects.filter(zone_id=Zone_id,slot=sl)
+        rs = running.objects.filter(zone_id=Zone_id,slot_no=sl)
         if len(rs) == 0 :
-            rs = running_slots(zone_id=Zone_id,slot=sl,alloted=0)
+            rs = running(zone_id=Zone_id,slot_no=sl,alloted=0)
         else :
             rs = rs[0]
         rs.alloted += 1
         rs.save()
-        ra = running_ads(zone_id=Zone_id,ad=cur_ad.id,slot_no=sl)
+        ra = running_ads.objects.filter(zone_id=Zone_id,ad_id=cur_ad.id,slot_no=sl)
         if len(ra) == 0 :
             ra = running_ads(zone_id=Zone_id,slot_no=sl,given=0,ad_id=cur_ad.id)
         else :
