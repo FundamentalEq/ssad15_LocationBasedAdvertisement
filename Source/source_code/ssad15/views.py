@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 import datetime
 from forms import *
+from decimal import * 
 import json
 
 def index(request):
@@ -39,13 +40,13 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
 
     lowerx = Zone.bottom_left_coordinate_x
     lowery = Zone.bottom_left_coordinate_y
-    topx = float(lowerx) + float(delx)
-    topy = float(lowery) + float(dely)
-    l = float(max(lowerx,left))
-    r = float(min(topx,right))
-    b = float(max(lowery,bottom))
-    t = float(min(topy,top))
-    area = float((r-l)*(t-b))
+    topx = Decimal(lowerx) + Decimal(delx)
+    topy = Decimal(lowery) + Decimal(dely)
+    l = Decimal(max(lowerx,left))
+    r = Decimal(min(topx,right))
+    b = Decimal(max(lowery,bottom))
+    t = Decimal(min(topy,top))
+    area = Decimal((r-l)*(t-b))
     #converting degree to Km
     area = area * kmTodegree * kmTodegree
     return area
@@ -109,8 +110,8 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
 def check_availability(request) :
 
     # intializing the variables need for the calculations
-    Xcenter = float(request.bussinessPoint_longitude)
-    Ycenter = float(request.bussinessPoint_latitude)
+    Xcenter = Decimal(request.bussinessPoint_longitude)
+    Ycenter = Decimal(request.bussinessPoint_latitude)
     left = Xcenter - DELX/2
     right = Xcenter + DELX/2
     bottom = Ycenter - DELY/2
@@ -162,7 +163,10 @@ def check_availability(request) :
 
 
 def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info):
+    # changing data type to avoid precision errors
+    required_bundles = Decimal(required_bundles)
     # algorithm for Updating the database
+    print "required_bundles = ",required_bundles
     Slots = slots.objects.filter(zone_id= zone_no,week=week_no).order_by('slot_no')
 
     total_bundles = DEFAULT_BUNDLES
@@ -264,8 +268,8 @@ def update_scheduler(request) :
     else :
         # availability still holds good
         # intializing the variables need for the calculations
-        Xcenter = float(request.bussinessPoint_longitude)
-        Ycenter = float(request.bussinessPoint_latitude)
+        Xcenter = Decimal(request.bussinessPoint_longitude)
+        Ycenter = Decimal(request.bussinessPoint_latitude)
         left = Xcenter - DELX/2
         right = Xcenter + DELX/2
         bottom = Ycenter - DELY/2
@@ -441,16 +445,16 @@ def display_advertisement(request):
     error = 0
     if request.method == 'POST':
         if 'longitude' in request.POST:
-            longitude = float(request.POST['longitude'])
+            longitude = Decimal(request.POST['longitude'])
         else :
             error=1
         if 'latitude' in request.POST :
-            latitude= float(request.POST['latitude'])
+            latitude= Decimal(request.POST['latitude'])
         else :
             error=1
     else :
         error = 1
-    print float(longitude),float(latitude)
+    print Decimal(longitude),Decimal(latitude)
     if error:
         return HttpResponse("Error in getting location !")
     else :
@@ -470,8 +474,8 @@ def display_advertisement(request):
 def total_cost(request):
     print "total cost has been called"
     # intializing the variables need for the calculations
-    Xcenter = float(request.bussinessPoint_longitude)
-    Ycenter = float(request.bussinessPoint_latitude)
+    Xcenter = Decimal(request.bussinessPoint_longitude)
+    Ycenter = Decimal(request.bussinessPoint_latitude)
     left = Xcenter - DELX/2
     right = Xcenter + DELX/2
     bottom = Ycenter - DELY/2
@@ -562,13 +566,13 @@ def select_zone(request) :
     if request.method == 'POST':
         # get the longitude
         if 'longitude' in request.POST:
-            longitude = float(request.POST['longitude'])
+            longitude = Decimal(request.POST['longitude'])
         else :
             error=1
 
         # get the latitude
         if 'latitude' in request.POST :
-            latitude= float(request.POST['latitude'])
+            latitude= Decimal(request.POST['latitude'])
         else :
             error=1
 
@@ -610,8 +614,8 @@ def edit_zone(request,longitude,latitude) :
             form = form.cleaned_data
 
             # intializing the variables need for the calculations
-            Xcenter = float(request.bussinessPoint_longitude)
-            Ycenter = float(request.bussinessPoint_latitude)
+            Xcenter = Decimal(request.bussinessPoint_longitude)
+            Ycenter = Decimal(request.bussinessPoint_latitude)
             left = Xcenter - DELX/2
             right = Xcenter + DELX/2
             bottom = Ycenter - DELY/2
