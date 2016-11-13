@@ -1,12 +1,15 @@
 console.log("i was here") ;
 console.log("i was here") ;
-var time_len = 300000;
+time_len = 10000;
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(updateLocation);
     } else {
         alert("Error in getting location.");
     }
+};
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 function updateLocation(position){
@@ -29,7 +32,9 @@ function updateLocation(position){
             document.getElementById('my_video').src = ret.path;
             document.getElementById('my_video1').src = ret.path ;
             console.log(document.getElementById('my_video').src) ;
-            time_len = ret.time_len*1000 ;
+            window.time_len = parseInt(ret.time_len)*1000 ;
+            // alert(window.time_len) ;
+            console.log("time len is ",window.time_len) ;
             console.log("the length of this video is ",time_len) ;
         },
         error : function(xhr, errmsg,err){
@@ -43,9 +48,15 @@ function updateLocation(position){
 };
 
 
+function show_ad()
+{
+    getLocation() ;
+    console.log(window.time_len) ;
+    setTimeout(show_ad,window.time_len) ;
+} ;
 
 $(document).ready( function ping(){
   console.log("i was here") ;
-  getLocation() ;
-  setInterval(function(){getLocation();},time_len);
+  show_ad() ;
+  // setInterval(function(){  console.log(window.time_len) ; getLocation();},window.time_len);
 });
