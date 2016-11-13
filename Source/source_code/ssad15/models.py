@@ -22,20 +22,21 @@ class zone_info(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     week = models.IntegerField(default=0)
     cost = models.IntegerField(default=-1)
-    no_of_bundles = models.IntegerField(default=10)
+    no_of_bundles = models.DecimalField(max_digits=10,decimal_places=5,default=0)
 
 
 class slots(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     week = models.IntegerField(default=0)
     slot_no = models.IntegerField(default=0)
-    no_of_bundles_used = models.IntegerField(default=0)
+    no_of_bundles_used = models.DecimalField(max_digits=10,decimal_places=5,default=0)
 class scheduler(models.Model) :
     slots_id = models.ForeignKey(slots, on_delete=models.CASCADE)
     advertisement_id = models.ForeignKey(advertisement, on_delete=models.CASCADE)
-    bundles_tobegiven = models.DecimalField(max_digits=5,decimal_places=2,default=0)
+    bundles_tobegiven = models.DecimalField(max_digits=10,decimal_places=5,default=0)
     is_starting = models.BooleanField(default=True)
 
+# stores the information about advertisement that have to be displayed in the current week
 class slot(models.Model):
     zone_id = models.ForeignKey(zone, on_delete=models.CASCADE)
     slot_no = models.IntegerField(default=0)
@@ -43,10 +44,15 @@ class slot(models.Model):
     is_starting = models.BooleanField(default=True)
     bundles_tobegiven = models.DecimalField(max_digits=5,decimal_places=2,default=0)
 
+# stores the information about number dervices that have been allocated in the given slot_no
+# for the given zone
 class running(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     slot_no = models.IntegerField(default=0)
     alloted = models.IntegerField(default=0)
+
+# store the information about the number of devices that have been allocated to
+#  a particular advertisement in the given slot and given zone
 class running_ads(models.Model) :
     zone = models.ForeignKey(zone, on_delete=models.CASCADE)
     ad = models.ForeignKey(advertisement, on_delete=models.CASCADE)
