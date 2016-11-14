@@ -111,7 +111,7 @@ def check_for_slot(zone_no,required_bundles,required_slots,cont_slots,sets,week_
         #displaying appropriate warnings
         print "Warning : Admin : Database has not been populated"
         print "Run initilize_zone.py to rectify the error"
-        redirect(invalid_empty_database)
+        return empty_database
 
     # algorithm to check avaialable availability of slots
 
@@ -186,11 +186,15 @@ def check_availability(request) :
             # calls the check_for_slot() to check for availability of slots in the current zone for all the required weeks
             for week_no in range(int(request.no_of_weeks)) :
                 week_no += wn
-                if not check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no) :
+                ret = check_for_slot(zone_no,required_bundles,request.no_of_slots,cont_slots,sets,week_no)
+                if ret == False  :
                     # no slots are avaialable in the current zone
                     # rasie error
                     return False
-
+                elif ret == True :
+                    pass
+                else :
+                    return ret
             x += delx
         y += dely
 
@@ -220,7 +224,7 @@ def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info
         #displaying appropriate warnings
         print "Warning : Admin : Database has not been populated"
         print "Run initilize_zone.py to rectify the error"
-        redirect(invalid_empty_database)
+        return empty_database
 
     i=0
     while i < len(Slots) :
@@ -291,6 +295,8 @@ def update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info
                 schedule.save()
             sets -= 1
             i += cont_slots
+
+    return True
     #the update complete
 
 def update_scheduler(request) :
@@ -352,8 +358,9 @@ def update_scheduler(request) :
                 #update the slots for all the required weeks for the current zone
                 for week_no in range(int(request.no_of_weeks)) :
                     week_no += wn
-                    update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info)
-
+                    ret = update_slot(zone_no,required_bundles,cont_slots,sets,week_no,ad,bundles_info)
+                    if ret == empty_database :
+                        return empty_database
                 x += delx
             y += dely
         for week_no in range(int(request.no_of_weeks)) :
@@ -376,7 +383,7 @@ def find_slot_no(Zone_id) :
         #displaying appropriate warnings
         print "Warning : Admin : Database has not been populated"
         print "Run initilize_zone.py to rectify the error"
-        redirect(invalid_empty_database)
+        return empty_database
 
     else :
         cur_slot = cur_slot[0]
@@ -408,7 +415,9 @@ def get_advertisement(Zone_id):
     #finding the current slot no for the current zone based on the server time and
     #total number of active slots in that zone
     slot_no = find_slot_no(Zone_id)
-
+    if slot_no == empty_database :
+        print "No advertisement to displayed"
+        pass
     # get all the advertisement in the current zone , whos display start in the
     # current zone
     all_adv = slot.objects.filter(zone_id_id=Zone_id,slot_no=slot_no,is_starting = True)
@@ -577,7 +586,7 @@ def total_cost(request):
                     #displaying appropriate warnings
                     print "Warning : Admin : Database has not been populated"
                     print "Run initilize_zone.py to rectify the error"
-                    redirect(invalid_empty_database)
+                    return empty_database
 
                 total_cost = total_cost + required_bundles * cost * no_of_slots
             x += delx
@@ -599,7 +608,7 @@ def select_zone(request) :
         # unauthorised access
         # raise error
         print "unauthorised access attempted by ",request.user
-        redirect(unauthorised_access)
+        return redirect(unauthorised_access)
 
     else :
         # the user is the superuser
@@ -643,7 +652,7 @@ def edit_zone(request,longitude,latitude) :
         # unauthorised access
         # raise error
         print "unauthorised access attempted by ",request.user
-        redirect(unauthorised_access)
+        return redirect(unauthorised_access)
 
     else :
         # the user is the superuser
@@ -682,7 +691,7 @@ def edit_zone(request,longitude,latitude) :
                     if len(check_zone) == 0 :
                         # raise error
                         # invalid_location
-                        redirect(invalid_location)
+                        return redirect(invalid_location)
 
                     else :
                         zone_info(zone_id=zone_no,week=wn,cost=form['cost'],no_of_bundles=form['no_of_bundles']).save()

@@ -112,6 +112,17 @@ def upload(request):
 									global c
 									val = 2
 									c = cost(post)
+									ret = c
+
+									if ret == invalid_location :
+										return redirect(invalid_location)
+									elif ret == internal_server_error :
+										return redirect(internal_server_error)
+									elif ret == empty_database :
+										return redirect(invalid_empty_database)
+									elif ret == unauthorised_access:
+										return redirect(unauthorised_access)
+
 									post.amount_paid = c
 									if not request.user.is_superuser:
 											post.uploader = request.user
@@ -149,6 +160,17 @@ def upload(request):
 									global c
 									val = 2
 									c = cost(post)
+									ret = c
+
+									if ret == invalid_location :
+										return redirect(invalid_location)
+									elif ret == internal_server_error :
+										return redirect(internal_server_error)
+									elif ret == empty_database :
+										return redirect(invalid_empty_database)
+									elif ret == unauthorised_access:
+										return redirect(unauthorised_access)
+										
 									post.amount_paid = c
 									if not request.user.is_superuser:
 											post.uploader = request.user
@@ -252,7 +274,17 @@ def total_cost(request):
 				p.uploader = request.user
 			post.save()
 			post.upload_Advertisement = p.upload_Advertisement
-			update_scheduler(post)
+			ret = update_scheduler(post)
+
+			if ret == invalid_location :
+				return redirect(invalid_location)
+			elif ret == internal_server_error :
+				return redirect(internal_server_error)
+			elif ret == empty_database :
+				return redirect(invalid_empty_database)
+			elif ret == unauthorised_access:
+				return redirect(unauthorised_access)
+
 			p.uploadby = post
 			p.save()
 			return render(request,'userauth/thanks.html', {'c':c})
