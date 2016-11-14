@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'ssad.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lba',
+        'NAME': 'hello',
         'USER': 'root',
         'PASSWORD': 'whyso123098',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
@@ -134,6 +134,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 # STATICFILES_DIRS = ( os.path.join(BASE_DIR, "static"),)
+CONTENT_TYPES = ['image', 'video']
+MAX_UPLOAD_SIZE = 104857600
 STATIC_URL = '/static/'
 LOGIN_URL = '/userauth/login/'
 MEDIA_URL = '/media/'

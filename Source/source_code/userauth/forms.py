@@ -10,7 +10,9 @@ import re
 import string
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput(),validators=[RegexValidator(regex='^[A-Za-z0-9@#$%^&+=]{8,}', message="Password should be a combination of Alphabets and Numbers and atleat 8 digit long",code='invalid_password'),])
 	password_confirm = forms.CharField(widget=forms.PasswordInput())
@@ -63,11 +65,22 @@ class UploadForm(forms.ModelForm):
 
 class UploadFileForm(forms.ModelForm):
         class Meta:
-                model = UploadFile
-                fields = ('upload_Advertisement',)
-                widgets = {
-                 'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
-                }
+			model = UploadFile
+			fields = ('upload_Advertisement',)
+			widgets = {
+			 'upload_Advertisement': forms.FileInput(attrs={'class':'btn btn-default'}),
+			}
+			def clean_content(self):
+				content = self.cleaned_data['upload_Advertisement']
+				content_type = content.content_type.split('/')[0]
+				if content_type in settings.CONTENT_TYPES :
+					if content.size > settings.MAX_UPLOAD_SIZE :
+						raise forms.ValidationError(_('File size larger than supported'))
+				else :
+					raise forms.ValidationError(_('File type not supported'))
+				
+
+
 class  Login_Adver(forms.ModelForm):
     class Meta:
 		model = Add_Device

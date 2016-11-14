@@ -22,6 +22,9 @@ import zipfile
 import StringIO
 import itertools
 from django.contrib.auth.models import UserManager
+from django.template.defaultfilters import filesizeformat
+from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 def register(request):
 
 	registered = False
@@ -218,6 +221,8 @@ def user_history(request):
 def total_cost(request):
 	if request.method == "POST":
 		p = UploadFileForm(request.POST, request.FILES)
+		if p.size > settings.MAX_UPLOAD_SIZE :
+			raise forms.ValidationError(_('File size larger than supported'))
 		if p.is_valid():
 			p = p.save(commit=False)
 			if request.user.is_superuser:
