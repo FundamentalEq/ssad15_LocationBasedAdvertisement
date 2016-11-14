@@ -705,12 +705,18 @@ def render_advertisement(request):
     return render(request,'ssad15/render_advertisement.html')
 
 def invalid_location(request) :
-    pass
+    error="Invalid Location !"
+    return render(request,'ssad15/error.html',{'error_message':error})
 
 def invalid_empty_database(request) :
-    pass
+    error="Invalid Request !"
+    return render(request,'ssad15/error.html',{'error_message':error})
+
 
 def unauthorised_access(request) :
-    pass
+    error="Unauthorised Access !"
+    return render(request,'ssad15/error.html',{'error_message':error})
+
 def internal_server_error(request) :
-    pass
+    error="Internal Server Error !"
+    return render(request,'ssad15/error.html',{'error_message':error})
