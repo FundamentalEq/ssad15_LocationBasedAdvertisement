@@ -95,20 +95,30 @@ def upload(request):
                 if request.method == "POST":
                         form = UploadForm(request.POST, request.FILES)
                         if form.is_valid():
-                                global post
-                                post = form.save(commit=False)
-                                if not checkavailable(post):
-                                        val = 1
-                                else:
-                                        global c
-                                        val = 2
-                                        c = cost(post)
-                                        post.amount_paid = c
-                                        if not request.user.is_superuser:
-                                                post.uploader = request.user
-                                        post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-                                        p = UploadFileForm()
-                                        return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
+							global post
+							post = form.save(commit=False)
+							ret = checkavailable(post)
+							if ret == invalid_location :
+								return redirect(invalid_location)
+							elif ret == internal_server_error :
+								return redirect(internal_server_error)
+							elif ret == empty_database :
+								return redirect(invalid_empty_database)
+							elif ret == unauthorised_access:
+								return redirect(unauthorised_access)
+							if ret == False :
+									val = 1
+							else:
+									global c
+									val = 2
+									c = cost(post)
+									post.amount_paid = c
+									if not request.user.is_superuser:
+											post.uploader = request.user
+									post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+									p = UploadFileForm()
+									return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
+
                         else:
                                 print form.errors
                 else :
@@ -122,20 +132,30 @@ def upload(request):
                 if request.method == "POST":
                         form = UploadForm1(request.POST, request.FILES)
                         if form.is_valid():
-                                global post
-                                post = form.save(commit=False)
-                                if not checkavailable(post):
-                                        val = 1
-                                else:
-                                        global c
-                                        val = 2
-                                        c = cost(post)
-                                        post.amount_paid = c
-                                        if not request.user.is_superuser:
-                                                post.uploader = request.user
-                                        post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
-                                        p = UploadFileForm()
-                                        return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
+							global post
+							post = form.save(commit=False)
+							ret = checkavailable(post)
+							if ret == invalid_location :
+								return redirect(invalid_location)
+							elif ret == internal_server_error :
+								return redirect(internal_server_error)
+							elif ret == empty_database :
+								return redirect(invalid_empty_database)
+							elif ret == unauthorised_access:
+								return redirect(unauthorised_access)
+							if ret == False :
+									val = 1
+							else:
+									global c
+									val = 2
+									c = cost(post)
+									post.amount_paid = c
+									if not request.user.is_superuser:
+											post.uploader = request.user
+									post.no_of_slots = math.ceil((post.no_of_repeats*post.time_of_advertisement)/30.0)
+									p = UploadFileForm()
+									return render(request,'userauth/total_cost.html',{'p': p ,'c':c,})
+
                         else:
                                 print form.errors
                 else :
@@ -221,9 +241,10 @@ def user_history(request):
 def total_cost(request):
 	if request.method == "POST":
 		p = UploadFileForm(request.POST, request.FILES)
-		if p.size > settings.MAX_UPLOAD_SIZE :
-			raise forms.ValidationError(_('File size larger than supported'))
+		# if p.size > settings.MAX_UPLOAD_SIZE :
+			# raise forms.ValidationError(_('File size larger than supported'))
 		if p.is_valid():
+			print p.clean_content()
 			p = p.save(commit=False)
 			if request.user.is_superuser:
 				p.uploader = post.uploader

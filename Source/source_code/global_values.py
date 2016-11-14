@@ -25,3 +25,7 @@ BAREA= Decimal(25)
 MAX_SLOTS = 120
 DEFAULT_BUNDLES = Decimal(10)
 DEFAULT_COST = 100
+invalid_location = "invalid_location"
+internal_server_error = "internal_server_error"
+empty_database = "empty_database"
+unauthorised_access = "unauthorised_access"

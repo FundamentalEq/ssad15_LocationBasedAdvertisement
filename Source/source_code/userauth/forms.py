@@ -73,12 +73,13 @@ class UploadFileForm(forms.ModelForm):
 			def clean_content(self):
 				content = self.cleaned_data['upload_Advertisement']
 				content_type = content.content_type.split('/')[0]
+				for i in range(10) :
+					print "clening the file size"
 				if content_type in settings.CONTENT_TYPES :
 					if content.size > settings.MAX_UPLOAD_SIZE :
 						raise forms.ValidationError(_('File size larger than supported'))
 				else :
 					raise forms.ValidationError(_('File type not supported'))
-				
 
 
 class  Login_Adver(forms.ModelForm):
