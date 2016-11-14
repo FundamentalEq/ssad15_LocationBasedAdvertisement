@@ -59,7 +59,7 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
         # => that an invalid location has been picked
         # raise error
         print "Invalid location has been entered by the user"
-        return False
+        return invalid_location
     else :
         # select the required zone
         Zone = Zone[0]
@@ -83,8 +83,7 @@ def getOverLappingArea(left,right,bottom,top,zone_no):
         # area = 0
         print "Warning : Area is negative"
         print "Check formula"
-        redirect(internal_server_error)
-
+        return internal_server_error
     return area
 
 def getWeekNumber(cur_date) :
@@ -176,10 +175,10 @@ def check_availability(request) :
 
             # get the overlap area between the bussiness area wrt to the current point and the zone
             OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-            if OArea == False :
+            if OArea == invalid_location or OArea == internal_server_error :
                 # error has been raised
                 # the user has inputed an invalid location
-                redirect(invalid_location)
+                return OArea
 
             # the number of bundles that needs to be given to the current advertisement in the current zone
             required_bundles = (OArea/BAREA)*request.select_bundles
@@ -338,10 +337,10 @@ def update_scheduler(request) :
 
                 # get the overlap area between the bussiness area wrt to the current point and the zone
                 OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-                if OArea == False :
+                if OArea == invalid_location or OArea == internal_server_error :
                     # error has been raised
                     # the user has inputed an invalid location
-                    redirect(invalid_location)
+                    return OArea
 
                 # the number of bundles that needs to be given to the current advertisement in the current zone
                 required_bundles = (OArea/BAREA)*request.select_bundles
@@ -549,10 +548,10 @@ def total_cost(request):
 
             # get the overlap area between the bussiness area wrt to the current point and the zone
             OArea = getOverLappingArea(left,right,bottom,top,zone_no)
-            if OArea == False :
+            if OArea == invalid_location or OArea == internal_server_error :
                 # error has been raised
                 # the user has inputed an invalid location
-                redirect(invalid_location)
+                return OArea
 
             # the number of bundles that needs to be given to the current advertisement in the current zone
             required_bundles = (OArea/BAREA)*request.select_bundles
